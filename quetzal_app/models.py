@@ -38,6 +38,7 @@ class Category(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     type = models.CharField(choices=CATEGORY_TYPES)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
