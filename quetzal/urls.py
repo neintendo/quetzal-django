@@ -20,6 +20,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", include("quetzal_app.urls")),
+    path("", include("quetzal_app.urls")),
     path("api-token-auth/", obtain_auth_token, name='api_token_auth'),
 ]
