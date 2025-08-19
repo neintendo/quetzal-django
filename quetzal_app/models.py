@@ -41,7 +41,7 @@ class Category(models.Model):
 
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     amount = models.IntegerField()
