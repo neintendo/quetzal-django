@@ -40,7 +40,7 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Transactions
 class TransactionListCreateView(generics.ListCreateAPIView):
-    serializer_class = CategorySerializer
+    serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
