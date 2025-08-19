@@ -27,7 +27,7 @@ class Account(models.Model):
     name = models.CharField(unique=True, max_length=100)
     type = models.CharField(max_length=50, choices=ACCOUNT_TYPES)
     currency_type = models.ForeignKey(Currency, on_delete=models.RESTRICT)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Category(models.Model):
     CATEGORY_TYPES = [
         ("income", "Income"),
