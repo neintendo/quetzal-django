@@ -4,6 +4,13 @@ from rest_framework.decorators import authentication_classes
 
 from .models import User, Account, Category, Transaction
 
+# Users
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'main_currency']
+
 # User Registration Serializer.
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
