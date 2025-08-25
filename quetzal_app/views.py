@@ -64,8 +64,15 @@ class TransactionListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
 
-    @db_transaction.atomic # Ensures database operations within a function/method are executed within a single database transaction.
+    def get_serializer_context(self):
+        # Pass the request to the serializer context
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    @db_transaction.atomic
     def perform_create(self, serializer):
+        # Save the transaction with the user
         transaction = serializer.save(user=self.request.user)
 
         # Updates the account balance.
