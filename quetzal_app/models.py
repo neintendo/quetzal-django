@@ -160,6 +160,14 @@ class Account(models.Model):
     currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        # Account names are unique per user.
+        unique_together = ['name', 'user']
+
+    def __str__(self):
+        return f"{self.name} ({self.currency})"
+
 class Category(models.Model):
     CATEGORY_TYPES = [
         ("income", "Income"),
@@ -172,12 +180,25 @@ class Category(models.Model):
     type = models.CharField(choices=CATEGORY_TYPES)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
+    class Meta:
+        # Account names are unique per user.
+        unique_together = ['name', 'user']
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return f"{self.name} ({self.type})"
+
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     amount = models.IntegerField()
     description = models.TextField()
     date = models.DateField()
     currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")    
+
+
+
+
+
+
+
