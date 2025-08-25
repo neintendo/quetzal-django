@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Account, Category, Transaction
 from .serializers import UserSerializer, AccountSerializer, CategorySerializer, TransactionSerializer
+from django.db import transaction as db_transaction
 
 # Users
 class UserProfileView(APIView):
@@ -63,8 +64,18 @@ class TransactionListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
 
+    @db_transaction.atomic # Ensures database operations within a function/method are executed within a single database transaction.
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        transaction = serializer.save(user=self.request.user)
+
+        # Updates the account balance.
+        account = transaction.account
+        if transaction.category.type == 'income':
+            account.balance += transaction.amount
+        elif transaction.category.type == 'expense':
+            account.balance -= transaction.amount
+        account.save()
+        # Will add block for transfers later :)
 
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
@@ -72,3 +83,38 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
+
+    @db_transaction.atomic
+    def perform_update(self, serializer):
+        old_transaction = self.get_object()
+        old_amount = old_transaction.amount
+        old_category_type = old_transaction.category.type
+
+        # Reverts the old transaction's effect
+        account = old_transaction.account
+        if old_category_type == 'income':
+            account.balance -= old_amount
+        elif old_category_type == 'expense':
+            account.balance += old_amount
+        account.save()
+
+        # Saves the updated transaction
+        updated_transaction = serializer.save()
+
+        # Apply the new transaction's effect
+        if updated_transaction.category.type == 'income':
+            account.balance += updated_transaction.amount
+        elif updated_transaction.category.type == 'expense':
+            account.balance -= updated_transaction.amount
+        account.save()
+
+    @db_transaction.atomic
+    def perform_destroy(self, instance):
+        # Revert the transaction's effect on account balance
+        account = instance.account
+        if instance.category.type == 'income':
+            account.balance -= instance.amount
+        elif instance.category.type == 'expense':
+            account.balance += instance.amount
+        account.save()
+        instance.delete()
