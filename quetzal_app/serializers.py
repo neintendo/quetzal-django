@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from rest_framework.decorators import authentication_classes
 
 from .models import User, Account, Category, Transaction
 
@@ -64,6 +63,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
+        read_only_fields = ('user', 'balance')
 
 # Category Serializer.
 class CategorySerializer(serializers.ModelSerializer):
@@ -76,3 +76,4 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = '__all__'
+        read_only_fields = ('user',)
