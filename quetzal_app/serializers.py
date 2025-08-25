@@ -107,9 +107,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         category, category_created = Category.objects.get_or_create(
             name=category_name,
             user=user,
-            defaults={
-                'type': 'expense'  # Default category type
-            }
+            defaults={'type': 'expense'}  # Default category type
         )
 
         # Create the transaction
@@ -125,7 +123,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         # Custom representation to show names instead of IDs
         representation = super().to_representation(instance)
-        # Replace the account and category fields with their names
+        # Replaces the account and category fields with their names
         representation['account'] = instance.account.name
         representation['category'] = instance.category.name
         return representation

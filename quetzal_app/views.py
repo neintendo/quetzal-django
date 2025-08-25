@@ -73,7 +73,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
     @db_transaction.atomic
     def perform_create(self, serializer):
         # Save the transaction with the user
-        transaction = serializer.save(user=self.request.user)
+        transaction = serializer.save()
 
         # Updates the account balance.
         account = transaction.account

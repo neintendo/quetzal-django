@@ -191,12 +191,15 @@ class Category(models.Model):
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()
     date = models.DateField()
     currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")    
 
-
+    def __str__(self):
+        return f"{self.date} - {self.amount} {self.currency} - {self.description}"
 
 
 
