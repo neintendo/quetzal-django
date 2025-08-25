@@ -140,6 +140,7 @@ class User(AbstractUser):
         return self.username
 
 class Currency(models.Model):
+    # Will implement this soon :)
     pass
 class Account(models.Model):
 
@@ -156,7 +157,8 @@ class Account(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(unique=True, max_length=100)
     type = models.CharField(max_length=50, choices=ACCOUNT_TYPES)
-    currency_type = models.ForeignKey(Currency, on_delete=models.RESTRICT)
+    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
+    balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 class Category(models.Model):
     CATEGORY_TYPES = [
@@ -178,4 +180,4 @@ class Transaction(models.Model):
     amount = models.IntegerField()
     description = models.TextField()
     date = models.DateField()
-    currency_ref = models.ForeignKey(Currency, on_delete=models.RESTRICT)
+    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")    
