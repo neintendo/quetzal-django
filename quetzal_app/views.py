@@ -1,6 +1,23 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Account, Category, Transaction
-from .serializers import AccountSerializer, CategorySerializer, TransactionSerializer
+from .serializers import UserSerializer, AccountSerializer, CategorySerializer, TransactionSerializer
+
+# Users
+class UserProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def put(self, request):
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Accounts
 class AccountsListCreateView(generics.ListCreateAPIView):
