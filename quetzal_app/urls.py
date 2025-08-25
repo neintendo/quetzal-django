@@ -1,7 +1,16 @@
 from django.urls import path
-from .views import AccountsListCreateView, AccountDetailView, CategoriesListCreateView, CategoriesDetailView, TransactionListCreateView, TransactionDetailView
+from .views import UserProfileView, AccountsListCreateView, AccountDetailView, CategoriesListCreateView, CategoriesDetailView, TransactionListCreateView, TransactionDetailView
+from .authentication import UserRegistrationView, UserLoginView, UserLogoutView
 
 urlpatterns = [
+    # Authentication
+    path("auth/register/", UserRegistrationView.as_view(), name="register"),
+    path("auth/login/", UserLoginView.as_view(), name="login"),
+    path("auth/logout/", UserLogoutView.as_view(), name="logout"),
+
+    # User Profile
+    path("profile/", UserProfileView.as_view(), name="profile"),
+
     # Accounts
     path("accounts/", AccountsListCreateView.as_view(), name="account-list-create"),
     path("accounts/<int:pk>/", AccountDetailView.as_view(), name="account-detail"),
