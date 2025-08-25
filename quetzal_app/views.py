@@ -95,7 +95,7 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         old_transaction = self.get_object()
         old_amount = old_transaction.amount
-        old_category_type = old_transaction.category.type
+        old_category_type = old_transaction.transaction_type
 
         # Reverts the old transaction's effect
         account = old_transaction.account
@@ -109,9 +109,9 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         updated_transaction = serializer.save()
 
         # Apply the new transaction's effect
-        if updated_transaction.category.type == 'income':
+        if updated_transaction.transaction_type == 'income':
             account.balance += updated_transaction.amount
-        elif updated_transaction.category.type == 'expense':
+        elif updated_transaction.transaction_type == 'expense':
             account.balance -= updated_transaction.amount
         account.save()
 
@@ -119,9 +119,10 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
         # Revert the transaction's effect on account balance
         account = instance.account
-        if instance.category.type == 'income':
+
+        if instance.transaction_type == 'income':
             account.balance -= instance.amount
-        elif instance.category.type == 'expense':
+        elif instance.transaction_type == 'expense':
             account.balance += instance.amount
         account.save()
         instance.delete()
