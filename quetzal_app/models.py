@@ -196,7 +196,8 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()
     date = models.DateField()
-    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")    
+    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
+    transaction_type = models.CharField(max_length=10, choices=Category.CATEGORY_TYPES, null=True, blank=True)
 
     def __str__(self):
         return f"{self.date} - {self.amount} {self.currency} - {self.description}"

@@ -81,8 +81,11 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'description', 'date', 'currency', 'account_name', 'category_name', 'account', 'category']
+        fields = ['id', 'amount', 'description', 'date', 'currency', 'account_name', 'category_name', 'account', 'category', 'transaction_type']
         read_only_fields = ('user',)
+        extra_kwargs = {
+            'transaction_type': {'required': True}
+        }
 
     def create(self, validated_data):
         # Get the current user from the request context
@@ -107,7 +110,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         category, category_created = Category.objects.get_or_create(
             name=category_name,
             user=user,
-            defaults={'type': 'expense'}  # Default category type
+            defaults={'type': Transaction.transaction_type}  # Default category type
         )
 
         # Create the transaction

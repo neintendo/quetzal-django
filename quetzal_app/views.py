@@ -77,9 +77,9 @@ class TransactionListCreateView(generics.ListCreateAPIView):
 
         # Updates the account balance.
         account = transaction.account
-        if transaction.category.type == 'income':
+        if transaction.transaction_type == 'income':
             account.balance += transaction.amount
-        elif transaction.category.type == 'expense':
+        elif transaction.transaction_type == 'expense':
             account.balance -= transaction.amount
         account.save()
         # Will add block for transfers later :)
