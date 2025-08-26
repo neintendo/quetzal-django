@@ -86,10 +86,11 @@ class TransactionSerializer(serializers.ModelSerializer):
     account = serializers.CharField(read_only=True)  # displays account name
     destination_account = serializers.CharField(read_only=True) # displays destination account name
     category = serializers.CharField(read_only=True)  # displays category name
+    datetime = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'description', 'date', 'currency', 'account_name',
+        fields = ['id', 'amount', 'description', 'datetime', 'currency', 'account_name',
                   'destination_account_name', 'category_name', 'account', 'destination_account', 'category', 'transaction_type']
         read_only_fields = ('user',)
         extra_kwargs = {

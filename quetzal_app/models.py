@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.functions import Now
 
 class User(AbstractUser):
 
@@ -196,12 +197,12 @@ class Transaction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()
-    date = models.DateField()
+    datetime = models.DateTimeField(db_default=Now())
     currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
     transaction_type = models.CharField(max_length=10, choices=Category.CATEGORY_TYPES, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.date} - {self.amount} {self.currency} - {self.description}"
+        return f"{self.datetime} - {self.amount} {self.currency} - {self.description}"
 
 
 
