@@ -191,7 +191,8 @@ class Category(models.Model):
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, related_name='outgoing_transactions')
+    destination_account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, blank=True, related_name='incoming_transactions')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()

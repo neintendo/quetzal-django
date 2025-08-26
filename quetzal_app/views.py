@@ -79,10 +79,18 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         account = transaction.account
         if transaction.transaction_type == 'income':
             account.balance += transaction.amount
+            account.save()
         elif transaction.transaction_type == 'expense':
             account.balance -= transaction.amount
-        account.save()
-        # Will add block for transfers later :)
+            account.save()            
+        elif transaction.transaction_type == 'transfer':
+            # Deducts from the origin account and adds to destination account
+            if transaction.account and transaction.destination_account:
+                transaction.account.balance -= transaction.amount
+                transaction.destination_account.balance += transaction.amount
+                transaction.account.save()
+                transaction.destination_account.save()
+            account.save()
 
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
@@ -103,16 +111,30 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
             account.balance -= old_amount
         elif old_category_type == 'expense':
             account.balance += old_amount
+        elif old_category_type == 'transfer':
+            old_transaction.account.balance += old_amount
+            old_transaction.destination_account.balance -= old_amount
+            old_transaction.account.save()
+            old_transaction.destination_account.save()
         account.save()
 
         # Saves the updated transaction
         updated_transaction = serializer.save()
+        new_type = updated_transaction.transaction_type
+        new_amount = updated_transaction.amount
 
         # Apply the new transaction's effect
-        if updated_transaction.transaction_type == 'income':
-            account.balance += updated_transaction.amount
-        elif updated_transaction.transaction_type == 'expense':
-            account.balance -= updated_transaction.amount
+        if new_type == 'income':
+            updated_transaction.account.balance += new_amount
+            updated_transaction.account.save()
+        elif new_type == 'expense':
+            updated_transaction.account.balance -= new_amount
+            updated_transaction.account.save()
+        elif new_type == 'transfer':
+            updated_transaction.account.balance -= new_amount
+            updated_transaction.destination_account.balance += new_amount
+            updated_transaction.account.save()
+            updated_transaction.destination_account.save()
         account.save()
 
     @db_transaction.atomic
@@ -124,5 +146,10 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
             account.balance -= instance.amount
         elif instance.transaction_type == 'expense':
             account.balance += instance.amount
+        elif instance.transaction_type == 'transfer':
+            instance.account.balance += instance.amount
+            instance.destination_account.balance -= instance.amount
+            instance.account.save()
+            instance.destination_account.save()
         account.save()
         instance.delete()
