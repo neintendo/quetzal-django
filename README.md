@@ -7,9 +7,10 @@
 - ✅ Straightforward interface for adding/removing transactions.
 - ✅ Support for custom income & expense categories.
 - ✅ Authentication and multiple-user support.
-- ✅ Graphical overview (charts & reports).
-- ✅ Currency conversion to a default currency for consistency.
 - ✅ Transaction filtering by date.
+- ✅ Multi-currency support.
+- ✅ Graphical overview (charts & reports).
+- ✅ Currency conversion to a default currency for consistency (pending implementation)
 
 ### Technology Stack:
 

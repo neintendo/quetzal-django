@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from .models import Account, Category, Transaction
 from .serializers import UserSerializer, AccountSerializer, CategorySerializer, TransactionSerializer
 from django.db import transaction as db_transaction
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
 # Users
 class UserProfileView(APIView):
@@ -56,13 +59,31 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Category.objects.filter(user=self.request.user)
 
+# Class for transaction filtering.
+class TransactionFilter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(field_name='datetime', lookup_expr='gte')
+    end_date = django_filters.DateFilter(field_name='datetime', lookup_expr='lte')
+    account = django_filters.CharFilter(method='filter_account')
+    category = django_filters.CharFilter(field_name='category__name', lookup_expr='icontains')
+
+    class Meta:
+        model = Transaction
+        fields = ['transaction_type']
+
+    def filter_account(self, queryset, name, value):
+        return queryset.filter(
+            Q(account__name__icontains=value) |
+            Q(destination_account__name__icontains=value)
+        )
 # Transactions
 class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = TransactionFilter
 
     def get_queryset(self):
-        return Transaction.objects.filter(user=self.request.user)
+        return Transaction.objects.filter(user=self.request.user).order_by('datetime')
 
     def get_serializer_context(self):
         # Pass the request to the serializer context
@@ -153,3 +174,4 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
             instance.destination_account.save()
         account.save()
         instance.delete()
+
