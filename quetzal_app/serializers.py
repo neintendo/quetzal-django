@@ -97,7 +97,8 @@ class TransactionSerializer(serializers.ModelSerializer):
                   'destination_account_name', 'category_name', 'account', 'destination_account', 'category', 'transaction_type']
         read_only_fields = ('user',)
         extra_kwargs = {
-            'transaction_type': {'required': True}
+            'transaction_type': {'required': True},
+            'currency': {'required': True}
         }
 
     # Validation to check if origin & destination accounts exists
