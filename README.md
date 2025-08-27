@@ -1,15 +1,14 @@
 # Quetzal Finance Manager.
 
-- A personal finance management system for tracking finances across multiple accounts (e.g., bank, cash, or investment). The system allows users to manage transactions, categorize expenses, and visualize financial data, with built-in authentication and support for multiple users.
+- A personal finance management system API for tracking finances across multiple user accounts (e.g., bank, cash, or investment). The system allows users to manage transactions, categorize expenses, and visualize financial data, with built-in authentication and support for multiple users.
 
-### Core Features:
+### Features:
 
-- ✅ Straightforward interface for adding/removing transactions.
+- ✅ Adding & removing transactions.
 - ✅ Support for custom income & expense categories.
 - ✅ Authentication and multiple-user support.
 - ✅ Transaction filtering by date.
-- ✅ Multi-currency support.
-- ✅ Graphical overview (charts & reports).
+- ✅ Multiple-currency support.
 - ✅ Currency conversion to a default currency for consistency (pending implementation)
 
 ### Technology Stack:
@@ -18,4 +17,4 @@
 - Database: PostgreSQL.
 - Authentication: Token-based.
 - Frontend: To be decided.
-- External API: Currency exchange rate API (to be chosen).
+- External API: Currency exchange rate API (pending implementation).
