@@ -63,6 +63,9 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
         read_only_fields = ('user', 'balance')
+        extra_kwargs = {
+            'currency': {'required': True}
+        }
 
 # Category Serializer.
 class CategorySerializer(serializers.ModelSerializer):
@@ -106,7 +109,7 @@ class TransactionSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Origin account is required for transfers.")
             if not data.get('destination_account_name'):
                 raise serializers.ValidationError("Destination account is required for transfers.")
-            else:
+        else:
                 """For non-transfers, require account_name instead of destination_account_name"""
                 if not data.get('account_name'):
                     raise serializers.ValidationError("An account is required.")
