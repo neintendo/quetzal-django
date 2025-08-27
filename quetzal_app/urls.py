@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserProfileView, AccountsListCreateView, AccountDetailView, CategoriesListCreateView, CategoriesDetailView, TransactionListCreateView, TransactionDetailView
+from .views import UserProfileView, AccountsListCreateView, AccountDetailView, CategoriesListCreateView, CategoriesDetailView, TransactionListCreateView, TransactionDetailView, TransactionAggregateView
 from .authentication import UserRegistrationView, UserLoginView, UserLogoutView
 
 urlpatterns = [
@@ -22,4 +22,5 @@ urlpatterns = [
     # Transactions
     path("transactions/", TransactionListCreateView.as_view(), name="transaction-list-create"),
     path("transactions/<int:pk>/", TransactionDetailView.as_view(), name="transaction-detail"),
+    path("transactions/aggregate/", TransactionAggregateView.as_view(), name="transaction-aggregate"),
 ]

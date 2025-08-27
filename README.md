@@ -7,7 +7,8 @@
 - ✅ Adding & removing transactions.
 - ✅ Support for custom income & expense categories.
 - ✅ Authentication and multiple-user support.
-- ✅ Transaction filtering by date.
+- ✅ Transaction filtering by date & time.
+- ✅ Account aggregates with filtering.
 - ✅ Multiple-currency support.
 - ✅ Currency conversion to a default currency for consistency (pending implementation)
 

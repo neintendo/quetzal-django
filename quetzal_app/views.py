@@ -1,4 +1,7 @@
+from unicodedata import category
+
 from rest_framework import generics, permissions, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Account, Category, Transaction
@@ -6,7 +9,7 @@ from .serializers import UserSerializer, AccountSerializer, CategorySerializer, 
 from django.db import transaction as db_transaction
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 # Users
 class UserProfileView(APIView):
@@ -70,7 +73,7 @@ class TransactionFilter(django_filters.FilterSet):
         model = Transaction
         fields = ['transaction_type']
 
-    def filter_account(self, queryset, name, value):
+    def filter_account(self, queryset, value):
         return queryset.filter(
             Q(account__name__icontains=value) |
             Q(destination_account__name__icontains=value)
@@ -111,7 +114,6 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 transaction.destination_account.balance += transaction.amount
                 transaction.account.save()
                 transaction.destination_account.save()
-            account.save()
 
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
@@ -175,3 +177,48 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         account.save()
         instance.delete()
 
+class TransactionAggregateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user transactions.
+        transactions = Transaction.objects.filter(user=request.user)
+
+        # Filtered transactions.
+        transactions_type = request.GET.get('transaction_type')
+        if transactions_type:
+            transactions = transactions.filter(transaction_type=transactions_type)
+
+        category = request.GET.get('category')
+        if category:
+            transactions = transactions.filter(category__name__icontains=category)
+
+        account = request.GET.get('account')
+        if account:
+            transactions = transactions.filter(
+                Q(account__name__icontains=account) |
+                Q(destination_account__name__icontains=account)
+            )
+
+        start_date = request.GET.get('start_date')
+        if start_date:
+            transactions = transactions.filter(datetime__date__gte=start_date)
+
+        end_date = request.GET.get('end_date')
+        if end_date:
+            transactions = transactions.filter(datetime__date__lte=end_date)
+
+        income_expense_transactions = transactions.exclude(transaction_type='transfer')
+
+        # Calculate expenses, income & net worth (EXCLUDING transfers)
+        income = income_expense_transactions.filter(transaction_type='income').aggregate(total=Sum('amount'))['total'] or 0
+        expenses = income_expense_transactions.filter(transaction_type='expense').aggregate(total=Sum('amount'))['total'] or 0
+        net = income - expenses
+
+        return Response({
+            'income': float(income),
+            'expense': float(expenses),
+            'net': float(net),
+            'transaction_count': transactions.count(),
+            'filters_applied': dict(request.GET)
+        })
