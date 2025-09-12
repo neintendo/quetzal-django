@@ -20,6 +20,52 @@ A personal finance management system API for tracking finances across multiple u
 - **Authentication**: Token-based authentication
 - **Filtering**: Django Filter for advanced query capabilities
 
+## ⚙️ Installation.
+
+### Prerequisites.
+
+- Python 3.10+
+- PostgreSQL
+- pip3
+- virtualenv or virtualfish
+
+### Step One: Clone The Repository.
+
+```
+git clone https://github.com/neintendo/quetzal-django.git
+cd quetzal-django
+```
+
+### Step Two: Install Virtual Environment.
+
+- You can use any virtual env that suits you, I used virtual fish.
+
+### Step Three: Install Dependencies.
+
+`pip3 install -r requirements.txt`
+
+### Step Four: Set Up PostgreSQL Database.
+
+- Install PostgreSQL (https://www.postgresql.org/download/)
+- Create new database for the project. Modify settings.py to suit your needs.
+
+```sql
+CREATE DATABASE quetzal;
+CREATE USER neintendo WITH PASSWORD 'quetzal-pass'; -- change this to your desired password
+GRANT ALL PRIVILEGES ON DATABASE quetzal TO neintendo; -- change this to your desired username
+```
+### Step Five: Run Database Migrations.
+
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+### Step Six: Run The Development Server.
+
+`python3 manage.py runserver`
+
+- The API can be accessed through http://127.0.0.1:8000/ and the admin panel at http://127.0.0.1:8000/admin
 
 ## 📜 API Documentation.
 
