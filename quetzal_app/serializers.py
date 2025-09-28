@@ -168,6 +168,13 @@ class TransactionSerializer(serializers.ModelSerializer):
                 defaults={"type": "bank", "currency": user.main_currency},
             )
 
+        # If accounts have different currencies display error message
+        if transaction_type == "transfer" and destination_account:
+            if origin_account.currency != destination_account.currency:
+                raise serializers.ValidationError(
+                    "Cannot transfer between accounts with different currencies"
+                )
+
         # Get or create category (_ is a placeholder value)
         category, _ = Category.objects.get_or_create(
             name=category_name, user=user, defaults={"type": transaction_type}
