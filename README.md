@@ -44,16 +44,30 @@ cd quetzal-django
 
 `pip3 install -r requirements.txt`
 
-### Step Four: Set Up PostgreSQL Database.
+### Step Four: Set Up PostgreSQL Database & Connection.
 
 - Install PostgreSQL (https://www.postgresql.org/download/)
 - Create new database for the project. Modify settings.py to suit your needs.
 
 ```sql
-CREATE DATABASE quetzal;
-CREATE USER neintendo WITH PASSWORD 'quetzal-pass'; -- change this to your desired password
-GRANT ALL PRIVILEGES ON DATABASE quetzal TO neintendo; -- change this to your desired username
+CREATE DATABASE quetzal; -- change this to your desired database name
+CREATE USER your-username WITH PASSWORD 'your-password'; -- change this to your desired username & password
+GRANT ALL PRIVILEGES ON DATABASE quetzal TO your-username; -- change this to your desired username
 ```
+
+- quetzal/settings.py configuration
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'quetzal', # change this to your desired database name
+        'USER': 'your-username', # change this to your desired username
+        'PASSWORD': 'your-password', # change this to your desired password
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+```
+
 ### Step Five: Run Database Migrations.
 
 ```
