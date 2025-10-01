@@ -158,7 +158,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             destination_account, _ = Account.objects.get_or_create(
                 name=destination_account_name,
                 user=user,
-                defaults={"type": "bank", "currency": user.main_currency},
+                defaults={"type": "bank", "currency": origin_account.currency},
             )
 
         # If accounts have different currencies display error message
