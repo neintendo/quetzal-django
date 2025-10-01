@@ -104,8 +104,8 @@ class TransactionSerializer(serializers.ModelSerializer):
             "description",
             "datetime",
             "currency",
-            "account_name",
-            "destination_account_name",
+            "account_name",  # Used for transfers
+            "destination_account_name",  # Used for transfers
             "category_name",
             "account",
             "destination_account",
@@ -118,23 +118,16 @@ class TransactionSerializer(serializers.ModelSerializer):
             "currency": {"required": False},
         }
 
-    # Validation to check if origin & destination accounts exists
     def validate(self, data):
-        transaction_type = data.get("transaction_type")
+        # Validate amount
+        if data.get("amount") <= 0:
+            raise serializers.ValidationError("Amount must be greater than 0")
 
-        if transaction_type == "transfer":
-            if not data.get("account_name"):
-                raise serializers.ValidationError(
-                    "Origin account is required for transfers."
-                )
-            if not data.get("destination_account_name"):
-                raise serializers.ValidationError(
-                    "Destination account is required for transfers."
-                )
-        else:
-            """For non-transfers, require account_name instead of destination_account_name"""
-            if not data.get("account_name"):
-                raise serializers.ValidationError("An account is required.")
+        # Validation checks for transfers
+        if data.get("transaction_type") == "transfer":
+            # Prevent transfers to the same account
+            if data.get("account_name") == data.get("destination_account_name"):
+                raise serializers.ValidationError("Cannot transfer to the same account")
 
         return data
 
