@@ -31,7 +31,7 @@ A personal finance management system API for tracking finances across multiple u
 
 ### Step One: Clone The Repository.
 
-```
+```sh
 git clone https://github.com/neintendo/quetzal-django.git
 cd quetzal-django
 ```
@@ -50,9 +50,9 @@ cd quetzal-django
 - Create new database for the project. Modify settings.py to suit your needs.
 
 ```sql
-CREATE DATABASE quetzal; -- change this to your desired database name
-CREATE USER your-username WITH PASSWORD 'your-password'; -- change this to your desired username & password
-GRANT ALL PRIVILEGES ON DATABASE quetzal TO your-username; -- change this to your desired username
+CREATE DATABASE quetzal;
+CREATE USER your_username WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE quetzal TO your_username;
 ```
 
 - quetzal/settings.py configuration
@@ -61,8 +61,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'quetzal', # change this to your desired database name
-        'USER': 'your-username', # change this to your desired username
-        'PASSWORD': 'your-password', # change this to your desired password
+        'USER': 'your_username', # change this to your desired username
+        'PASSWORD': 'your_password', # change this to your desired password
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -70,7 +70,7 @@ DATABASES = {
 
 ### Step Five: Run Database Migrations.
 
-```
+```sh
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
