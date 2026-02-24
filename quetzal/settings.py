@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "quetzal_app",
     "django_filters",
+    "corsheaders",
 ]
 
 REST_FRAMEWORK = {
@@ -70,7 +71,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000/", "http://localhost:5173/"]
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:5173"]
 
 ROOT_URLCONF = "quetzal.urls"
 
