@@ -45,7 +45,7 @@ function Form({ route, method }) {
         console.error("Error data:", error.response.data);
         console.error("Error status:", error.response.status);
         // Shows status errors from the backend to the user.
-        alert(error.response.data);
+        alert(JSON.stringify(error.response.data));
       } else if (error.request) {
         console.error("No response received", error.request);
         alert(
@@ -62,7 +62,7 @@ function Form({ route, method }) {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-      <h1>{name}</h1>;
+      <h1>{name}</h1>
       <input
         className="form-input"
         type="text"
@@ -71,14 +71,16 @@ function Form({ route, method }) {
         placeholder="Username"
         required
       />
-      <input
-        className="form-input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
+      {method === "register" && (
+        <input
+          className="form-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+      )}
       {method === "register" && (
         <input
           className="form-input"
