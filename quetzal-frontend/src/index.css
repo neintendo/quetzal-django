@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "DepartureMono-Regular";
+    src: url("./assets/fonts/DepartureMono-Regular.ttf") format("truetype");
+}
+
+html,
+body {
+    font-family: "DepartureMono-Regular", sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    font-family: inherit;
+}
