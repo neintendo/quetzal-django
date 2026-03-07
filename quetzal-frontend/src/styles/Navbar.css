@@ -1,0 +1,33 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cccccc;
+    color: black;
+    padding: 16px;
+    max-height: 16px;
+}
+
+.add-nav {
+    display: flex;
+    align-items: center;
+    background-color: #eeeeee;
+    border: none;
+    font-size: 13px;
+}
+
+.add-nav:hover {
+    background-color: white;
+}
+
+.menu-nav {
+    display: flex;
+    align-items: center;
+    background-color: #eeeeee;
+    border: none;
+    font-size: 13px;
+}
+
+.menu-nav:hover {
+    background-color: white;
+}

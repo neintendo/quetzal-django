@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
+import Navbar from "../components/Navbar";
 
 function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -59,7 +60,12 @@ function Home() {
     getTransactions();
   };
 
-  return <div>Home</div>;
+  return (
+    <div>
+      <Navbar />
+      <div>.</div>
+    </div>
+  );
 }
 
 export default Home;
