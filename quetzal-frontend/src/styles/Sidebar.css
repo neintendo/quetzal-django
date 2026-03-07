@@ -1,0 +1,74 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #cccccc;
+    width: 12%;
+    padding: 16px;
+    position: fixed;
+    left: 0;
+    top: 48px;
+    height: calc(100vh - 48px);
+    transition: width 250ms ease;
+}
+
+.sidebar.closed {
+    width: 0;
+    overflow: hidden;
+    padding: 0;
+}
+.sidebar-top {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.sidebar-pages-top {
+    margin-bottom: 4px;
+    padding: 8px;
+}
+.sidebar-pages-top:hover {
+    background-color: #aaaaaa;
+}
+
+.sidebar-profile {
+    font-size: 14px;
+    background-color: #bbbbbb;
+    align-items: center;
+    justify-content: left;
+    width: 85%;
+    max-width: 85%;
+    max-width: 100%;
+    display: flex;
+    margin-bottom: 15%;
+    padding: 8px;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar-profile:hover {
+    background-color: #aaaaaa;
+}
+
+.sidebar-settings {
+    background-color: #bbbbbb;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    max-width: 15%;
+    display: flex;
+    margin-bottom: 15%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.sidebar-settings:hover {
+    background-color: #aaaaaa;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -63,7 +64,8 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div>.</div>
+      <Sidebar />
+      <div></div>
     </div>
   );
 }
