@@ -13,6 +13,9 @@ function Form({ route, method }) {
   const navigate = useNavigate();
 
   const name = method === "login" ? "LOGIN" : "REGISTER";
+  const link_path = method === "login" ? "/register" : "/login";
+  const link_text =
+    method === "login" ? "Don't have an account?" : "Already have an account?";
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -98,11 +101,15 @@ function Form({ route, method }) {
         placeholder="Password"
         required
       />
+      {/* Button disabled when loading to prevent double submission */}
       <button className="form-button" type="submit" disabled={loading}>
         {loading ? "LOADING..." : name}
       </button>
+      {/* Dynamic link that navigates between login & register pages */}
+      <a className="where-to" href={link_path}>
+        {link_text}
+      </a>
     </form>
-    // Button disabled when loading to prevent double submission
   );
 }
 
