@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen }) => {
               // Show profile
               <div className="sidebar-profile">
                 {profile ? (
-                  <div>░ {profile.username}</div>
+                  <div>▒ {profile.username}</div>
                 ) : (
                   <div>LOADING...</div>
                 )}
