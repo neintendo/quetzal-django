@@ -14,25 +14,27 @@
     background-color: #eeeeee;
     border: none;
     font-size: 13px;
+    transition: background-color 250ms ease;
 }
 
 .add-nav:hover {
     background-color: white;
 }
 
-.menu-nav {
+.sidebar-nav {
     display: flex;
     align-items: center;
     background-color: #eeeeee;
     border: none;
     font-size: 13px;
+    transition: background-color 250ms ease;
 }
 
-.menu-nav:hover {
+.sidebar-nav:hover {
     background-color: white;
 }
 
 .add-nav,
-.menu-nav {
+.sidebar-nav {
     cursor: pointer;
 }

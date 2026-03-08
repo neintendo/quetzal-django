@@ -15,7 +15,7 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="navbar-left">
           <button
-            className="menu-nav"
+            className="sidebar-nav"
             title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
             type="button"
             onClick={toggleSidebar}
