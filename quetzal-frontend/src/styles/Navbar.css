@@ -31,3 +31,8 @@
 .menu-nav:hover {
     background-color: white;
 }
+
+.add-nav,
+.menu-nav {
+    cursor: pointer;
+}

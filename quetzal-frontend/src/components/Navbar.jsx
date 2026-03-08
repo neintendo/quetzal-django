@@ -14,7 +14,12 @@ const Navbar = () => {
 
       <nav className="navbar">
         <div className="navbar-left">
-          <button className="menu-nav" type="button" onClick={toggleSidebar}>
+          <button
+            className="menu-nav"
+            title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
+            type="button"
+            onClick={toggleSidebar}
+          >
             {isSidebarOpen ? "<" : ">"}
           </button>
         </div>
