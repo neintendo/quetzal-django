@@ -9,6 +9,7 @@
     left: 0;
     top: 48px;
     height: calc(100vh - 48px);
+    border-right: 1px solid #aaaaaa;
     transition: width 250ms ease;
 }
 

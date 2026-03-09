@@ -6,6 +6,7 @@
     color: black;
     padding: 16px;
     max-height: 16px;
+    border-bottom: 1px solid #aaaaaa;
 }
 
 .add-nav {
