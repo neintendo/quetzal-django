@@ -3,7 +3,8 @@
     flex-direction: column;
     justify-content: space-between;
     background-color: #cccccc;
-    width: 12%;
+    width: 200px;
+
     padding: 16px;
     position: fixed;
     left: 0;
