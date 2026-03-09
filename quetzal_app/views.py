@@ -1,18 +1,19 @@
+import django_filters
+from django.db import transaction as db_transaction
+from django.db.models import Q, Sum
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import Account, Category, Transaction
 from .serializers import (
-    UserSerializer,
     AccountSerializer,
     CategorySerializer,
     TransactionSerializer,
+    UserSerializer,
 )
-from django.db import transaction as db_transaction
-import django_filters
-from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q, Sum
 
 
 # Users
@@ -253,4 +254,29 @@ class TransactionAggregateView(APIView):
                 "transaction_count": transactions.count(),
                 "filters_applied": dict(request.GET),
             }
+        )
+
+
+class AccountsAggregateView(APIView):
+    permissions_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user accounts
+        accounts = Account.objects.filter(user=request.user)
+
+        # Filter by account type
+        account_type = request.GET.get("type")
+        if account_type:
+            accounts = accounts.filter(type=account_type)
+
+        # Filter by currency
+        currency = request.GET.get("currency")
+        if currency:
+            accounts = accounts.filter(currency=currency.upper())
+
+        total_balance = accounts.aggregate(total=Sum("balance"))["total"] or 0
+        total_accounts = accounts.count()
+
+        return Response(
+            {"total_balance": float(total_balance), "total_accounts": total_accounts}
         )
