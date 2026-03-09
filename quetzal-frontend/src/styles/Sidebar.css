@@ -11,13 +11,13 @@
     top: 48px;
     height: calc(100vh - 48px);
     border-right: 1px solid #aaaaaa;
-    transition: width 250ms ease;
+    transition: transform 250ms ease;
+    transform: translateX(0);
 }
 
 .sidebar.closed {
-    width: 0;
+    transform: translateX(-100%);
     overflow: hidden;
-    padding: 0;
 }
 .sidebar-top {
     justify-content: space-between;
