@@ -1,38 +1,40 @@
 .navbar {
     display: flex;
+    grid-column: 1 / -1;
+    grid-row: 1;
     justify-content: space-between;
     align-items: center;
-    background-color: #cccccc;
+    background-color: #dddddd;
+    border: 1px solid #bbbbbb;
     color: black;
     padding: 16px;
     max-height: 16px;
-    border-bottom: 1px solid #aaaaaa;
 }
 
 .add-nav {
     display: flex;
     align-items: center;
-    background-color: #eeeeee;
+    background-color: #cccccc;
     border: none;
     font-size: 13px;
     transition: background-color 250ms ease;
 }
 
 .add-nav:hover {
-    background-color: white;
+    background-color: #eeeeee;
 }
 
 .sidebar-nav {
     display: flex;
     align-items: center;
-    background-color: #eeeeee;
+    background-color: #cccccc;
     border: none;
     font-size: 13px;
     transition: background-color 250ms ease;
 }
 
 .sidebar-nav:hover {
-    background-color: white;
+    background-color: #eeeeee;
 }
 
 .add-nav,

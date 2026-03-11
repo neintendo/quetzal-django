@@ -2,15 +2,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #cccccc;
-    width: 200px;
-
+    background-color: #dddddd;
+    width: 85%;
     padding: 16px;
-    position: fixed;
     left: 0;
     top: 48px;
     height: calc(100vh - 48px);
-    border-right: 1px solid #aaaaaa;
     transition: transform 250ms ease;
     transform: translateX(0);
 }
@@ -44,13 +41,13 @@
     transition: background-color 250ms ease;
 }
 .sidebar-pages-top:hover {
-    background-color: #aaaaaa;
+    background-color: #cccccc;
     font-size: 18px;
 }
 
 .sidebar-profile {
-    font-size: 14px;
-    background-color: #bbbbbb;
+    font-size: 12px;
+    background-color: #cccccc;
     align-items: center;
     justify-content: left;
     width: 85%;
@@ -66,11 +63,11 @@
 }
 
 .sidebar-profile:hover {
-    background-color: #aaaaaa;
+    background-color: #bbbbbb;
 }
 
 .sidebar-options {
-    background-color: #bbbbbb;
+    background-color: #cccccc;
     font-size: 14px;
     width: 85%;
     max-width: 85%;
@@ -90,12 +87,12 @@
     transition: background-color 250ms ease;
 }
 .sidebar-options-icons:hover {
-    background-color: #aaaaaa;
+    background-color: #bbbbbb;
     font-size: 17px;
 }
 
 .sidebar-options-toggle {
-    background-color: #aaaaaa;
+    background-color: #cccccc;
     align-items: center;
     justify-content: space-evenly;
     width: 15%;
@@ -108,7 +105,7 @@
 }
 
 .sidebar-options-toggle:hover {
-    background-color: #999999;
+    background-color: #bbbbbb;
 }
 
 .sidebar-pages-top,
