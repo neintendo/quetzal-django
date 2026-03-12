@@ -27,19 +27,23 @@
 
 .accounts-table-container {
     background-color: #dddddd;
+    padding-top: 50px;
     padding: 16px;
     width: calc(100% - 32px);
     height: 70%;
     border: 1px solid #bbbbbb;
+    scroll-snap-type: y proximity;
+    overflow-y: auto;
 }
 
 .accounts-table-header {
-    display: inline-block;
-    border: 1px solid #bbbbbb;
-    padding: 8px;
+    position: sticky;
+    background-color: #dddddd;
+    display: flex;
+    top: 0px;
 }
 
-.accounts-table {
-    width: 100%;
-    border-width: 12px;
+.accounts-table-title {
+    padding: 8px;
+    border: 1px solid #bbbbbb;
 }

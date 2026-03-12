@@ -1,7 +1,7 @@
 import "../styles/Accounts.css";
 import api from "../api";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import AccountsTable from "./AccountsTable";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
@@ -30,8 +30,12 @@ const Accounts = () => {
           <div></div>
         </div>
         <div className="accounts-table-container">
-          <div className="accounts-table-header">Accounts</div>
-          <div></div>
+          <div className="accounts-table-header">
+            <div className="accounts-table-title">Accounts</div>
+          </div>
+          <div>
+            <AccountsTable />
+          </div>
         </div>
       </div>
     </>

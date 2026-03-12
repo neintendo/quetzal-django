@@ -1,0 +1,26 @@
+table {
+    width: calc(100% - 32px);
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    position: sticky;
+    top: 40px;
+    background-color: #dddddd;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 1.4%;
+    font-size: 14px;
+}
+
+tr {
+    border-bottom: 1px solid #bbbbbb;
+    scroll-snap-align: center;
+}
+tr:not(:first-child):hover {
+    background-color: #cccccc;
+}
