@@ -1,6 +1,5 @@
 table {
     width: calc(100% - 32px);
-    width: 100%;
     border-collapse: collapse;
 }
 
@@ -9,6 +8,18 @@ th {
     top: 40px;
     background-color: #dddddd;
     text-align: left;
+    z-index: 28;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-color: #dddddd;
+        transform: translateY(-100%);
+        z-index: 27;
+    }
 }
 
 th,

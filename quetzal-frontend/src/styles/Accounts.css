@@ -27,13 +27,13 @@
 
 .accounts-table-container {
     background-color: #dddddd;
-    padding-top: 50px;
     padding: 16px;
     width: calc(100% - 32px);
     height: 70%;
     border: 1px solid #bbbbbb;
     scroll-snap-type: y proximity;
     overflow-y: auto;
+    scroll-padding: 20%;
 }
 
 .accounts-table-header {
@@ -41,6 +41,18 @@
     background-color: #dddddd;
     display: flex;
     top: 0px;
+    z-index: 30;
+
+    ::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 100%;
+        background-color: #dddddd;
+        transform: translateY(-100%);
+        z-index: 29;
 }
 
 .accounts-table-title {
