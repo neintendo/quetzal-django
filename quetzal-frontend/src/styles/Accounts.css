@@ -23,6 +23,7 @@
     display: inline-block;
     border: 1px solid #bbbbbb;
     padding: 8px;
+
 }
 
 .accounts-table-container {
@@ -58,4 +59,9 @@
 .accounts-table-title {
     padding: 8px;
     border: 1px solid #bbbbbb;
+}
+
+.accounts-graph-balance,
+.accounts-table-title {
+    cursor: pointer;
 }

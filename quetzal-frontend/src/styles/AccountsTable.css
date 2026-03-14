@@ -31,6 +31,7 @@ td {
 tr {
     border-bottom: 1px solid #bbbbbb;
     scroll-snap-align: center;
+    cursor: pointer;
 }
 tr:not(:first-child):hover {
     background-color: #cccccc;
