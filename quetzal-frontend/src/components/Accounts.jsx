@@ -32,6 +32,10 @@ const Accounts = () => {
         <div className="accounts-table-container">
           <div className="accounts-table-header">
             <div className="accounts-table-title">Accounts</div>
+            <input
+              className="table-header-input"
+              placeholder="Search Account"
+            />
           </div>
           <div>
             <AccountsTable />

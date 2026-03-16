@@ -5,6 +5,10 @@ import "../styles/AccountsTable.css";
 
 const AccountsTable = () => {
   const [tableData, setTableData] = useState([]);
+  const [sortHeader, setSortHeader] = useState({
+    key: "name",
+    direction: "asc",
+  });
 
   const getTableData = () => {
     api
@@ -21,16 +25,67 @@ const AccountsTable = () => {
     getTableData();
   }, []);
 
+  const requestSort = (key) => {
+    let direction = "asc";
+    if (sortHeader.key === key && sortHeader.direction === "asc") {
+      direction = "desc";
+    }
+    setSortHeader({ key, direction });
+  };
+
+  const sortedData = [...tableData].sort((a, b) => {
+    if (!sortHeader.key) return 0;
+
+    const aValue = a[sortHeader.key];
+    const bValue = b[sortHeader.key];
+
+    if (aValue < bValue) {
+      return sortHeader.direction === "asc" ? -1 : 1;
+    }
+    if (aValue > bValue) {
+      return sortHeader.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
   return (
     <div>
       <table className="accounts-table">
         <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Currency</th>
-          <th>Balance</th>
+          <th onClick={() => requestSort("name")}>
+            Name{" "}
+            {sortHeader.key === "name"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th onClick={() => requestSort("type")}>
+            Type{" "}
+            {sortHeader.key === "type"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th onClick={() => requestSort("currency")}>
+            Currency{" "}
+            {sortHeader.key === "currency"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th onClick={() => requestSort("balance")}>
+            Balance{" "}
+            {sortHeader.key === "balance"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
         </tr>
-        {tableData.map((val, key) => {
+        {sortedData.map((val, key) => {
           return (
             <tr key={key}>
               <td>{val.name}</td>
