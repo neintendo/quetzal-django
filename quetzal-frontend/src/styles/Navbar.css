@@ -17,6 +17,7 @@
     background-color: #cccccc;
     border: none;
     font-size: 13px;
+    border: 1px solid #bbbbbb;
     transition: background-color 250ms ease;
 }
 
@@ -30,6 +31,7 @@
     background-color: #cccccc;
     border: none;
     font-size: 13px;
+    border: 1px solid #bbbbbb;
     transition: background-color 250ms ease;
 }
 

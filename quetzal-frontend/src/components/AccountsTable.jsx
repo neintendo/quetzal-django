@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../styles/AccountsTable.css";
 
-const AccountsTable = () => {
+const AccountsTable = ({ searchTerm }) => {
   const [tableData, setTableData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "name",
@@ -33,7 +33,11 @@ const AccountsTable = () => {
     setSortHeader({ key, direction });
   };
 
-  const sortedData = [...tableData].sort((a, b) => {
+  const filteredData = tableData.filter((item) => {
+    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
     if (!sortHeader.key) return 0;
 
     const aValue = a[sortHeader.key];

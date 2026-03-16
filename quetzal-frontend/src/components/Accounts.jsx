@@ -5,6 +5,7 @@ import AccountsTable from "./AccountsTable";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const getAccountAggregates = () => {
     api
       .get("accounts/aggregate/")
@@ -35,10 +36,20 @@ const Accounts = () => {
             <input
               className="table-header-input"
               placeholder="Search Account"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <div className="table-header-button-container">
+              <button className="filter-accounts" type="button">
+                {"▫"}
+              </button>
+              <button className="add-account" type="button">
+                {"+ Add Account"}
+              </button>
+            </div>
           </div>
           <div>
-            <AccountsTable />
+            <AccountsTable searchTerm={searchTerm} />
           </div>
         </div>
       </div>
