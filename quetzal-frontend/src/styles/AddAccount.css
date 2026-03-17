@@ -1,0 +1,52 @@
+.add-account-modal {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    box-sizing: border-box;
+    padding-bottom: 16px;
+    padding-top: 8px;
+}
+
+.modal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    border: 1px solid #bbbbbb;
+    transition: background-color 250ms ease;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+    z-index: 1;
+}
+
+.modal-close-button:hover {
+    background-color: #dddddd;
+}
+
+.modal-close-button {
+    cursor: pointer;
+}

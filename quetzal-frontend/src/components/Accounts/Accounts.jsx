@@ -1,11 +1,14 @@
-import "../styles/Accounts.css";
-import api from "../api";
+import "../../styles/Accounts.css";
+import api from "../../api";
 import { useState, useEffect } from "react";
-import AccountsTable from "./AccountsTable";
+import AccountsTable from "../Accounts/AccountsTable";
+import AddAccount from "./AddAccount";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+
   const getAccountAggregates = () => {
     api
       .get("accounts/aggregate/")
@@ -20,6 +23,11 @@ const Accounts = () => {
   useEffect(() => {
     getAccountAggregates();
   }, []);
+
+  const handleAccountAdded = () => {
+    setShowAddModal(false);
+    // add code for refreshing table here later
+  };
 
   return (
     <>
@@ -43,9 +51,22 @@ const Accounts = () => {
               <button className="filter-accounts" type="button">
                 {"▫"}
               </button>
-              <button className="add-account" type="button">
-                {"+ Add Account"}
-              </button>
+              <div className="add-account-container">
+                <button
+                  className="add-account-button"
+                  type="button"
+                  onClick={() => setShowAddModal(true)}
+                >
+                  {"+ Add Account"}
+                </button>
+                {showAddModal && (
+                  <AddAccount
+                    route="/accounts/"
+                    onClose={() => setShowAddModal(false)}
+                    onSuccess={handleAccountAdded}
+                  />
+                )}
+              </div>
             </div>
           </div>
           <div>
