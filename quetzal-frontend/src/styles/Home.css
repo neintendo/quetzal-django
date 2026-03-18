@@ -1,17 +1,16 @@
-.home-container {
+.home-container,
+.home-container-minimized {
     display: grid;
-    /*224px column*/
-    grid-template-columns: 224px 1fr;
     grid-template-rows: 48px 1fr;
     height: 100vh;
     overflow: hidden;
 }
 
+.home-container {
+    grid-template-columns: 224px 1fr;
+}
+
 .home-container-minimized {
-    display: grid;
-    /*224px column*/
+    transition: grid-template-columns 250ms ease;
     grid-template-columns: 12px 1fr;
-    grid-template-rows: 48px 1fr;
-    height: 100vh;
-    overflow: hidden;
 }
