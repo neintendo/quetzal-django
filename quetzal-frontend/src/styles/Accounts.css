@@ -99,6 +99,10 @@
     background-color: #eeeeee;
 }
 
+.filter-account-container {
+    display: flex;
+}
+
 .filter-accounts {
     align-items: center;
     background-color: #cccccc;
@@ -106,8 +110,9 @@
     font-size: 13px;
     transition: background-color 250ms ease;
     border: 1px solid #bbbbbb;
+    width: 38px;
     aspect-ratio: 1 / 1;
-    height: 100%;
+    gap: 8px;
 }
 
 .filter-accounts:hover {

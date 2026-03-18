@@ -48,9 +48,11 @@ const Accounts = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="table-header-button-container">
-              <button className="filter-accounts" type="button">
-                {"▫"}
-              </button>
+              <div className="filter-account-container">
+                <button className="filter-accounts" type="button">
+                  {"▫"}
+                </button>
+              </div>
               <div className="add-account-container">
                 <button
                   className="add-account-button"

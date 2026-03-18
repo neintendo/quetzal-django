@@ -1,6 +1,16 @@
 .home-container {
     display: grid;
+    /*224px column*/
     grid-template-columns: 224px 1fr;
+    grid-template-rows: 48px 1fr;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.home-container-minimized {
+    display: grid;
+    /*224px column*/
+    grid-template-columns: 12px 1fr;
     grid-template-rows: 48px 1fr;
     height: 100vh;
     overflow: hidden;
