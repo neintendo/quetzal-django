@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import django_filters
 from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
@@ -14,6 +16,7 @@ from .serializers import (
     TransactionSerializer,
     UserSerializer,
 )
+from .utilities.frankfurter_api import conversion
 
 
 # Users
@@ -263,6 +266,8 @@ class AccountsAggregateView(APIView):
     def get(self, request):
         # All user accounts
         accounts = Account.objects.filter(user=request.user)
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
 
         # Filter by account type
         account_type = request.GET.get("type")
@@ -274,9 +279,31 @@ class AccountsAggregateView(APIView):
         if currency:
             accounts = accounts.filter(currency=currency.upper())
 
-        total_balance = accounts.aggregate(total=Sum("balance"))["total"] or 0
+        # Creates a new array with converted balances
+        converted_balances = []
+        date_obj = datetime.now()
+        accounts_converted = 0
+        for account in accounts:
+            if account.currency != main_currency:
+                balance = conversion(
+                    account.balance, account.currency, main_currency, date_obj
+                )
+                converted_balances.append(balance)
+                accounts_converted += 1
+            else:
+                converted_balances.append(float(account.balance))
+
+        total_balance = 0
+        for balance in converted_balances:
+            total_balance += balance
+
         total_accounts = accounts.count()
 
         return Response(
-            {"total_balance": float(total_balance), "total_accounts": total_accounts}
+            {
+                "total_balance": round(total_balance, 2),
+                "total_accounts": total_accounts,
+                "main_currency": main_currency,
+                "accounts_converted": accounts_converted,
+            }
         )
