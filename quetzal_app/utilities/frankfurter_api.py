@@ -1,61 +1,62 @@
-from datetime import datetime
+import json
 
 import requests
 
 
-def conversion(amount, base_currency, target_currency, transaction_date):
-    today = datetime.today().strftime("%Y-%m-%d")
+def ff_today_func(base_path, base_currency, today):
+    try:
+        url = "https://api.frankfurter.dev/v1/latest?base=" + base_currency.upper()
+        response = requests.get(url)
 
-    if transaction_date.strftime("%Y-%m-%d") > today:
-        raise ValueError(
-            "Date of transfers cannot be in the future between accounts with different currencies"
+        # Dumps data to cache on success
+        if response.status_code == 200:
+            try:
+                with open(base_path, "w") as base_cache:
+                    json.dump(response.json(), base_cache)
+
+            except Exception as write_err:
+                print("FILE WRITE ERROR:", write_err)
+                return
+
+            # Check cache file
+
+        return response
+
+    # Fallback - Return cached rate on success or None on error
+    except Exception as e:
+        print("Connection Error: {0} - Checking cache for rates.".format(e))
+        try:
+            with open(base_path, "r") as base_cache:
+                cache = json.load(base_cache)
+            # If cache's date is not the same as today() then return None
+            if today != cache["date"]:  # INCREASE THIS TO 7 DAYS
+                print("Cache is too old")
+                return
+            else:
+                return cache
+
+        except Exception as read_err:
+            print("FILE ERROR", read_err)
+            return
+
+
+def ff_historical_func(transaction_date, base_currency):
+    try:
+        url = (
+            "https://api.frankfurter.dev/v1/"
+            + transaction_date.strftime("%Y-%m-%d")
+            + "?base="
+            + base_currency.upper()
         )
-    if today == transaction_date.strftime("%Y-%m-%d"):
-        try:
-            url = "https://api.frankfurter.dev/v1/latest?base=" + base_currency.upper()
-            response = requests.get(url)
+        response = requests.get(url)
 
-            if response.status_code != 200:
-                print("API Returned Error:", response.status_code)
-                return
-
-        # Return none on error
-        except Exception as e:
-            print("Connection Error: {0}".format(e))
+        if response.status_code != 200:
+            print("API Returned Error:", response.status_code)
             return
 
-    elif today != transaction_date.strftime("%Y-%m-%d"):
-        try:
-            url = (
-                "https://api.frankfurter.dev/v1/"
-                + transaction_date.strftime("%Y-%m-%d")
-                + "?base="
-                + base_currency.upper()
-            )
-            response = requests.get(url)
+        return response
 
-            if response.status_code != 200:
-                print("API Returned Error:", response.status_code)
-                return
-
-        # Return none on error
-        except Exception as e:
-            print("Connection Error: {0}".format(e))
-            return
-
-    # Parsing the request to dictionary
-    data = response.json()
-
-    # Access exchange rate multiplier for the target currency based on base_currency
-    multiplier = data["rates"][target_currency.upper()]
-
-    # Convert the currency
-    amount = float(amount)
-    amount *= multiplier
-    return amount
-
-
-# DEVELOPMENT
-
-# transaction_datse = datetime.today()
-# print(conversion(4539, "eur", "usd", transaction_datse))
+    # Return none on error
+    except Exception as e:
+        print("Connection Error: {0}".format(e))
+        return

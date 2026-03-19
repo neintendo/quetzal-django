@@ -16,7 +16,7 @@ from .serializers import (
     TransactionSerializer,
     UserSerializer,
 )
-from .utilities.frankfurter_api import conversion
+from .utilities.currency_conv import conversion
 
 
 # Users
