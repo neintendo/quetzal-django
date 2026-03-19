@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from .frankfurter_api import ff_historical_func, ff_today_func
+from django.core.cache import cache
+
+from .frankfurter_api import cache_rates, ff_historical_func, ff_today_func
 
 
 def conversion(amount, base_currency, target_currency, transaction_date):
@@ -15,7 +17,20 @@ def conversion(amount, base_currency, target_currency, transaction_date):
 
     # Today's rates conversion
     if today == transaction_date.strftime("%Y-%m-%d"):
-        response = ff_today_func(base_path, base_currency, today)
+        try:
+            with open(
+                "quetzal_app/utilities/frankfurter_cache/date_tracker.txt", "r"
+            ) as date_cmp:
+                # Downloads and caches new rates if date_tracker.txt is older than today()
+                if today != date_cmp.read():
+                    cache_rates("quetzal_app/utilities/frankfurter_cache/")
+                    response = ff_today_func(base_path)
+                else:
+                    response = ff_today_func(base_path)
+
+        except Exception as read_err:
+            print("FILE ERROR", read_err)
+            return
 
     # Historical rates conversion
     elif today != transaction_date.strftime("%Y-%m-%d"):
