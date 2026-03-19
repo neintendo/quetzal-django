@@ -23,6 +23,13 @@
     display: inline-block;
     border: 1px solid #bbbbbb;
     padding: 8px;
+    transition: background-color 250ms ease;
+    transition: font-size 250ms ease;
+}
+
+.accounts-graph-balance:hover {
+    background-color: #cccccc;
+    font-size: 18px;
 }
 
 .accounts-table-container {
