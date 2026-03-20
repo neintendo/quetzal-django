@@ -34,7 +34,9 @@ const Accounts = () => {
       <div className="accounts">
         <div className="accounts-graph">
           <div className="accounts-graph-balance">
-            ± ${accountAggregates?.total_balance ?? "..."}
+            {accountAggregates?.accounts_converted != 0
+              ? `± ${accountAggregates?.total_balance ?? "..."}`
+              : `${accountAggregates?.total_balance ?? "..."}`}
           </div>
           <div></div>
         </div>
