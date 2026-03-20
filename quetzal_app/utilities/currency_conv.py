@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from django.core.cache import cache
-
 from .frankfurter_api import cache_rates, ff_historical_func, ff_today_func
 
 
 def conversion(amount, base_currency, target_currency, transaction_date):
+
     today = datetime.today().strftime("%Y-%m-%d")
+    print(today)
     base_path = (
         "quetzal_app/utilities/frankfurter_cache/" + base_currency.lower() + ".json"
     )
