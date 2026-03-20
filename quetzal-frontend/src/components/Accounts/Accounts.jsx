@@ -6,6 +6,7 @@ import AddAccount from "./AddAccount";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -24,6 +25,26 @@ const Accounts = () => {
     getAccountAggregates();
   }, []);
 
+  const getProfile = () => {
+    api
+      .get("profile/")
+      .then((res) => res.data)
+      .then((data) => {
+        setProfile(data);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const currencyFormatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: profile?.main_currency || "USD", // USD is just a fallback
+  });
+
   const handleAccountAdded = () => {
     setShowAddModal(false);
     // add code for refreshing table here later
@@ -35,8 +56,8 @@ const Accounts = () => {
         <div className="accounts-graph">
           <div className="accounts-graph-balance">
             {accountAggregates?.accounts_converted != 0
-              ? `± ${accountAggregates?.total_balance ?? "..."}`
-              : `${accountAggregates?.total_balance ?? "..."}`}
+              ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
+              : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
           </div>
           <div></div>
         </div>
