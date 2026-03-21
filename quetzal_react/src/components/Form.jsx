@@ -7,6 +7,7 @@ import "../styles/Form.css";
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [display_name, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [main_currency, setCurrency] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,7 @@ function Form({ route, method }) {
         requestData = {
           username,
           email,
+          display_name,
           password,
           main_currency: main_currency || "USD",
         };
@@ -66,6 +68,16 @@ function Form({ route, method }) {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>{name}</h2>
+      {method === "register" && (
+        <input
+          className="form-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+      )}
       <input
         className="form-input"
         type="text"
@@ -74,13 +86,14 @@ function Form({ route, method }) {
         placeholder="Username"
         required
       />
+
       {method === "register" && (
         <input
           className="form-input"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          type="text"
+          value={display_name}
+          onChange={(e) => setDisplayName(e.target.value)}
+          placeholder="Name (eg. Jane Doe)"
           required
         />
       )}

@@ -39,6 +39,7 @@ class User(AbstractUser):
 
     id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True, max_length=320)
+    display_name = models.CharField(unique=True, max_length=100)
     main_currency = models.CharField(max_length=10, choices=CURRENCIES, default="USD")
 
     def __str__(self):

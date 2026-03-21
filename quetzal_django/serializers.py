@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User, Account, Category, Transaction
+from rest_framework import serializers
+
+from .models import Account, Category, Transaction, User
 
 # Users
 
@@ -8,7 +9,7 @@ from .models import User, Account, Category, Transaction
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "main_currency"]
+        fields = ["id", "username", "email", "display_name", "main_currency"]
 
 
 # User Registration Serializer.
@@ -17,7 +18,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "password", "main_currency"]
+        fields = [
+            "id",
+            "username",
+            "email",
+            "display_name",
+            "password",
+            "main_currency",
+        ]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
