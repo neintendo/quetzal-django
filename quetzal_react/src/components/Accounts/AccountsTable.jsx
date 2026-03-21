@@ -44,8 +44,13 @@ const AccountsTable = ({ searchTerm, currencyFilter }) => {
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortHeader.key) return 0;
 
-    const aValue = a[sortHeader.key];
-    const bValue = b[sortHeader.key];
+    let aValue = a[sortHeader.key];
+    let bValue = b[sortHeader.key];
+
+    if (sortHeader.key === "balance") {
+      aValue = parseFloat(aValue);
+      bValue = parseFloat(bValue);
+    }
 
     if (aValue < bValue) {
       return sortHeader.direction === "asc" ? -1 : 1;
