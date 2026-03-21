@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../../styles/AccountsTable.css";
 
-const AccountsTable = ({ searchTerm }) => {
+const AccountsTable = ({ searchTerm, currencyFilter }) => {
   const [tableData, setTableData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "name",
@@ -34,7 +34,11 @@ const AccountsTable = ({ searchTerm }) => {
   };
 
   const filteredData = tableData.filter((item) => {
-    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCurrency = !currencyFilter || item.currency === currencyFilter;
+    return matchesSearch && matchesCurrency;
   });
 
   const sortedData = [...filteredData].sort((a, b) => {

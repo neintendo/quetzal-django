@@ -19,17 +19,50 @@
     border: 1px solid #bbbbbb;
 }
 
-.accounts-graph-balance {
+.accounts-graph-balance-container {
+    position: relative;
     display: inline-block;
     border: 1px solid #bbbbbb;
-    padding: 8px;
     transition: background-color 250ms ease;
     transition: font-size 250ms ease;
 }
 
-.accounts-graph-balance:hover {
+.dot {
+    position: absolute;
+    top: -3px;
+    right: -4px;
+    background-color: #cccccc;
+    border: 1px solid #999999;
+    width: 6px;
+    height: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accounts-graph-balance-container:hover,
+.accounts-graph-balance-container-dot:hover {
     background-color: #cccccc;
     font-size: 18px;
+}
+
+.accounts-graph-balance-container:hover .accounts-graph-balance-list {
+    display: flex;
+}
+
+.accounts-graph-balance {
+    padding: 8px;
+}
+
+.accounts-graph-balance-list {
+    display: none;
+    padding: 8px;
+    justify-content: left;
+    align-items: center;
+    border-top: 1px solid #bbbbbb;
+}
+.accounts-graph-balance-list:hover {
+    background-color: #bbbbbb;
 }
 
 .accounts-table-container {
@@ -106,29 +139,9 @@
     background-color: #eeeeee;
 }
 
-.filter-account-container {
-    display: flex;
-}
-
-.filter-accounts {
-    align-items: center;
-    background-color: #cccccc;
-    border: none;
-    font-size: 13px;
-    transition: background-color 250ms ease;
-    border: 1px solid #bbbbbb;
-    width: 38px;
-    aspect-ratio: 1 / 1;
-    gap: 8px;
-}
-
-.filter-accounts:hover {
-    background-color: #eeeeee;
-}
-
 .add-account-button,
-.filter-accounts,
 .accounts-graph-balance,
+.accounts-graph-balance-list,
 .accounts-table-title {
     cursor: pointer;
 }
