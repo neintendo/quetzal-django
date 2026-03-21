@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
-    "quetzal_app",
+    "quetzal_django",
     "django_filters",
     "corsheaders",
 ]
@@ -58,7 +58,7 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
-AUTH_USER_MODEL = "quetzal_app.User"
+AUTH_USER_MODEL = "quetzal_django.User"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

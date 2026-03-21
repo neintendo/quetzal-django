@@ -1,0 +1,7 @@
+# .gitignore
+.env
+db_reset.sh
+*.pyc
+test_accounts_curl
+test_transactions_curl
+quetzal_django/utilities/frankfurter_cache

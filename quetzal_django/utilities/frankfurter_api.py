@@ -17,7 +17,7 @@ def ff_today_func(base_path):
         print("FILE NOT FOUND:", file_err)
 
         # Tries to fetch up to date rates again
-        cache_rates("quetzal_app/utilities/frankfurter_cache/")
+        cache_rates("quetzal_django/utilities/frankfurter_cache/")
         try:
             with open(base_path, "r") as base_cache:
                 cache = json.load(base_cache)

@@ -8,7 +8,7 @@ def conversion(amount, base_currency, target_currency, transaction_date):
     today = datetime.today().strftime("%Y-%m-%d")
     print(today)
     base_path = (
-        "quetzal_app/utilities/frankfurter_cache/" + base_currency.lower() + ".json"
+        "quetzal_django/utilities/frankfurter_cache/" + base_currency.lower() + ".json"
     )
     if transaction_date.strftime("%Y-%m-%d") > today:
         raise ValueError(
@@ -19,11 +19,11 @@ def conversion(amount, base_currency, target_currency, transaction_date):
     if today == transaction_date.strftime("%Y-%m-%d"):
         try:
             with open(
-                "quetzal_app/utilities/frankfurter_cache/date_tracker.txt", "r"
+                "quetzal_django/utilities/frankfurter_cache/date_tracker.txt", "r"
             ) as date_cmp:
                 # Downloads and caches new rates if date_tracker.txt is older than today()
                 if today != date_cmp.read():
-                    cache_rates("quetzal_app/utilities/frankfurter_cache/")
+                    cache_rates("quetzal_django/utilities/frankfurter_cache/")
                     response = ff_today_func(base_path)
                 else:
                     response = ff_today_func(base_path)
