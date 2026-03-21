@@ -12,45 +12,18 @@ const Accounts = () => {
   const [currencyFilter, setCurrencyFilter] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Calculates the aggregate of the user's accounts
-  const getAccountAggregates = () => {
-    api
-      .get("accounts/aggregate/")
-      .then((res) => res.data)
-      .then((data) => {
-        setAccountAggregates(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
-  };
-
-  // For getting the user's main currency
-  const getProfile = () => {
-    api
-      .get("profile/")
-      .then((res) => res.data)
-      .then((data) => {
-        setProfile(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
-  };
-
-  const getAccounts = () => {
-    api
-      .get("accounts/")
-      .then((res) => res.data)
-      .then((data) => {
-        setAccountsData(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
-  };
-
   useEffect(() => {
-    getAccountAggregates();
-    getProfile();
-    getAccounts();
+    Promise.all([
+      api.get("accounts/aggregate/"),
+      api.get("profile/"),
+      api.get("accounts/"),
+    ])
+      .then(([aggregatesRes, profileRes, accountsRes]) => {
+        setAccountAggregates(aggregatesRes.data);
+        setProfile(profileRes.data);
+        setAccountsData(accountsRes.data);
+      })
+      .catch((err) => alert(err));
   }, []);
 
   const currencyFormatter = new Intl.NumberFormat(undefined, {
@@ -69,7 +42,6 @@ const Accounts = () => {
     (total, sum) => total + sum,
     0,
   );
-  console.log("NOT NAN", selectedCurrencySum);
 
   const uniqueCurrencies = [
     ...new Set(accountsData.map((account) => account.currency)),
@@ -78,7 +50,6 @@ const Accounts = () => {
   const divCurrencies = uniqueCurrencies.map((currency) => (
     <div
       className="accounts-graph-balance-list"
-      value={currencyFilter}
       onClick={() => setCurrencyFilter(currency)}
     >
       {currency}
@@ -94,7 +65,13 @@ const Accounts = () => {
     <>
       <div className="accounts">
         <div className="accounts-graph">
-          <div className="accounts-graph-balance-container">
+          <div
+            className={
+              currencyFilter
+                ? "accounts-graph-balance-container-active"
+                : "accounts-graph-balance-container"
+            }
+          >
             <div
               className="accounts-graph-balance"
               onClick={() => setCurrencyFilter(null)}
@@ -106,7 +83,6 @@ const Accounts = () => {
                   : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
             </div>
             <div>{divCurrencies}</div>
-            {currencyFilter ? <div class="dot"></div> : null}
           </div>
         </div>
         <div className="accounts-table-container">

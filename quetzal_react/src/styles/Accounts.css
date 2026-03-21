@@ -19,39 +19,50 @@
     border: 1px solid #bbbbbb;
 }
 
+.accounts-graph-balance-container-active,
 .accounts-graph-balance-container {
     position: relative;
     display: inline-block;
     border: 1px solid #bbbbbb;
-    transition: background-color 250ms ease;
-    transition: font-size 250ms ease;
+    transition:
+        background-color 250ms ease,
+        font-size 250ms ease;
+    max-height: 100%;
+    overflow-y: auto;
 }
-
-.dot {
-    position: absolute;
-    top: -3px;
-    right: -4px;
-    background-color: #cccccc;
+.accounts-graph-balance-container-active {
+    background-color: #bbbbbb;
     border: 1px solid #999999;
-    width: 6px;
-    height: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.accounts-graph-balance-container:hover,
-.accounts-graph-balance-container-dot:hover {
+.accounts-graph-balance-container:hover {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+.accounts-graph-balance-container-active:hover {
+    border: 1px solid #999999;
     background-color: #cccccc;
     font-size: 18px;
 }
 
 .accounts-graph-balance-container:hover .accounts-graph-balance-list {
-    display: flex;
+    display: block;
+}
+.accounts-graph-balance-container-active:hover .accounts-graph-balance-list {
+    display: block;
+}
+
+.accounts-graph-balance-container:hover .accounts-graph-balance {
+    background-color: #cccccc;
+}
+.accounts-graph-balance-container-active:hover .accounts-graph-balance {
+    background-color: #bbbbbb;
 }
 
 .accounts-graph-balance {
     padding: 8px;
+    position: sticky;
+    top: 0px;
 }
 
 .accounts-graph-balance-list {
@@ -82,7 +93,6 @@
     display: flex;
     top: 0px;
     z-index: 30;
-    display: flex;
     grid-column: 1 / -1;
     grid-row: 1;
     justify-content: space-between;
