@@ -15,7 +15,8 @@
     align-items: center;
     padding: 16px;
     width: calc(100% - 32px);
-    height: 30%;
+    min-height: 4%;
+    height: 50%;
     border: 1px solid #bbbbbb;
 }
 
