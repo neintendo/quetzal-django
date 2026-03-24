@@ -319,6 +319,12 @@ class AccountsGraphView(APIView):
         transactions = (Transaction.objects.filter(user=request.user)).exclude(
             transaction_type="transfer"
         )
+        # Filters request by currency
+        currency = request.GET.get("currency")
+        print("Currency:", currency)
+        if currency:
+            transactions = transactions.filter(currency=currency)
+
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")
 
@@ -330,7 +336,12 @@ class AccountsGraphView(APIView):
             month_key = transaction.datetime.strftime("%Y-%m")
             amount = transaction.amount
 
-            if transaction.currency != main_currency and transaction.amount != 0:
+            # For aggregate conversions
+            if (
+                transaction.currency != main_currency
+                and transaction.amount != 0
+                and currency is None
+            ):
                 converted_amount = conversion(
                     transaction.amount,
                     transaction.currency,
