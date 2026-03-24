@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.functions import Now
 
 
-class User(AbstractUser):
+class ExchangeRates(models.Model):
     CURRENCIES = [
         ("AUD", "Australian Dollar"),
         ("BRL", "Brazilian Real"),
@@ -37,18 +37,24 @@ class User(AbstractUser):
         ("ZAR", "South African Rand"),
     ]
 
+    date = models.DateField()
+    base = models.CharField(max_length=3, choices=CURRENCIES)
+    rates = models.JSONField()
+
+    def __str__(self):
+        return f"{self.date} - {self.base} {self.rates}"
+
+
+class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True, max_length=320)
     display_name = models.CharField(unique=True, max_length=100)
-    main_currency = models.CharField(max_length=10, choices=CURRENCIES, default="USD")
+    main_currency = models.CharField(
+        max_length=10, choices=ExchangeRates.CURRENCIES, default="USD"
+    )
 
     def __str__(self):
         return self.username
-
-
-class Currency(models.Model):
-    # Will implement this soon :)
-    pass
 
 
 class Account(models.Model):
@@ -65,7 +71,9 @@ class Account(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(unique=True, max_length=100)
     type = models.CharField(max_length=50, choices=ACCOUNT_TYPES)
-    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
+    currency = models.CharField(
+        max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
+    )
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -121,7 +129,9 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()
     datetime = models.DateTimeField(db_default=Now())
-    currency = models.CharField(max_length=30, choices=User.CURRENCIES, default="USD")
+    currency = models.CharField(
+        max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
+    )
     transaction_type = models.CharField(
         max_length=10, choices=Category.CATEGORY_TYPES, null=True, blank=True
     )
