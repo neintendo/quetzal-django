@@ -69,7 +69,7 @@ class Account(models.Model):
     ]
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(unique=True, max_length=100)
+    name = models.CharField(max_length=100)
     type = models.CharField(max_length=50, choices=ACCOUNT_TYPES)
     currency = models.CharField(
         max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
