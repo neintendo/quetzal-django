@@ -44,7 +44,7 @@ const AccountsGraph = ({ currencyFilter }) => {
   }, []);
 
   if (!transactionData) {
-    return <div className="accounts-graph-canvas">Loading...</div>;
+    return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
   }
 
   const months = Object.keys(transactionData).sort();

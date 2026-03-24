@@ -1,5 +1,14 @@
 .accounts-graph-canvas {
     display: flex;
-    width: calc(100% - 32px);
-    height: 90%;
+    width: calc(100% - 4px);
+    height: 100%;
+}
+.accounts-graph-loading {
+    display: flex;
+    width: calc(100% - 4px);
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
 }
