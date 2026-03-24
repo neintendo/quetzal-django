@@ -1,4 +1,6 @@
+from collections import defaultdict
 from datetime import datetime
+from decimal import Decimal
 
 import django_filters
 from django.db import transaction as db_transaction
@@ -53,6 +55,55 @@ class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Account.objects.filter(user=self.request.user)
+
+
+class AccountsAggregateView(APIView):
+    permissions_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user accounts
+        accounts = Account.objects.filter(user=request.user)
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
+
+        # Filter by account type
+        account_type = request.GET.get("type")
+        if account_type:
+            accounts = accounts.filter(type=account_type)
+
+        # Filter by currency
+        currency = request.GET.get("currency")
+        if currency:
+            accounts = accounts.filter(currency=currency.upper())
+
+        # Creates a new array with converted balances
+        converted_balances = []
+        date_obj = datetime.now()
+        accounts_converted = 0
+        for account in accounts:
+            if account.currency != main_currency:
+                balance = conversion(
+                    account.balance, account.currency, main_currency, date_obj
+                )
+                converted_balances.append(balance)
+                accounts_converted += 1
+            else:
+                converted_balances.append(float(account.balance))
+
+        total_balance = 0
+        for balance in converted_balances:
+            total_balance += balance
+
+        total_accounts = accounts.count()
+
+        return Response(
+            {
+                "total_balance": round(total_balance, 2),
+                "total_accounts": total_accounts,
+                "main_currency": main_currency,
+                "accounts_converted": accounts_converted,
+            }
+        )
 
 
 # Categories
@@ -260,50 +311,49 @@ class TransactionAggregateView(APIView):
         )
 
 
-class AccountsAggregateView(APIView):
-    permissions_classes = [IsAuthenticated]
+class AccountsGraphView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # All user accounts
-        accounts = Account.objects.filter(user=request.user)
+        # All user transactions.
+        transactions = (Transaction.objects.filter(user=request.user)).exclude(
+            transaction_type="transfer"
+        )
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")
 
-        # Filter by account type
-        account_type = request.GET.get("type")
-        if account_type:
-            accounts = accounts.filter(type=account_type)
+        monthly_data = defaultdict(Decimal)
+        converted_transactions = 0
+        total_t = 0
 
-        # Filter by currency
-        currency = request.GET.get("currency")
-        if currency:
-            accounts = accounts.filter(currency=currency.upper())
+        for transaction in transactions:
+            month_key = transaction.datetime.strftime("%Y-%m")
+            amount = transaction.amount
 
-        # Creates a new array with converted balances
-        converted_balances = []
-        date_obj = datetime.now()
-        accounts_converted = 0
-        for account in accounts:
-            if account.currency != main_currency:
-                balance = conversion(
-                    account.balance, account.currency, main_currency, date_obj
+            if transaction.currency != main_currency and transaction.amount != 0:
+                converted_amount = conversion(
+                    transaction.amount,
+                    transaction.currency,
+                    main_currency,
+                    transaction.datetime,
                 )
-                converted_balances.append(balance)
-                accounts_converted += 1
-            else:
-                converted_balances.append(float(account.balance))
+                converted_transactions += 1
+                print(
+                    "Converting {0} to {1}".format(transaction.currency, main_currency)
+                )
+                amount = Decimal(str(converted_amount))
 
-        total_balance = 0
-        for balance in converted_balances:
-            total_balance += balance
-
-        total_accounts = accounts.count()
+            if transaction.transaction_type == "income":
+                monthly_data[month_key] += amount
+                total_t += 1
+            elif transaction.transaction_type == "expense":
+                monthly_data[month_key] -= amount
+                total_t += 1
 
         return Response(
             {
-                "total_balance": round(total_balance, 2),
-                "total_accounts": total_accounts,
-                "main_currency": main_currency,
-                "accounts_converted": accounts_converted,
+                "transactions_by_month": monthly_data,
+                "converted_transactions": converted_transactions,
+                "total_transctions": total_t,
             }
         )

@@ -1,0 +1,5 @@
+.accounts-graph-canvas {
+    display: flex;
+    width: calc(100% - 32px);
+    height: 90%;
+}

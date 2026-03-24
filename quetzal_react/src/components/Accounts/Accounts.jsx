@@ -1,6 +1,7 @@
 import "../../styles/Accounts.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
+import AccountsGraph from "./AccountsGraph";
 import AccountsTable from "../Accounts/AccountsTable";
 import AddAccount from "./AddAccount";
 
@@ -84,6 +85,7 @@ const Accounts = () => {
             </div>
             <div>{divCurrencies}</div>
           </div>
+          <AccountsGraph />
         </div>
         <div className="accounts-table-container">
           <div className="accounts-table-header">

@@ -5,6 +5,7 @@ from .views import (
     AccountDetailView,
     AccountsAggregateView,
     AccountsListCreateView,
+    AccountsGraphView,
     CategoriesDetailView,
     CategoriesListCreateView,
     TransactionAggregateView,
@@ -28,6 +29,8 @@ urlpatterns = [
         AccountsAggregateView.as_view(),
         name="accounts-aggregate",
     ),
+    path("accounts/graph/", AccountsGraphView.as_view(), name="accounts-graph"),
+
     # Categories
     path(
         "categories/", CategoriesListCreateView.as_view(), name="category-list-create"
