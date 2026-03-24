@@ -28,20 +28,20 @@ ChartJS.register(
 const AccountsGraph = ({ currencyFilter }) => {
   const [transactionData, setTransactionData] = useState(null);
 
-  const getTransactionData = () => {
-    api
-      .get("accounts/graph")
-      .then((res) => res.data)
-      .then((data) => {
-        setTransactionData(data.transactions_by_month);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
-  };
-
   useEffect(() => {
+    const getTransactionData = () => {
+      api
+        .get("accounts/graph", { params: { currency: currencyFilter } })
+        .then((res) => res.data)
+        .then((data) => {
+          setTransactionData(data.transactions_by_month);
+          console.log(data);
+        })
+        .catch((err) => alert(err));
+    };
+
     getTransactionData();
-  }, []);
+  }, [currencyFilter]);
 
   if (!transactionData) {
     return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;

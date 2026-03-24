@@ -85,7 +85,7 @@ const Accounts = () => {
             </div>
             <div>{divCurrencies}</div>
           </div>
-          <AccountsGraph />
+          <AccountsGraph currencyFilter={currencyFilter} />
         </div>
         <div className="accounts-table-container">
           <div className="accounts-table-header">
