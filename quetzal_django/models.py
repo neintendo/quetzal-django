@@ -41,6 +41,12 @@ class ExchangeRates(models.Model):
     base = models.CharField(max_length=3, choices=CURRENCIES)
     rates = models.JSONField()
 
+    class Meta:
+        ordering = ["-date"]
+        indexes = [
+            models.Index(fields=["-date"]),
+        ]
+
     def __str__(self):
         return f"{self.date} - {self.base} {self.rates}"
 
