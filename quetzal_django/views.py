@@ -106,6 +106,61 @@ class AccountsAggregateView(APIView):
         )
 
 
+class AccountsGraphView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user transactions.
+        transactions = (Transaction.objects.filter(user=request.user)).exclude(
+            transaction_type="transfer"
+        )
+        # Filters request by currency
+        currency = request.GET.get("currency")
+        print("Currency:", currency)
+        if currency:
+            transactions = transactions.filter(currency=currency)
+
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
+
+        monthly_data = defaultdict(Decimal)
+        converted_transactions = 0
+        total_t = 0
+
+        for transaction in transactions:
+            month_key = transaction.datetime.strftime("%Y-%m")
+            amount = transaction.amount
+
+            # For aggregate conversions
+            if transaction.currency != main_currency and transaction.amount != 0:
+                converted_amount = conversion(
+                    transaction.amount,
+                    transaction.currency,
+                    main_currency,
+                    transaction.datetime,
+                )
+                converted_transactions += 1
+                print(
+                    "Converting {0} to {1}".format(transaction.currency, main_currency)
+                )
+                amount = Decimal(str(converted_amount))
+
+            if transaction.transaction_type == "income":
+                monthly_data[month_key] += amount
+                total_t += 1
+            elif transaction.transaction_type == "expense":
+                monthly_data[month_key] -= amount
+                total_t += 1
+
+        return Response(
+            {
+                "transactions_by_month": monthly_data,
+                "converted_transactions": converted_transactions,
+                "total_transctions": total_t,
+            }
+        )
+
+
 # Categories
 class CategoriesListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
@@ -307,64 +362,5 @@ class TransactionAggregateView(APIView):
                 "net": float(net),
                 "transaction_count": transactions.count(),
                 "filters_applied": dict(request.GET),
-            }
-        )
-
-
-class AccountsGraphView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        # All user transactions.
-        transactions = (Transaction.objects.filter(user=request.user)).exclude(
-            transaction_type="transfer"
-        )
-        # Filters request by currency
-        currency = request.GET.get("currency")
-        print("Currency:", currency)
-        if currency:
-            transactions = transactions.filter(currency=currency)
-
-        # User's main currency
-        main_currency = getattr(request.user, "main_currency", "USD")
-
-        monthly_data = defaultdict(Decimal)
-        converted_transactions = 0
-        total_t = 0
-
-        for transaction in transactions:
-            month_key = transaction.datetime.strftime("%Y-%m")
-            amount = transaction.amount
-
-            # For aggregate conversions
-            if (
-                transaction.currency != main_currency
-                and transaction.amount != 0
-                and currency is None
-            ):
-                converted_amount = conversion(
-                    transaction.amount,
-                    transaction.currency,
-                    main_currency,
-                    transaction.datetime,
-                )
-                converted_transactions += 1
-                print(
-                    "Converting {0} to {1}".format(transaction.currency, main_currency)
-                )
-                amount = Decimal(str(converted_amount))
-
-            if transaction.transaction_type == "income":
-                monthly_data[month_key] += amount
-                total_t += 1
-            elif transaction.transaction_type == "expense":
-                monthly_data[month_key] -= amount
-                total_t += 1
-
-        return Response(
-            {
-                "transactions_by_month": monthly_data,
-                "converted_transactions": converted_transactions,
-                "total_transctions": total_t,
             }
         )
