@@ -1,8 +1,13 @@
 .accounts-graph-canvas {
     display: flex;
-    width: calc(100% - 4px);
-    height: 100%;
+    position: absolute;
+    top: 16px;
+    bottom: 8px;
+    right: 8px;
+    width: calc(100% - 32px);
+    z-index: 30;
 }
+
 .accounts-graph-loading {
     display: flex;
     width: calc(100% - 4px);

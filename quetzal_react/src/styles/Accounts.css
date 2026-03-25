@@ -17,7 +17,6 @@
     align-items: start;
     padding: 16px;
     padding-bottom: 8px;
-    padding-right: 0px;
     width: calc(100% - 32px);
     min-height: 4%;
     height: 50%;
@@ -37,6 +36,7 @@
         font-size 250ms ease;
     max-height: calc(100% - 32px);
     overflow-y: auto;
+    z-index: 31;
 }
 .accounts-graph-balance-container-active {
     background-color: #bbbbbb;
