@@ -163,6 +163,25 @@ class AccountsGraphView(APIView):
                     monthly_data[month_key] -= amount
                     total_t += 1
 
+        list_month = []
+        for count in monthly_data:
+            list_month.append(count)
+
+        values = list(monthly_data.values())
+
+        cumulative = []
+        cumulative_total = 0
+        for value in values:
+            cumulative_total += value
+            cumulative.append(cumulative_total)
+
+        print(cumulative)
+
+        c = 0
+        for month in monthly_data:
+            monthly_data[month] = cumulative[c]
+            c += 1
+
         return Response(
             {
                 "transactions_by_month": monthly_data,
