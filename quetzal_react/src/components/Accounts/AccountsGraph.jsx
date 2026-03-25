@@ -47,11 +47,34 @@ const AccountsGraph = ({ currencyFilter }) => {
     return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
   }
 
+  // Get months then fills gaps
   const months = Object.keys(transactionData).sort();
-  const amounts = months.map((month) => transactionData[month]);
+  let fill_months = [];
+  fill_months[0] = months[0];
+  let a = 1;
+  let date = new Date(months[0]);
+
+  while (fill_months[fill_months.length - 1] != months[months.length - 1]) {
+    date.setMonth(date.getMonth() + 1);
+    let year = date.getFullYear();
+    let month = String(date.getMonth() + 1).padStart(2, "0");
+    let newMonthStr = `${year}-${month}`;
+    fill_months[a] = newMonthStr;
+    a++;
+  }
+  const f_months = fill_months;
+
+  // Maps transactions
+  const amounts = f_months.map((f_month) => transactionData[f_month]);
+  for (let b = 0; b < f_months.length; b++) {
+    if (amounts[b] == undefined) {
+      amounts[b] = amounts[b - 1];
+      console.log(amounts[b]);
+    }
+  }
 
   const canvasData = {
-    labels: months,
+    labels: f_months,
     datasets: [
       {
         label: "Balance",
