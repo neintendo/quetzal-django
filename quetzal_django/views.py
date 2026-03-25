@@ -127,30 +127,41 @@ class AccountsGraphView(APIView):
         converted_transactions = 0
         total_t = 0
 
-        for transaction in transactions:
-            month_key = transaction.datetime.strftime("%Y-%m")
-            amount = transaction.amount
+        # Graph conversion for all currencies
+        if currency == "" or currency is None:
+            for transaction in transactions:
+                month_key = transaction.datetime.strftime("%Y-%m")
+                amount = transaction.amount
 
-            # For aggregate conversions
-            if transaction.currency != main_currency and transaction.amount != 0:
-                converted_amount = conversion(
-                    transaction.amount,
-                    transaction.currency,
-                    main_currency,
-                    transaction.datetime,
-                )
-                converted_transactions += 1
-                print(
-                    "Converting {0} to {1}".format(transaction.currency, main_currency)
-                )
-                amount = Decimal(str(converted_amount))
+                # For non main_currency conversions only
+                if transaction.currency != main_currency and transaction.amount != 0:
+                    converted_amount = conversion(
+                        transaction.amount,
+                        transaction.currency,
+                        main_currency,
+                        transaction.datetime,
+                    )
+                    converted_transactions += 1
+                    amount = Decimal(str(converted_amount))
 
-            if transaction.transaction_type == "income":
-                monthly_data[month_key] += amount
-                total_t += 1
-            elif transaction.transaction_type == "expense":
-                monthly_data[month_key] -= amount
-                total_t += 1
+                if transaction.transaction_type == "income":
+                    monthly_data[month_key] += amount
+                    total_t += 1
+                elif transaction.transaction_type == "expense":
+                    monthly_data[month_key] -= amount
+                    total_t += 1
+        # No graph conversions for a single currency
+        else:
+            for transaction in transactions:
+                month_key = transaction.datetime.strftime("%Y-%m")
+                amount = transaction.amount
+
+                if transaction.transaction_type == "income":
+                    monthly_data[month_key] += amount
+                    total_t += 1
+                elif transaction.transaction_type == "expense":
+                    monthly_data[month_key] -= amount
+                    total_t += 1
 
         return Response(
             {
