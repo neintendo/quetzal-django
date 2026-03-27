@@ -110,6 +110,20 @@ const AccountsGraph = ({ currencyFilter }) => {
         display: false,
       },
     },
+    scales: {
+      x: {
+        ticks: {
+          font: { family: "DepartureMono-Regular", size: 11 },
+          color: "#444444",
+        },
+      },
+      y: {
+        ticks: {
+          font: { family: "DepartureMono-Regular", size: 11 },
+          color: "#444444",
+        },
+      },
+    },
   };
 
   return (

@@ -82,10 +82,10 @@ class AccountsAggregateView(APIView):
         accounts_converted = 0
         for account in accounts:
             if account.currency != main_currency:
-                balance = conversion(
-                    account.balance, account.currency, main_currency, date_obj
-                )
-                converted_balances.append(balance)
+                # balance = conversion(
+                #     account.balance, account.currency, main_currency, date_obj
+                # )
+                # converted_balances.append(balance)
                 accounts_converted += 1
             else:
                 converted_balances.append(float(account.balance))
