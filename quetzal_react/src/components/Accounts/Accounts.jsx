@@ -64,6 +64,13 @@ const Accounts = () => {
 
   return (
     <>
+      {showAddModal && (
+        <AddAccount
+          route="/accounts/"
+          onClose={() => setShowAddModal(false)}
+          onSuccess={handleAccountAdded}
+        />
+      )}
       <div className="accounts">
         <div className="accounts-graph">
           <div
@@ -105,13 +112,6 @@ const Accounts = () => {
                 >
                   {"+ Add Account"}
                 </button>
-                {showAddModal && (
-                  <AddAccount
-                    route="/accounts/"
-                    onClose={() => setShowAddModal(false)}
-                    onSuccess={handleAccountAdded}
-                  />
-                )}
               </div>
             </div>
           </div>
