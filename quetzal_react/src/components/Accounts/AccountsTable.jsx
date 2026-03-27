@@ -63,51 +63,53 @@ const AccountsTable = ({ searchTerm, currencyFilter }) => {
 
   return (
     <div>
-      <table className="accounts-table">
-        <tr>
-          <th onClick={() => requestSort("name")}>
-            Name{" "}
-            {sortHeader.key === "name"
-              ? sortHeader.direction === "asc"
-                ? "↑"
-                : "↓"
-              : ""}
-          </th>
-          <th onClick={() => requestSort("type")}>
-            Type{" "}
-            {sortHeader.key === "type"
-              ? sortHeader.direction === "asc"
-                ? "↑"
-                : "↓"
-              : ""}
-          </th>
-          <th onClick={() => requestSort("currency")}>
-            Currency{" "}
-            {sortHeader.key === "currency"
-              ? sortHeader.direction === "asc"
-                ? "↑"
-                : "↓"
-              : ""}
-          </th>
-          <th onClick={() => requestSort("balance")}>
-            Balance{" "}
-            {sortHeader.key === "balance"
-              ? sortHeader.direction === "asc"
-                ? "↑"
-                : "↓"
-              : ""}
-          </th>
-        </tr>
-        {sortedData.map((val, key) => {
-          return (
-            <tr key={key}>
-              <td>{val.name}</td>
-              <td style={{ textTransform: "capitalize" }}>{val.type}</td>
-              <td>{val.currency}</td>
-              <td>{val.balance}</td>
-            </tr>
-          );
-        })}
+      <table>
+        <tbody>
+          <tr>
+            <th onClick={() => requestSort("name")}>
+              Name{" "}
+              {sortHeader.key === "name"
+                ? sortHeader.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th onClick={() => requestSort("type")}>
+              Type{" "}
+              {sortHeader.key === "type"
+                ? sortHeader.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th onClick={() => requestSort("currency")}>
+              Currency{" "}
+              {sortHeader.key === "currency"
+                ? sortHeader.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th onClick={() => requestSort("balance")}>
+              Balance{" "}
+              {sortHeader.key === "balance"
+                ? sortHeader.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+          </tr>
+          {sortedData.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{val.name}</td>
+                <td style={{ textTransform: "capitalize" }}>{val.type}</td>
+                <td>{val.currency}</td>
+                <td>{val.balance}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );
