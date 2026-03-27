@@ -1,5 +1,5 @@
 .home-container,
-.home-container-minimized {
+.home-container-maximized {
     display: grid;
     grid-template-rows: 48px 1fr;
     height: 100vh;
@@ -10,7 +10,7 @@
     grid-template-columns: 224px 1fr;
 }
 
-.home-container-minimized {
+.home-container-maximized {
     transition: grid-template-columns 250ms ease;
     grid-template-columns: 12px 1fr;
 }

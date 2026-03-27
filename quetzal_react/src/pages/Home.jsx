@@ -31,7 +31,7 @@ function Home() {
 
   return (
     <div
-      className={isSidebarOpen ? "home-container" : "home-container-minimized"}
+      className={isSidebarOpen ? "home-container" : "home-container-maximized"}
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Sidebar />
