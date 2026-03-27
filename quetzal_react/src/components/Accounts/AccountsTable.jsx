@@ -1,7 +1,7 @@
 import api from "../../api";
 import { useState } from "react";
 import { useEffect } from "react";
-import "../../styles/AccountsTable.css";
+import "../../styles/Accounts/AccountsTable.css";
 
 const AccountsTable = ({ searchTerm, currencyFilter }) => {
   const [tableData, setTableData] = useState([]);

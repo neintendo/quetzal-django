@@ -1,5 +1,5 @@
 import api from "../../api";
-import "../../styles/AccountsGraph.css";
+import "../../styles/Accounts/AccountsGraph.css";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {

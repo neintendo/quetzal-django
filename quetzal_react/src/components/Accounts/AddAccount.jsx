@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "../../styles/AddAccount.css";
-import "../../styles/AddAccountForm.css";
+import "../../styles/Accounts/AddAccount.css";
+import "../../styles/Accounts/AddAccountForm.css";
 import api from "../../api";
 
 function AddAccount({ route, onSuccess, onClose }) {

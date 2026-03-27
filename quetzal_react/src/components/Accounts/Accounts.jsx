@@ -1,4 +1,4 @@
-import "../../styles/Accounts.css";
+import "../../styles/Accounts/Accounts.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import AccountsGraph from "./AccountsGraph";
