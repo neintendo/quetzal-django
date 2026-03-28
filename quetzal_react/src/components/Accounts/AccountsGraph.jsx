@@ -65,17 +65,20 @@ const AccountsGraph = ({ currencyFilter }) => {
 
   // Custom month labels
   let labels = [];
-  for (let b = 0; b < fill_months.length; b++) {
-    let month_int = fill_months[b].slice(-2);
-    if (month_int[0] == 0) {
-      month_int = month_int.slice(1);
+  // Skip if there's no data
+  if (Object.keys(transactionData) != 0) {
+    for (let b = 0; b < fill_months.length; b++) {
+      let month_int = fill_months[b].slice(-2);
+      if (month_int[0] == 0) {
+        month_int = month_int.slice(1);
+      }
+      month_int -= 1;
+      let year_int = fill_months[b].slice(0, 4);
+      let new_date = new Date(year_int, month_int);
+      let opts = { year: "numeric", month: "short" };
+      new_date = Intl.DateTimeFormat("en", opts).format(new_date);
+      labels[b] = new_date;
     }
-    month_int -= 1;
-    let year_int = fill_months[b].slice(0, 4);
-    let new_date = new Date(year_int, month_int);
-    let opts = { year: "numeric", month: "short" };
-    new_date = Intl.DateTimeFormat("en", opts).format(new_date);
-    labels[b] = new_date;
   }
 
   const f_months = fill_months;
