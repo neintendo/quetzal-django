@@ -3,6 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 
 import django_filters
+import requests
 from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
 from django_filters.rest_framework import DjangoFilterBackend
@@ -79,13 +80,36 @@ class AccountsAggregateView(APIView):
         # Creates a new array with converted balances
         converted_balances = []
         date_obj = datetime.now()
+        print("DATE", date_obj)
         accounts_converted = 0
+
+        # Checks if API is working. If not, date_cmp = last saved date
+        try:
+            url = (
+                "https://api.frankfurter.dev/v1/"
+                + date_obj.strftime("%Y-%m-%d")
+                + "?base="
+                + main_currency.upper()
+            )
+            response = requests.get(url)
+            print("STATUS CODE:", response.status_code)
+
+        except Exception as e:
+            try:
+                with open("quetzal_django/utilities/date_obj.txt", "r") as date_cmp:
+                    date_obj = datetime.strptime(date_cmp.read(), "%Y-%m-%d")
+
+            except Exception as read_err:
+                print("FILE ERROR", read_err)
+                return
+            print(e)
+
         for account in accounts:
             if account.currency != main_currency:
-                # balance = conversion(
-                #     account.balance, account.currency, main_currency, date_obj
-                # )
-                # converted_balances.append(balance)
+                balance = conversion(
+                    account.balance, account.currency, main_currency, date_obj
+                )
+                converted_balances.append(balance)
                 accounts_converted += 1
             else:
                 converted_balances.append(float(account.balance))
@@ -95,6 +119,15 @@ class AccountsAggregateView(APIView):
             total_balance += balance
 
         total_accounts = accounts.count()
+
+        # On success, saves the current date for cache reference
+        try:
+            with open("quetzal_django/utilities/date_obj.txt", "w") as date_cmp:
+                date_cmp.write(date_obj.strftime("%Y-%m-%d"))
+
+        except Exception as read_err:
+            print("FILE ERROR", read_err)
+            return
 
         return Response(
             {
