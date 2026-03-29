@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../api";
 import "../../styles/Transactions/AddTransaction.css";
 import "../../styles/Transactions/TransactionForm.css";
@@ -9,9 +9,26 @@ function AddTransaction({ route, onSuccess, onClose }) {
   const [description, setDescription] = useState("");
   const [datetime, setDatetime] = useState("");
   const [account_name, setAccount] = useState("");
+  const [destination_account_name, setDestAccount] = useState("");
   const [category_name, setCategory] = useState("");
   const [transaction_type, setType] = useState("");
+  const [userAccounts, setUserAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getUserAccounts = () => {
+    api
+      .get("accounts/")
+      .then((res) => res.data)
+      .then((data) => {
+        setUserAccounts(data);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    getUserAccounts();
+  }, []);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -20,15 +37,28 @@ function AddTransaction({ route, onSuccess, onClose }) {
     try {
       let requestData;
 
-      requestData = {
-        amount,
-        currency,
-        description,
-        datetime,
-        account_name,
-        category_name,
-        transaction_type,
-      };
+      if (transaction_type != "transfer") {
+        requestData = {
+          amount,
+          currency,
+          description,
+          datetime,
+          account_name,
+          category_name,
+          transaction_type,
+        };
+      } else {
+        console.log("TRANSFER ON");
+        requestData = {
+          amount,
+          description,
+          datetime,
+          account_name,
+          category_name,
+          transaction_type,
+          destination_account_name,
+        };
+      }
 
       const res = await api.post(route, requestData);
 
@@ -40,6 +70,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
         setDescription("");
         setDatetime("");
         setAccount("");
+        setDestAccount("");
         setCategory("");
 
         if (onSuccess) onSuccess();
@@ -93,9 +124,9 @@ function AddTransaction({ route, onSuccess, onClose }) {
         <input
           className="add-transaction-form-input"
           type="text"
-          value={transaction_type}
-          onChange={(e) => setType(e.target.value)}
-          placeholder="Transaction Type"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
           required
         />
         <input
@@ -106,30 +137,66 @@ function AddTransaction({ route, onSuccess, onClose }) {
           placeholder="Category"
           required
         />
-        <input
+        <select
           className="add-transaction-form-input"
           type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
+          value={transaction_type}
+          onChange={(e) => setType(e.target.value)}
+          placeholder="Transaction Type"
           required
-        />
-        <input
+        >
+          <optgroup label="Transaction Type">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+            <option value="transfer">Transfer</option>
+          </optgroup>
+        </select>
+        <select
           className="add-transaction-form-input"
           type="text"
           value={account_name}
-          onChange={(e) => setAccount(e.target.value)}
-          placeholder="Account"
+          onChange={(e) => {
+            setAccount(e.target.value);
+            const selectedAccount = userAccounts?.find(
+              (account) => account.name === e.target.value,
+            );
+            setCurrency(selectedAccount?.currency || "");
+          }}
           required
-        />
-        <input
-          className="add-transaction-form-input"
-          type="text"
-          value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
-          placeholder="Currency"
-          required
-        />
+        >
+          <optgroup label="Account">
+            <option>- Select Account -</option>
+            {userAccounts &&
+              Array.isArray(userAccounts) &&
+              userAccounts.map((account, index) => (
+                <option key={index} value={account.name}>
+                  {account.name} ({account.currency})
+                </option>
+              ))}
+          </optgroup>
+        </select>
+        {transaction_type === "transfer" && (
+          <select
+            className="add-transaction-form-input"
+            type="text"
+            value={destination_account_name}
+            onChange={(e) => setDestAccount(e.target.value)}
+          >
+            <optgroup label="Destination Account">
+              <option>- Select Destination Account -</option>
+              {userAccounts &&
+                Array.isArray(userAccounts) &&
+                userAccounts.map((account, index) =>
+                  account.currency === currency &&
+                  account_name !== account.name ? (
+                    <option key={index} value={account.name}>
+                      {account.name} ({account.currency})
+                    </option>
+                  ) : null,
+                )}
+            </optgroup>
+          </select>
+        )}
         <button
           className="add-transaction-form-button"
           type="submit"
