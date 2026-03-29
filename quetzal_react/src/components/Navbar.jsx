@@ -1,9 +1,24 @@
 import "../styles/Navbar.css";
 import Sidebar from "./Sidebar";
+import { useState } from "react";
+import AddTransaction from "./Transactions/AddTransaction";
 
 const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const handleTransactionAdded = () => {
+    setShowAddModal(false);
+    // add code for refreshing table here later
+  };
   return (
     <>
+      {showAddModal && (
+        <AddTransaction
+          route="/transactions/"
+          onClose={() => setShowAddModal(false)}
+          onSuccess={handleTransactionAdded}
+        />
+      )}
       <Sidebar isOpen={isSidebarOpen} />
 
       <nav className="navbar">
@@ -19,7 +34,11 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
         </div>
         <div className="navbar-center">quetzal</div>
         <div className="navbar-right">
-          <button className="add-nav" type="button">
+          <button
+            className="add-nav"
+            type="button"
+            onClick={() => setShowAddModal(true)}
+          >
             {"+"}
           </button>
         </div>
