@@ -51,6 +51,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
         console.log("TRANSFER ON");
         requestData = {
           amount,
+          currency,
           description,
           datetime,
           account_name,

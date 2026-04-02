@@ -144,7 +144,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         user = request.user
         transaction_type = validated_data.get("transaction_type")
-        transaction_currency = validated_data.get("currency")
+        transfer_currency = validated_data.get("currency")
 
         # Extract account and category names from validated data
         account_name = validated_data.pop("account_name")
@@ -153,12 +153,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         # Get or create origin account
         origin_account, _ = Account.objects.get_or_create(
-            name=account_name,
-            user=user,
-            currency=transaction_currency,
-            defaults={
-                "type": "bank",  # Default account type
-            },
+            name=account_name, user=user, currency=transfer_currency
         )
 
         # Get or create destination account (for transfers)
@@ -167,7 +162,10 @@ class TransactionSerializer(serializers.ModelSerializer):
             destination_account, _ = Account.objects.get_or_create(
                 name=destination_account_name,
                 user=user,
-                defaults={"type": "bank", "currency": origin_account.currency},
+                defaults={
+                    "type": origin_account.type,
+                    "currency": origin_account.currency,
+                },
             )
 
         # If accounts have different currencies display error message
