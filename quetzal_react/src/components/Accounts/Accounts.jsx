@@ -2,8 +2,8 @@ import "../../styles/Accounts/Accounts.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import AccountsGraph from "./AccountsGraph";
-import AccountsTable from "../Accounts/AccountsTable";
 import AddAccount from "./AddAccount";
+import AccountsDetail from "./AccountsDetail";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
@@ -116,10 +116,7 @@ const Accounts = () => {
             </div>
           </div>
           <div>
-            <AccountsTable
-              searchTerm={searchTerm}
-              currencyFilter={currencyFilter}
-            />
+            <AccountsDetail searchTerm={searchTerm} accountName="Aus Caus" />
           </div>
         </div>
       </div>
