@@ -1,9 +1,10 @@
 import "../../styles/Accounts/Accounts.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
-import AccountsGraph from "./AccountsGraph";
-import AddAccount from "./AddAccount";
 import AccountsDetail from "./AccountsDetail";
+import AccountsGraph from "./AccountsGraph";
+import AccountsTable from "../Accounts/AccountsTable";
+import AddAccount from "./AddAccount";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
@@ -11,6 +12,7 @@ const Accounts = () => {
   const [accountsData, setAccountsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currencyFilter, setCurrencyFilter] = useState("");
+  const [tableNav, setTableNav] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
@@ -116,7 +118,15 @@ const Accounts = () => {
             </div>
           </div>
           <div>
-            <AccountsDetail searchTerm={searchTerm} accountName="Aus Caus" />
+            {/* If tableNav is true switch page to account AccountsDetail*/}
+            {tableNav ? (
+              <AccountsDetail searchTerm={searchTerm} accountName="Aus Caus" />
+            ) : (
+              <AccountsTable
+                searchTerm={searchTerm}
+                currencyFilter={currencyFilter}
+              />
+            )}
           </div>
         </div>
       </div>
