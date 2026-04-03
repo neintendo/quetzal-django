@@ -169,11 +169,13 @@ function AddTransaction({ route, onSuccess, onClose }) {
             <option>- Select Account -</option>
             {userAccounts &&
               Array.isArray(userAccounts) &&
-              userAccounts.map((account, index) => (
-                <option key={index} value={account.name}>
-                  {account.name} ({account.currency})
-                </option>
-              ))}
+              [...userAccounts]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((account, index) => (
+                  <option key={index} value={account.name}>
+                    {account.name} ({account.currency})
+                  </option>
+                ))}
           </optgroup>
         </select>
         {transaction_type === "transfer" && (
@@ -187,14 +189,16 @@ function AddTransaction({ route, onSuccess, onClose }) {
               <option>- Select Destination Account -</option>
               {userAccounts &&
                 Array.isArray(userAccounts) &&
-                userAccounts.map((account, index) =>
-                  account.currency === currency &&
-                  account_name !== account.name ? (
-                    <option key={index} value={account.name}>
-                      {account.name} ({account.currency})
-                    </option>
-                  ) : null,
-                )}
+                [...userAccounts]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((account, index) =>
+                    account.currency === currency &&
+                    account_name !== account.name ? (
+                      <option key={index} value={account.name}>
+                        {account.name} ({account.currency})
+                      </option>
+                    ) : null,
+                  )}
             </optgroup>
           </select>
         )}
