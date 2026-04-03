@@ -248,7 +248,7 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
 class TransactionFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name="datetime", lookup_expr="gte")
     end_date = django_filters.DateFilter(field_name="datetime", lookup_expr="lte")
-    account = django_filters.CharFilter(method="filter_account")
+    account = django_filters.CharFilter(field_name="account__name", lookup_expr="exact")
     category = django_filters.CharFilter(
         field_name="category__name", lookup_expr="icontains"
     )
