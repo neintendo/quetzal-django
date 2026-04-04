@@ -82,15 +82,9 @@ class Account(models.Model):
 
 
 class Category(models.Model):
-    CATEGORY_TYPES = [
-        ("income", "Income"),
-        ("expense", "Expense"),
-        ("transfer", "Transfer"),
-    ]
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    type = models.CharField(choices=CATEGORY_TYPES)
+    type = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
@@ -103,6 +97,12 @@ class Category(models.Model):
 
 
 class Transaction(models.Model):
+    TRANSACTION_TYPES = [
+        ("income", "Income"),
+        ("expense", "Expense"),
+        ("transfer", "Transfer"),
+    ]
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(
@@ -129,7 +129,7 @@ class Transaction(models.Model):
         max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
     )
     transaction_type = models.CharField(
-        max_length=10, choices=Category.CATEGORY_TYPES, null=True, blank=True
+        max_length=10, choices=TRANSACTION_TYPES, null=True, blank=True
     )
 
     def __str__(self):
