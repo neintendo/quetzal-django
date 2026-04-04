@@ -6,8 +6,8 @@ import "../../styles/Accounts/AccountsDetail.css";
 const AccountsDetail = ({ searchTerm, accountName }) => {
   const [accTransactionData, setAccTransactionData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
-    key: "name",
-    direction: "asc",
+    key: "datetime",
+    direction: "desc",
   });
 
   useEffect(() => {
@@ -46,18 +46,31 @@ const AccountsDetail = ({ searchTerm, accountName }) => {
     let aValue = a[sortHeader.key];
     let bValue = b[sortHeader.key];
 
-    if (sortHeader.key === "amount") {
-      aValue = parseFloat(aValue);
-      a.transaction_type === "expense" ? (aValue *= -1) : aValue;
-      bValue = parseFloat(bValue);
-      b.transaction_type === "expense" ? (bValue *= -1) : bValue;
-    }
+    if (
+      sortHeader.key === "amount" ||
+      sortHeader.key === "destination_account"
+    ) {
+      if (sortHeader.key === "amount") {
+        aValue = parseFloat(aValue);
+        a.transaction_type === "expense" ? (aValue *= -1) : aValue;
+        bValue = parseFloat(bValue);
+        b.transaction_type === "expense" ? (bValue *= -1) : bValue;
+      }
 
-    if (aValue < bValue) {
-      return sortHeader.direction === "asc" ? -1 : 1;
-    }
-    if (aValue > bValue) {
-      return sortHeader.direction === "asc" ? 1 : -1;
+      if (aValue < bValue) {
+        return sortHeader.direction === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortHeader.direction === "asc" ? 1 : -1;
+      }
+    } else {
+      console.log(sortHeader.key);
+      if (aValue.toLowerCase() < bValue.toLowerCase()) {
+        return sortHeader.direction === "asc" ? -1 : 1;
+      }
+      if (aValue.toLowerCase() > bValue.toLowerCase()) {
+        return sortHeader.direction === "asc" ? 1 : -1;
+      }
     }
     return 0;
   });
@@ -101,7 +114,7 @@ const AccountsDetail = ({ searchTerm, accountName }) => {
             </th>
             <th onClick={() => requestSort("transaction_type")}>
               Transaction Type{" "}
-              {sortHeader.key === "type"
+              {sortHeader.key === "transaction_type"
                 ? sortHeader.direction === "asc"
                   ? "↑"
                   : "↓"
@@ -135,7 +148,7 @@ const AccountsDetail = ({ searchTerm, accountName }) => {
                 >
                   {val.transaction_type}
                 </td>
-                <td style={{ width: 130 }}>{val.destination_account}</td>
+                <td style={{ width: 150 }}>{val.destination_account}</td>
               </tr>
             );
           })}

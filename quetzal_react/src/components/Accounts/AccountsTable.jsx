@@ -50,13 +50,20 @@ const AccountsTable = ({ onRowClick, searchTerm, currencyFilter }) => {
     if (sortHeader.key === "balance") {
       aValue = parseFloat(aValue);
       bValue = parseFloat(bValue);
-    }
 
-    if (aValue < bValue) {
-      return sortHeader.direction === "asc" ? -1 : 1;
-    }
-    if (aValue > bValue) {
-      return sortHeader.direction === "asc" ? 1 : -1;
+      if (aValue < bValue) {
+        return sortHeader.direction === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortHeader.direction === "asc" ? 1 : -1;
+      }
+    } else {
+      if (aValue.toLowerCase() < bValue.toLowerCase()) {
+        return sortHeader.direction === "asc" ? -1 : 1;
+      }
+      if (aValue.toLowerCase() > bValue.toLowerCase()) {
+        return sortHeader.direction === "asc" ? 1 : -1;
+      }
     }
     return 0;
   });
