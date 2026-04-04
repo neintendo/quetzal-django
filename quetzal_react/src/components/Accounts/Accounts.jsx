@@ -54,7 +54,10 @@ const Accounts = () => {
   const divCurrencies = uniqueCurrencies.map((currency) => (
     <div
       className="accounts-graph-balance-list"
-      onClick={() => setCurrencyFilter(currency)}
+      onClick={() => {
+        setCurrencyFilter(currency);
+        setTableNav(false);
+      }}
     >
       {currency}
     </div>
@@ -70,6 +73,10 @@ const Accounts = () => {
     setTableNav(true);
   };
 
+  const accountDetailBalance = accountsData.find(
+    (account) => account.name === selectedAccount,
+  );
+
   return (
     <>
       {showAddModal && (
@@ -83,20 +90,28 @@ const Accounts = () => {
         <div className="accounts-graph">
           <div
             className={
-              currencyFilter
+              currencyFilter || tableNav
                 ? "accounts-graph-balance-container-active"
                 : "accounts-graph-balance-container"
             }
           >
             <div
               className="accounts-graph-balance"
-              onClick={() => setCurrencyFilter(null)}
+              onClick={() => {
+                setCurrencyFilter(null);
+                setTableNav(false);
+              }}
             >
-              {currencyFilter
-                ? currencyFormatter.format(selectedCurrencySum)
-                : accountAggregates?.accounts_converted != 0
-                  ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
-                  : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
+              {tableNav
+                ? new Intl.NumberFormat(undefined, {
+                    style: "currency",
+                    currency: accountDetailBalance.currency,
+                  }).format(accountDetailBalance.balance)
+                : currencyFilter
+                  ? currencyFormatter.format(selectedCurrencySum)
+                  : accountAggregates?.accounts_converted != 0
+                    ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
+                    : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
             </div>
             <div>{divCurrencies}</div>
           </div>
