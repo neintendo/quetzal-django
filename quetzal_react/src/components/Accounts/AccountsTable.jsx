@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../../styles/Accounts/AccountsTable.css";
 
-const AccountsTable = ({ searchTerm, currencyFilter }) => {
+const AccountsTable = ({ onRowClick, searchTerm, currencyFilter }) => {
   const [tableData, setTableData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "name",
@@ -101,7 +101,7 @@ const AccountsTable = ({ searchTerm, currencyFilter }) => {
           </tr>
           {sortedData.map((val, key) => {
             return (
-              <tr key={key}>
+              <tr onClick={() => onRowClick(val.name)} key={key}>
                 <td>{val.name}</td>
                 <td style={{ textTransform: "capitalize" }}>{val.type}</td>
                 <td>{val.currency}</td>

@@ -116,6 +116,17 @@
     border: 1px solid #bbbbbb;
 }
 
+.accounts-table-title-active {
+    white-space: nowrap;
+    background-color: #bbbbbb;
+    padding: 8px;
+    border: 1px solid #999999;
+    transition: background-color 250ms ease;
+}
+.accounts-table-title-active:hover {
+    background-color: #cccccc;
+}
+
 .table-header-input {
     font-size: 12px;
     background-color: #dddddd;
@@ -162,6 +173,7 @@
 .add-account-button,
 .accounts-graph-balance,
 .accounts-graph-balance-list,
-.accounts-table-title {
+.accounts-table-title,
+.accounts-table-title-active {
     cursor: pointer;
 }

@@ -13,6 +13,7 @@ const Accounts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currencyFilter, setCurrencyFilter] = useState("");
   const [tableNav, setTableNav] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState("Aus Caus");
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
@@ -64,6 +65,11 @@ const Accounts = () => {
     // add code for refreshing table here later
   };
 
+  const handleRowClick = (accountNameFromChild) => {
+    setSelectedAccount(accountNameFromChild);
+    setTableNav(true);
+  };
+
   return (
     <>
       {showAddModal && (
@@ -98,7 +104,16 @@ const Accounts = () => {
         </div>
         <div className="accounts-table-container">
           <div className="accounts-table-header">
-            <div className="accounts-table-title">Accounts</div>
+            {tableNav ? (
+              <div
+                onClick={() => setTableNav(false)}
+                className="accounts-table-title-active"
+              >
+                {selectedAccount}
+              </div>
+            ) : (
+              <div className="accounts-table-title"> Accounts</div>
+            )}
             <input
               className="table-header-input"
               placeholder="Search Account"
@@ -120,9 +135,13 @@ const Accounts = () => {
           <div>
             {/* If tableNav is true switch page to account AccountsDetail*/}
             {tableNav ? (
-              <AccountsDetail searchTerm={searchTerm} accountName="Aus Caus" />
+              <AccountsDetail
+                searchTerm={searchTerm}
+                accountName={selectedAccount}
+              />
             ) : (
               <AccountsTable
+                onRowClick={handleRowClick}
                 searchTerm={searchTerm}
                 currencyFilter={currencyFilter}
               />
