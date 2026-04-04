@@ -168,7 +168,7 @@ class AccountsGraphView(APIView):
         total_t = 0
 
         # Graph conversion for all currencies
-        if currency == "" or currency is None:
+        if (currency is None or currency == "") and account is None:
             for transaction in transactions:
                 month_key = transaction.datetime.strftime("%Y-%m")
                 amount = transaction.amount
