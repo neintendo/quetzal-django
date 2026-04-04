@@ -116,7 +116,9 @@ const Accounts = () => {
             )}
             <input
               className="table-header-input"
-              placeholder="Search Account"
+              placeholder={
+                tableNav ? `Search ${selectedAccount}` : "Search Account"
+              }
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
