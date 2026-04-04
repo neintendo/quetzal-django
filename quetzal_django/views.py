@@ -147,11 +147,18 @@ class AccountsGraphView(APIView):
         transactions = (Transaction.objects.filter(user=request.user)).exclude(
             transaction_type="transfer"
         )
+
         # Filters request by currency
         currency = request.GET.get("currency")
         print("Currency:", currency)
         if currency:
             transactions = transactions.filter(currency=currency)
+
+        # Filters request by account
+        account = request.GET.get("account")
+        print("Account:", account)
+        if account:
+            transactions = transactions.filter(account=account)
 
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")

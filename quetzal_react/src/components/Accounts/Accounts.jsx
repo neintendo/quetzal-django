@@ -58,6 +58,7 @@ const Accounts = () => {
       onClick={() => {
         setCurrencyFilter(currency);
         setTableNav(false);
+        setSelectedAccount();
       }}
     >
       {currency}
@@ -102,6 +103,7 @@ const Accounts = () => {
               onClick={() => {
                 setCurrencyFilter(null);
                 setTableNav(false);
+                setSelectedAccount();
               }}
             >
               {tableNav
@@ -117,13 +119,19 @@ const Accounts = () => {
             </div>
             <div>{divCurrencies}</div>
           </div>
-          <AccountsGraph currencyFilter={currencyFilter} />
+          <AccountsGraph
+            currencyFilter={currencyFilter}
+            selectedAccount={selectedAccount}
+          />
         </div>
         <div className="accounts-table-container">
           <div className="accounts-table-header">
             {tableNav ? (
               <div
-                onClick={() => setTableNav(false)}
+                onClick={() => {
+                  setTableNav(false);
+                  setSelectedAccount();
+                }}
                 className="accounts-table-title-active"
               >
                 {selectedAccountName}

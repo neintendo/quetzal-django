@@ -25,13 +25,15 @@ ChartJS.register(
   Filler,
 );
 
-const AccountsGraph = ({ currencyFilter }) => {
+const AccountsGraph = ({ currencyFilter, selectedAccount }) => {
   const [transactionData, setTransactionData] = useState(null);
 
   useEffect(() => {
     const getTransactionData = () => {
       api
-        .get("accounts/graph", { params: { currency: currencyFilter } })
+        .get("accounts/graph", {
+          params: { currency: currencyFilter, account: selectedAccount },
+        })
         .then((res) => res.data)
         .then((data) => {
           setTransactionData(data.transactions_by_month);
@@ -41,7 +43,7 @@ const AccountsGraph = ({ currencyFilter }) => {
     };
 
     getTransactionData();
-  }, [currencyFilter]);
+  }, [currencyFilter, selectedAccount]);
 
   if (!transactionData) {
     return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
