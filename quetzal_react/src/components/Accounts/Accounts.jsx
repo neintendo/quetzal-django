@@ -84,6 +84,7 @@ const Accounts = () => {
 
   const handleAccountEdited = () => {
     setShowAccEditModal(false);
+    setSelectedAccount("");
     refresh();
   };
 
