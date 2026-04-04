@@ -33,12 +33,12 @@ const AccountsDetail = ({ searchTerm, accountName }) => {
     setSortHeader({ key, direction });
   };
 
-  const filteredData = accTransactionData; //.filter((item) => {
-  //   const matchesSearch = item.name
-  //     .toLowerCase()
-  //     .includes(searchTerm.toLowerCase());
-  //   return matchesSearch;
-  // });
+  const filteredData = accTransactionData.filter((item) => {
+    const matchesSearch = item.description
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortHeader.key) return 0;
