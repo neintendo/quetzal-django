@@ -108,7 +108,7 @@ const AccountsTable = ({ onRowClick, searchTerm, currencyFilter }) => {
           </tr>
           {sortedData.map((val, key) => {
             return (
-              <tr onClick={() => onRowClick(val.name)} key={key}>
+              <tr onClick={() => onRowClick(val.id, val.name)} key={key}>
                 <td>{val.name}</td>
                 <td style={{ textTransform: "capitalize" }}>{val.type}</td>
                 <td>{val.currency}</td>

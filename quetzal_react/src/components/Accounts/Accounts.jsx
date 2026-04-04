@@ -13,7 +13,8 @@ const Accounts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currencyFilter, setCurrencyFilter] = useState("");
   const [tableNav, setTableNav] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState("Aus Caus");
+  const [selectedAccount, setSelectedAccount] = useState();
+  const [selectedAccountName, setSelectedAccountName] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
@@ -68,13 +69,14 @@ const Accounts = () => {
     // add code for refreshing table here later
   };
 
-  const handleRowClick = (accountNameFromChild) => {
-    setSelectedAccount(accountNameFromChild);
+  const handleRowClick = (accountIdFromChild, accountNameFromChild) => {
+    setSelectedAccount(accountIdFromChild);
+    setSelectedAccountName(accountNameFromChild);
     setTableNav(true);
   };
 
   const accountDetailBalance = accountsData.find(
-    (account) => account.name === selectedAccount,
+    (account) => account.id === selectedAccount,
   );
 
   return (
@@ -124,7 +126,7 @@ const Accounts = () => {
                 onClick={() => setTableNav(false)}
                 className="accounts-table-title-active"
               >
-                {selectedAccount}
+                {selectedAccountName}
               </div>
             ) : (
               <div className="accounts-table-title"> Accounts</div>
@@ -132,7 +134,7 @@ const Accounts = () => {
             <input
               className="table-header-input"
               placeholder={
-                tableNav ? `Search ${selectedAccount}` : "Search Account"
+                tableNav ? `Search ${selectedAccountName}` : "Search Account"
               }
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -154,7 +156,7 @@ const Accounts = () => {
             {tableNav ? (
               <AccountsDetail
                 searchTerm={searchTerm}
-                accountName={selectedAccount}
+                accountName={selectedAccountName}
               />
             ) : (
               <AccountsTable
