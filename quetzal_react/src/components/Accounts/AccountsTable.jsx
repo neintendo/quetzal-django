@@ -102,7 +102,7 @@ const AccountsTable = ({
                 key={key}
               >
                 <td>{val.name}</td>
-                <td style={{ textTransform: "capitalize" }}>{val.type}</td>
+                <td>{val.type}</td>
                 <td>{val.currency}</td>
                 <td>{val.balance}</td>
               </tr>

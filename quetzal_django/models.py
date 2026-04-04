@@ -64,19 +64,9 @@ class User(AbstractUser):
 
 
 class Account(models.Model):
-    ACCOUNT_TYPES = [
-        ("cash", "Cash"),
-        ("bank", "Bank"),
-        ("investment", "Investment"),
-        ("savings", "Savings"),
-        ("credit", "Credit Card"),
-        ("loan", "Loan"),
-        ("other", "Other"),
-    ]
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=50, choices=ACCOUNT_TYPES)
+    type = models.CharField(max_length=50)
     currency = models.CharField(
         max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
     )
