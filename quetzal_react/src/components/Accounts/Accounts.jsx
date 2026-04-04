@@ -86,6 +86,11 @@ const Accounts = () => {
     setShowAccEditModal(false);
     setSelectedAccount("");
     refresh();
+    setTableNav(false);
+  };
+
+  const handleAccountDelete = () => {
+    setTableNav(false);
   };
 
   const handleRowClick = (
@@ -104,10 +109,6 @@ const Accounts = () => {
   const accountDetailBalance = accountsData.find(
     (account) => account.id === selectedAccount,
   );
-
-  const handleAccountDelete = () => {
-    setTableNav(false);
-  };
 
   return (
     <>
