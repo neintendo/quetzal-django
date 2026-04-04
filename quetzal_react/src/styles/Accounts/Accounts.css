@@ -155,6 +155,9 @@
 .add-account-container {
     display: flex;
 }
+.edit-account-container {
+    display: flex;
+}
 
 .add-account-button {
     align-items: center;
@@ -174,10 +177,10 @@
     align-items: center;
     background-color: #cccccc;
     border: none;
-    font-size: 16px;
+    font-size: 13px;
     transition: background-color 250ms ease;
     border: 1px solid #bbbbbb;
-    width: 40px;
+    width: 144px;
 }
 
 .edit-account-button:hover {

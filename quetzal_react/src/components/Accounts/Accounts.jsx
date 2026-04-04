@@ -21,7 +21,7 @@ const Accounts = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAccEditModal, setShowAccEditModal] = useState(false);
 
-  useEffect(() => {
+  const fetchData = () => {
     Promise.all([
       api.get("accounts/aggregate/"),
       api.get("profile/"),
@@ -33,7 +33,15 @@ const Accounts = () => {
         setAccountsData(accountsRes.data);
       })
       .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
+
+  const refresh = () => {
+    fetchData();
+  };
 
   const currencyFormatter = new Intl.NumberFormat(undefined, {
     style: "currency",
@@ -71,12 +79,12 @@ const Accounts = () => {
 
   const handleAccountAdded = () => {
     setShowAddModal(false);
-    // add code for refreshing table here later
+    refresh();
   };
 
   const handleAccountEdited = () => {
     setShowAccEditModal(false);
-    // add code for refreshing table here later
+    refresh();
   };
 
   const handleRowClick = (
@@ -179,28 +187,32 @@ const Accounts = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="table-header-button-container">
-              <div className="add-account-container">
-                {tableNav ? (
+              {tableNav ? (
+                <div className="edit-account-container">
                   <button
                     className="edit-account-button"
                     type="button"
                     onClick={() => setShowAccEditModal(true)}
                   >
-                    {"⌥"}
+                    {"Edit Account"}
                   </button>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="add-account-container">
-                <button
-                  className="add-account-button"
-                  type="button"
-                  onClick={() => setShowAddModal(true)}
-                >
-                  {"+ Add Account"}
-                </button>
-              </div>
+                </div>
+              ) : (
+                ""
+              )}
+              {tableNav ? (
+                ""
+              ) : (
+                <div className="add-account-container">
+                  <button
+                    className="add-account-button"
+                    type="button"
+                    onClick={() => setShowAddModal(true)}
+                  >
+                    {"+ Add Account"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div>
@@ -215,6 +227,7 @@ const Accounts = () => {
                 onRowClick={handleRowClick}
                 searchTerm={searchTerm}
                 currencyFilter={currencyFilter}
+                accountsData={accountsData}
               />
             )}
           </div>

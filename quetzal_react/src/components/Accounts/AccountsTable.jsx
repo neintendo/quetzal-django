@@ -1,29 +1,16 @@
-import api from "../../api";
 import { useState } from "react";
-import { useEffect } from "react";
 import "../../styles/Accounts/AccountsTable.css";
 
-const AccountsTable = ({ onRowClick, searchTerm, currencyFilter }) => {
-  const [tableData, setTableData] = useState([]);
+const AccountsTable = ({
+  onRowClick,
+  searchTerm,
+  currencyFilter,
+  accountsData,
+}) => {
   const [sortHeader, setSortHeader] = useState({
     key: "name",
     direction: "asc",
   });
-
-  const getTableData = () => {
-    api
-      .get("accounts/")
-      .then((res) => res.data)
-      .then((data) => {
-        setTableData(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
-  };
-
-  useEffect(() => {
-    getTableData();
-  }, []);
 
   const requestSort = (key) => {
     let direction = "asc";
@@ -33,7 +20,7 @@ const AccountsTable = ({ onRowClick, searchTerm, currencyFilter }) => {
     setSortHeader({ key, direction });
   };
 
-  const filteredData = tableData.filter((item) => {
+  const filteredData = accountsData.filter((item) => {
     const matchesSearch = item.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
