@@ -24,10 +24,10 @@ def conversion(amount, base_currency, target_currency, transaction_date):
         try:
             print("{0} for {1} DOES NOT EXIST".format(base_currency, transaction_date))
             url = (
-                "https://api.frankfurter.dev/v1/"
-                + transaction_date.strftime("%Y-%m-%d")
-                + "?base="
+                "https://api.frankfurter.dev/v2/rates/?base="
                 + base_currency.upper()
+                + "&date="
+                + transaction_date.strftime("%Y-%m-%d")
             )
             response = requests.get(url)
 
@@ -36,11 +36,13 @@ def conversion(amount, base_currency, target_currency, transaction_date):
                 return
 
             data = response.json()
-            rates_n = data.get("rates", {})
+            rates_dict = {}
+            for item in data:
+                rates_dict[item["quote"]] = item["rate"]
 
             try:
                 ExchangeRates.objects.create(
-                    date=transaction_date, base=base_currency, rates=rates_n
+                    date=transaction_date, base=base_currency, rates=rates_dict
                 )
                 print(
                     "{0} for {1} CREATE SUCCESS".format(base_currency, transaction_date)
@@ -49,7 +51,7 @@ def conversion(amount, base_currency, target_currency, transaction_date):
                 print("ERROR:", e)
                 return
 
-            multiplier = rates_n[target_currency.upper()]
+            multiplier = rates_dict[target_currency.upper()]
 
         except Exception as e:
             print("Error: {0}".format(e))
