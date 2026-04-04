@@ -5,6 +5,7 @@ import AccountsDetail from "./AccountsDetail";
 import AccountsGraph from "./AccountsGraph";
 import AccountsTable from "../Accounts/AccountsTable";
 import AddAccount from "./AddAccount";
+import EditAccount from "./EditAccount";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
@@ -15,7 +16,10 @@ const Accounts = () => {
   const [tableNav, setTableNav] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState();
   const [selectedAccountName, setSelectedAccountName] = useState("");
+  const [selectedAccountType, setSelectedAccountType] = useState("");
+  const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAccEditModal, setShowAccEditModal] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -70,15 +74,31 @@ const Accounts = () => {
     // add code for refreshing table here later
   };
 
-  const handleRowClick = (accountIdFromChild, accountNameFromChild) => {
+  const handleAccountEdited = () => {
+    setShowAccEditModal(false);
+    // add code for refreshing table here later
+  };
+
+  const handleRowClick = (
+    accountIdFromChild,
+    accountNameFromChild,
+    accountTypeFromChild,
+    currencyFromChild,
+  ) => {
     setSelectedAccount(accountIdFromChild);
     setSelectedAccountName(accountNameFromChild);
+    setSelectedAccountType(accountTypeFromChild);
+    setSelectedAccountCurrency(currencyFromChild);
     setTableNav(true);
   };
 
   const accountDetailBalance = accountsData.find(
     (account) => account.id === selectedAccount,
   );
+
+  const handleAccountDelete = () => {
+    setTableNav(false);
+  };
 
   return (
     <>
@@ -87,6 +107,17 @@ const Accounts = () => {
           route="/accounts/"
           onClose={() => setShowAddModal(false)}
           onSuccess={handleAccountAdded}
+        />
+      )}
+      {showAccEditModal && (
+        <EditAccount
+          route={`/accounts/${selectedAccount}/`}
+          onClose={() => setShowAccEditModal(false)}
+          onSuccess={handleAccountEdited}
+          account={selectedAccountName}
+          accountType={selectedAccountType}
+          accountCurrency={selectedAccountCurrency}
+          onAccountDelete={handleAccountDelete}
         />
       )}
       <div className="accounts">
@@ -148,6 +179,19 @@ const Accounts = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="table-header-button-container">
+              <div className="add-account-container">
+                {tableNav ? (
+                  <button
+                    className="edit-account-button"
+                    type="button"
+                    onClick={() => setShowAccEditModal(true)}
+                  >
+                    {"⌥"}
+                  </button>
+                ) : (
+                  ""
+                )}
+              </div>
               <div className="add-account-container">
                 <button
                   className="add-account-button"

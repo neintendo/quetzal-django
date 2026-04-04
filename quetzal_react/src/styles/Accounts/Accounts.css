@@ -170,7 +170,22 @@
     background-color: #eeeeee;
 }
 
+.edit-account-button {
+    align-items: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 16px;
+    transition: background-color 250ms ease;
+    border: 1px solid #bbbbbb;
+    width: 40px;
+}
+
+.edit-account-button:hover {
+    background-color: #eeeeee;
+}
+
 .add-account-button,
+.edit-account-button,
 .accounts-graph-balance,
 .accounts-graph-balance-list,
 .accounts-table-title,
