@@ -74,15 +74,15 @@ const TransactionsTable = ({ transactionsData, searchTerm }) => {
                   : "↓"
                 : ""}
             </th>
-            <th onClick={() => requestSort("category_name")}>
+            <th onClick={() => requestSort("category")}>
               Category{" "}
-              {sortHeader.key === "category_name"
+              {sortHeader.key === "category"
                 ? sortHeader.direction === "asc"
                   ? "↑"
                   : "↓"
                 : ""}
             </th>
-            <th onClick={() => requestSort("account_name")}>
+            <th onClick={() => requestSort("account")}>
               Account{" "}
               {sortHeader.key === "account"
                 ? sortHeader.direction === "asc"
@@ -110,13 +110,15 @@ const TransactionsTable = ({ transactionsData, searchTerm }) => {
           {sortedData.map((val, key) => {
             return (
               <tr key={key}>
-                <td>{val.datetime}</td>
+                <td style={{ width: 150 }}>{val.datetime}</td>
                 <td>{val.description}</td>
                 <td>{val.amount}</td>
-                <td>{val.category_name}</td>
-                <td>{val.account_name}</td>
-                <td>{val.currency}</td>
-                <td>{val.transaction_type}</td>
+                <td>{val.category}</td>
+                <td>{val.account}</td>
+                <td style={{ width: 96 }}>{val.currency}</td>
+                <td style={{ textTransform: "capitalize", width: 70 }}>
+                  {val.transaction_type}
+                </td>
               </tr>
             );
           })}
