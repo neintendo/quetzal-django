@@ -20,6 +20,10 @@ const Accounts = () => {
   const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAccEditModal, setShowAccEditModal] = useState(false);
+  const [graphMax, setGraphMax] = useState(false);
+  const [graphMin, setGraphMin] = useState(true);
+  const [tableMax, setTableMax] = useState(false);
+  const [tableMin, setTableMin] = useState(true);
 
   const fetchData = () => {
     Promise.all([
@@ -110,6 +114,22 @@ const Accounts = () => {
     (account) => account.id === selectedAccount,
   );
 
+  const toggleGraphMax = () => {
+    setGraphMax(!graphMax);
+  };
+
+  const toggleGraphMin = () => {
+    setGraphMin(!graphMin);
+  };
+
+  const toggleTableMax = () => {
+    setTableMax(!tableMax);
+  };
+
+  const toggleTableMin = () => {
+    setTableMin(!tableMin);
+  };
+
   return (
     <>
       {showAddModal && (
@@ -131,111 +151,134 @@ const Accounts = () => {
         />
       )}
       <div className="accounts">
-        <div className="accounts-graph">
+        {graphMin ? (
           <div
-            className={
-              currencyFilter || tableNav
-                ? "accounts-graph-balance-container-active"
-                : "accounts-graph-balance-container"
-            }
-            title={currencyFilter || tableNav ? "Reset Currency Filter" : ""}
+            className={graphMax ? "accounts-graph-max" : "accounts-graph"}
+            onDoubleClick={() => {
+              toggleGraphMax();
+              toggleTableMin();
+            }}
           >
             <div
-              className="accounts-graph-balance"
-              onClick={() => {
-                setCurrencyFilter(null);
-                setTableNav(false);
-                setSelectedAccount();
-              }}
+              className={
+                currencyFilter || tableNav
+                  ? "accounts-graph-balance-container-active"
+                  : "accounts-graph-balance-container"
+              }
+              title={currencyFilter || tableNav ? "Reset Currency Filter" : ""}
             >
-              {tableNav
-                ? new Intl.NumberFormat(undefined, {
-                    style: "currency",
-                    currency: accountDetailBalance.currency,
-                  }).format(accountDetailBalance.balance)
-                : currencyFilter
-                  ? currencyFormatter.format(selectedCurrencySum)
-                  : accountAggregates?.accounts_converted != 0
-                    ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
-                    : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
-            </div>
-            <div>{divCurrencies}</div>
-          </div>
-          <AccountsGraph
-            currencyFilter={currencyFilter}
-            selectedAccount={selectedAccount}
-          />
-        </div>
-        <div className="accounts-table-container">
-          <div className="accounts-table-header">
-            {tableNav ? (
               <div
+                className="accounts-graph-balance"
                 onClick={() => {
+                  setCurrencyFilter(null);
                   setTableNav(false);
                   setSelectedAccount();
                 }}
-                className="accounts-table-title-active"
-                title="Navigate Back"
               >
-                {selectedAccountName}
+                {tableNav
+                  ? new Intl.NumberFormat(undefined, {
+                      style: "currency",
+                      currency: accountDetailBalance.currency,
+                    }).format(accountDetailBalance.balance)
+                  : currencyFilter
+                    ? currencyFormatter.format(selectedCurrencySum)
+                    : accountAggregates?.accounts_converted != 0
+                      ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
+                      : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
               </div>
-            ) : (
-              <div className="accounts-table-title"> Accounts</div>
-            )}
-            <input
-              className="table-header-input"
-              placeholder={
-                tableNav ? `Search ${selectedAccountName}` : "Search Account"
-              }
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              <div>{divCurrencies}</div>
+            </div>
+            <AccountsGraph
+              currencyFilter={currencyFilter}
+              selectedAccount={selectedAccount}
             />
-            <div className="table-header-button-container">
+          </div>
+        ) : (
+          ""
+        )}
+        {tableMin ? (
+          <div className="accounts-table-container">
+            <div className="accounts-table-header">
               {tableNav ? (
-                <div className="edit-account-container">
-                  <button
-                    className="edit-account-button"
-                    type="button"
-                    onClick={() => setShowAccEditModal(true)}
-                  >
-                    {"Edit Account"}
-                  </button>
+                <div
+                  onClick={() => {
+                    setTableNav(false);
+                    setSelectedAccount();
+                  }}
+                  className="accounts-table-title-active"
+                  title="Navigate Back"
+                >
+                  {selectedAccountName}
                 </div>
               ) : (
-                ""
+                <div
+                  className="accounts-table-title"
+                  onDoubleClick={() => {
+                    (toggleTableMax(), toggleGraphMin());
+                  }}
+                  title="Double Click to Minimise / Maximise"
+                >
+                  {" "}
+                  Accounts
+                </div>
               )}
+              <input
+                className="table-header-input"
+                placeholder={
+                  tableNav ? `Search ${selectedAccountName}` : "Search Account"
+                }
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="table-header-button-container">
+                {tableNav ? (
+                  <div className="edit-account-container">
+                    <button
+                      className="edit-account-button"
+                      type="button"
+                      onClick={() => setShowAccEditModal(true)}
+                    >
+                      {"Edit Account"}
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {tableNav ? (
+                  ""
+                ) : (
+                  <div className="add-account-container">
+                    <button
+                      className="add-account-button"
+                      type="button"
+                      onClick={() => setShowAddModal(true)}
+                    >
+                      {"+ Add Account"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div>
+              {/* If tableNav is true switch page to account AccountsDetail*/}
               {tableNav ? (
-                ""
+                <AccountsDetail
+                  searchTerm={searchTerm}
+                  accountName={selectedAccountName}
+                />
               ) : (
-                <div className="add-account-container">
-                  <button
-                    className="add-account-button"
-                    type="button"
-                    onClick={() => setShowAddModal(true)}
-                  >
-                    {"+ Add Account"}
-                  </button>
-                </div>
+                <AccountsTable
+                  onRowClick={handleRowClick}
+                  searchTerm={searchTerm}
+                  currencyFilter={currencyFilter}
+                  accountsData={accountsData}
+                />
               )}
             </div>
           </div>
-          <div>
-            {/* If tableNav is true switch page to account AccountsDetail*/}
-            {tableNav ? (
-              <AccountsDetail
-                searchTerm={searchTerm}
-                accountName={selectedAccountName}
-              />
-            ) : (
-              <AccountsTable
-                onRowClick={handleRowClick}
-                searchTerm={searchTerm}
-                currencyFilter={currencyFilter}
-                accountsData={accountsData}
-              />
-            )}
-          </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

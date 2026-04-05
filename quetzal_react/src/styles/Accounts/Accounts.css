@@ -9,7 +9,8 @@
     height: calc(100vh - 76.5px);
 }
 
-.accounts-graph {
+.accounts-graph,
+.accounts-graph-max {
     display: flex;
     gap: 8px;
     flex-direction: column;
@@ -22,6 +23,10 @@
     height: 50%;
     border: 1px solid #bbbbbb;
     position: relative;
+}
+
+.accounts-graph-max {
+    height: 100%;
 }
 
 .accounts-graph-balance-container-active,
