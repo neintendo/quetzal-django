@@ -62,7 +62,7 @@ const Accounts = () => {
 
   const uniqueCurrencies = [
     ...new Set(accountsData.map((account) => account.currency)),
-  ];
+  ].sort();
 
   const divCurrencies = uniqueCurrencies.map((currency) => (
     <div
