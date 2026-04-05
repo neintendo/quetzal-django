@@ -138,6 +138,7 @@ const Accounts = () => {
                 ? "accounts-graph-balance-container-active"
                 : "accounts-graph-balance-container"
             }
+            title={currencyFilter || tableNav ? "Reset Currency Filter" : ""}
           >
             <div
               className="accounts-graph-balance"
@@ -174,6 +175,7 @@ const Accounts = () => {
                   setSelectedAccount();
                 }}
                 className="accounts-table-title-active"
+                title="Navigate Back"
               >
                 {selectedAccountName}
               </div>

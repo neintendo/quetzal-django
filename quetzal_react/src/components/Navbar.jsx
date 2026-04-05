@@ -36,6 +36,7 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
         <div className="navbar-right">
           <button
             className="add-nav"
+            title="Add Transaction"
             type="button"
             onClick={() => setShowAddModal(true)}
           >

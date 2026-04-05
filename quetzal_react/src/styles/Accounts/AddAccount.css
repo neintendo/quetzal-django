@@ -50,3 +50,7 @@
 .modal-close-button {
     cursor: pointer;
 }
+
+.modal-title-container {
+    cursor: default;
+}

@@ -84,7 +84,11 @@ function EditAccount({
       <form onSubmit={handleSubmit} className="edit-account-form-container">
         <div className="modal-title-container">
           <div className="modal-title">Edit Account</div>
-          <div className="modal-close-button" onClick={onClose}>
+          <div
+            className="modal-close-button"
+            onClick={onClose}
+            title="Close Modal"
+          >
             X
           </div>
         </div>

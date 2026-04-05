@@ -191,7 +191,10 @@
 .edit-account-button,
 .accounts-graph-balance,
 .accounts-graph-balance-list,
-.accounts-table-title,
 .accounts-table-title-active {
     cursor: pointer;
+}
+
+.accounts-table-title {
+    cursor: default;
 }

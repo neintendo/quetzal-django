@@ -221,7 +221,11 @@ function AddAccount({ route, onSuccess, onClose }) {
       <form onSubmit={handleSubmit} className="add-account-form-container">
         <div className="modal-title-container">
           <div className="modal-title">Add Account</div>
-          <div className="modal-close-button" onClick={onClose}>
+          <div
+            className="modal-close-button"
+            onClick={onClose}
+            title="Close Modal"
+          >
             X
           </div>
         </div>
@@ -243,7 +247,6 @@ function AddAccount({ route, onSuccess, onClose }) {
         />
         <select
           className="add-account-form-input"
-          size="1"
           type="text"
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}

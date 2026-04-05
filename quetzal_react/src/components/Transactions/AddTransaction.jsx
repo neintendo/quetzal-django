@@ -102,7 +102,11 @@ function AddTransaction({ route, onSuccess, onClose }) {
       <form onSubmit={handleSubmit} className="add-transaction-form-container">
         <div className="modal-title-container">
           <div className="modal-title">Add Transaction</div>
-          <div className="modal-close-button" onClick={onClose}>
+          <div
+            className="modal-close-button"
+            onClick={onClose}
+            title="Close Modal"
+          >
             X
           </div>
         </div>
