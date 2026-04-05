@@ -1,12 +1,12 @@
 import "../styles/Home.css";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-// import Accounts from "../components/Accounts/Accounts";
+import Accounts from "../components/Accounts/Accounts";
 import Transactions from "../components/Transactions/Transactions";
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [page, setPage] = useState(""); // Set default to dashboard later
 
   useEffect(() => {
     const handleResize = () => {
@@ -17,26 +17,41 @@ function Home() {
         setIsSidebarOpen(true);
       }
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const pageHandler = (pageFromChild) => {
+    setPage(pageFromChild);
+  };
+
+  const pageSwitch = () => {
+    switch (page) {
+      case "accounts":
+        return <Accounts />;
+      case "transactions":
+        return <Transactions />;
+      default:
+        return <Accounts />;
+    }
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    console.log(isSidebarOpen);
   };
 
   return (
     <div
       className={isSidebarOpen ? "home-container" : "home-container-maximized"}
     >
-      <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <Sidebar />
-      <Transactions />
+      <Navbar
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        pageToHome={pageHandler}
+      />
+      {pageSwitch()}
     </div>
   );
 }

@@ -3,13 +3,18 @@ import Sidebar from "./Sidebar";
 import { useState } from "react";
 import AddTransaction from "./Transactions/AddTransaction";
 
-const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
+const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
   const [showAddModal, setShowAddModal] = useState(false);
 
   const handleTransactionAdded = () => {
     setShowAddModal(false);
     // add code for refreshing table here later
   };
+
+  const handlePageClick = (pageFromChild) => {
+    pageToHome(pageFromChild);
+  };
+
   return (
     <>
       {showAddModal && (
@@ -19,7 +24,7 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }) => {
           onSuccess={handleTransactionAdded}
         />
       )}
-      <Sidebar isOpen={isSidebarOpen} />
+      <Sidebar isOpen={isSidebarOpen} onPageClick={handlePageClick} />
 
       <nav className="navbar">
         <div className="navbar-left">

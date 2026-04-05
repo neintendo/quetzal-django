@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, onPageClick }) => {
   const [profile, setProfile] = useState(null);
   const [showProfile, setShowProfile] = useState(true);
   const navigate = useNavigate();
@@ -33,8 +33,18 @@ const Sidebar = ({ isOpen }) => {
       <nav className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <div className="sidebar-top">
           <div className="sidebar-pages-top">{"Dashboard"}</div>
-          <div className="sidebar-pages-top">{"Transactions"}</div>
-          <div className="sidebar-pages-top">{"Accounts"}</div>
+          <div
+            className="sidebar-pages-top"
+            onClick={() => onPageClick("transactions")}
+          >
+            {"Transactions"}
+          </div>
+          <div
+            className="sidebar-pages-top"
+            onClick={() => onPageClick("accounts")}
+          >
+            {"Accounts"}
+          </div>
           <div className="sidebar-pages-top">{"Categories"}</div>
         </div>
         <div className="sidebar-bottom">
