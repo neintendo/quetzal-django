@@ -17,9 +17,12 @@ function EditAccount({
   const [currency, setCurrency] = useState(accountCurrency);
   const [method, setMethod] = useState("put");
   const [loading, setLoading] = useState(false);
+  const [loadingB, setLoadingB] = useState(false);
 
   const handleSubmit = async (e) => {
-    setLoading(true);
+    {
+      method === "delete" ? setLoadingB(true) : setLoading(true);
+    }
     e.preventDefault();
 
     if (method === "delete") {
@@ -27,7 +30,7 @@ function EditAccount({
         "Are you sure you want to delete this account? This action cannot be undone!",
       );
       if (!confirmed) {
-        setLoading(false);
+        setLoadingB(false);
         return;
       }
     }
@@ -70,7 +73,9 @@ function EditAccount({
         alert(error.message);
       }
     } finally {
-      setLoading(false);
+      {
+        method === "delete" ? setLoadingB(false) : setLoading(false);
+      }
     }
   };
 
@@ -112,9 +117,9 @@ function EditAccount({
           className="delete-account-form-button"
           onClick={() => setMethod("delete")}
           type="submit"
-          disabled={loading}
+          disabled={loadingB}
         >
-          {loading ? "LOADING..." : "Delete Account"}
+          {loadingB ? "LOADING..." : "Delete Account"}
         </button>
       </form>
     </div>
