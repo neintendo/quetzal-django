@@ -2,7 +2,8 @@ import "../styles/Home.css";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
-import Accounts from "../components/Accounts/Accounts";
+// import Accounts from "../components/Accounts/Accounts";
+import Transactions from "../components/Transactions/Transactions";
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,7 +36,7 @@ function Home() {
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Sidebar />
-      <Accounts />
+      <Transactions />
     </div>
   );
 }
