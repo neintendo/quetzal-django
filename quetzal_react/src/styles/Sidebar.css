@@ -40,6 +40,14 @@
     transition: font-size 250ms ease;
     transition: background-color 250ms ease;
 }
+.sidebar-pages-top-active {
+    border-bottom: 4px solid transparent;
+    padding: 8px;
+    transition: font-size 250ms ease;
+    transition: background-color 250ms ease;
+    background-color: #cccccc;
+}
+
 .sidebar-pages-top:hover {
     background-color: #cccccc;
     font-size: 18px;
@@ -109,6 +117,7 @@
 }
 
 .sidebar-pages-top,
+.sidebar-pages-top-active,
 .sidebar-profile,
 .sidebar-options-icons,
 .sidebar-options-toggle {
