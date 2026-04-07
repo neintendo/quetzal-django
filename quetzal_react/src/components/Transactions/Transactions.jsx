@@ -72,6 +72,7 @@ const Transactions = () => {
               <div
                 className="transactions-table-title"
                 onClick={toggleFilterView}
+                title="Click to open filters"
               >
                 Transactions
               </div>

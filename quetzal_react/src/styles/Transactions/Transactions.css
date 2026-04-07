@@ -181,3 +181,7 @@
 .filter-clear-button {
     cursor: pointer;
 }
+
+.transactions-table-filter-container {
+    cursor: default;
+}
