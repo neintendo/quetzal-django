@@ -112,10 +112,9 @@ function AddTransaction({ route, onSuccess, onClose }) {
         </div>
         <input
           className="add-transaction-form-input"
-          type="date"
+          type="datetime-local"
           value={datetime}
           onChange={(e) => setDatetime(e.target.value)}
-          placeholder="Date"
           required
         />
         <input
