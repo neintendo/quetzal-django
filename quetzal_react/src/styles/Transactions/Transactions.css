@@ -36,7 +36,9 @@
     gap: 8px;
 }
 
-.transactions-table-title-container {
+.transactions-table-title-container,
+.transactions-table-title-container-active,
+.transactions-table-title-container-expanded {
     background-color: #dddddd;
     display: block;
     border: 1px solid #bbbbbb;
@@ -44,19 +46,30 @@
         background-color 250ms ease,
         font-size 250ms ease;
 }
-.transactions-table-title-container:hover {
+.transactions-table-title-container-active {
+    background-color: #bbbbbb;
+    border: 1px solid #999999;
+}
+.transactions-table-title-container-expanded {
     background-color: #cccccc;
     font-size: 18px;
     width: 100%;
 }
-.transactions-table-title-container:hover .transactions-table-filter-container {
+.transactions-table-title-container-expanded
+    .transactions-table-filter-container {
     display: flex;
 }
 
 .transactions-table-title {
     padding: 8px;
-    position: sticky;
-    top: 0px;
+    transition:
+        background-color 250ms ease,
+        font-size 250ms ease;
+}
+
+.transactions-table-title:hover {
+    font-size: 18px;
+    background-color: #cccccc;
 }
 
 .transactions-table-title-active {
@@ -67,16 +80,16 @@
     transition: background-color 250ms ease;
 }
 
-.transactions-table-title-active:hover {
-    background-color: #cccccc;
-}
-
 .transactions-table-filter-container {
     display: none;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     border-top: 1px solid #bbbbbb;
+}
+
+.transactions-table-title-container-expanded + .table-header-input {
+    display: none;
 }
 
 .transactions-table-textselect-container {
@@ -87,6 +100,8 @@
 }
 
 .transactions-table-filters-filter {
+    display: flex;
+    flex-direction: row;
     font-size: 14px;
 }
 
@@ -118,6 +133,24 @@
     justify-content: space-evenly;
 }
 
+.filter-clear-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #bbbbbb;
+    font-size: 11px;
+    border: 1px solid #bbbbbb;
+    transition: background-color 250ms ease;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+    z-index: 1;
+}
+
+.filter-clear-button:hover {
+    background-color: #eeeeee;
+}
+
 .table-header-input {
     font-size: 12px;
     background-color: #dddddd;
@@ -144,10 +177,7 @@
     gap: 8px;
 }
 
-.transactions-table-title {
-    cursor: default;
-}
-
-.transactions-table-title-container:hover + .table-header-input {
-    display: none;
+.transactions-table-title,
+.filter-clear-button {
+    cursor: pointer;
 }
