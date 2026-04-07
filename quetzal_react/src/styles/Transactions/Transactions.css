@@ -36,9 +36,26 @@
     gap: 8px;
 }
 
+.transactions-table-title-container {
+    background-color: #dddddd;
+    display: inline-block;
+    border: 1px solid #bbbbbb;
+    transition:
+        background-color 250ms ease,
+        font-size 250ms ease;
+}
+.transactions-table-title-container:hover {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+.transactions-table-title-container:hover .transactions-table-filter-container {
+    display: flex;
+}
+
 .transactions-table-title {
     padding: 8px;
-    border: 1px solid #bbbbbb;
+    position: sticky;
+    top: 0px;
 }
 
 .transactions-table-title-active {
@@ -51,6 +68,32 @@
 
 .transactions-table-title-active:hover {
     background-color: #cccccc;
+}
+
+.transactions-table-filter-container {
+    display: none;
+    flex-direction: row;
+}
+
+.transactions-table-textselect-container {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    padding: 8px;
+    border-top: 1px solid #bbbbbb;
+    width: 256px;
+}
+
+.transactions-table-filters-filter {
+    font-size: 14px;
+}
+
+.transactions-table-filters-select {
+    height: 36px;
+    margin: 4px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .table-header-input {
@@ -81,4 +124,8 @@
 
 .transactions-table-title {
     cursor: default;
+}
+
+.transactions-table-filter-container:hover .table-header-input {
+    display: none;
 }
