@@ -51,6 +51,12 @@ const Transactions = () => {
     ...new Set(transactionsData.map((transaction) => transaction.currency)),
   ].sort();
 
+  const uniqueTypes = [
+    ...new Set(
+      transactionsData.map((transaction) => transaction.transaction_type),
+    ),
+  ].sort();
+
   const toggleFilterView = () => {
     setShowFilterView(!showFilterView);
   };
@@ -234,9 +240,16 @@ const Transactions = () => {
                     }}
                   >
                     <option value="">- Select Transaction Type -</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                    <option value="transfer">Transfer</option>
+                    {uniqueTypes.map((transactionType) => (
+                      <option
+                        style={{ textTransform: "capitalize" }}
+                        key={transactionType}
+                        value={transactionType}
+                      >
+                        {transactionType.charAt(0).toUpperCase()}
+                        {transactionType.slice(1)}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
