@@ -257,6 +257,7 @@ class Transaction(models.Model):
     )
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField()
+    notes = models.TextField()
     datetime = models.DateTimeField(db_default=Now())
     currency = models.CharField(
         max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"

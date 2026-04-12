@@ -110,6 +110,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             "id",
             "amount",
             "description",
+            "notes",
             "datetime",
             "currency",
             "account_name",  # Used for transfers
@@ -124,6 +125,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "transaction_type": {"required": True},
             "currency": {"required": False},
+            "notes": {"required": False},
         }
 
     def validate(self, data):
