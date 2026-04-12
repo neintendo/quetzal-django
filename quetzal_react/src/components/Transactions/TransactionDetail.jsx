@@ -4,6 +4,7 @@ const TransactionDetail = ({
   onClose,
   datetime,
   description,
+  notes,
   amount,
   category,
   account,
@@ -12,8 +13,6 @@ const TransactionDetail = ({
 }) => {
   let dateStr = datetime.replace(" ", "T");
   const newDate = Date.parse(dateStr);
-
-  console.log(newDate, typeof newDate);
 
   return (
     <>
@@ -61,6 +60,7 @@ const TransactionDetail = ({
               </div>
             </div>
           </div>
+          {notes !== "" ? <div className="notes-container">{notes}</div> : ""}
         </div>
       </div>
     </>

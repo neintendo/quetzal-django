@@ -19,6 +19,7 @@ const Accounts = () => {
   const [selectedAccountName, setSelectedAccountName] = useState("");
   const [selectedAccountType, setSelectedAccountType] = useState("");
   const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("");
+  const [selectedTransactionNotes, setSelectedTransactionNotes] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAccEditModal, setShowAccEditModal] = useState(false);
   const [showTransactionDetailModal, setShowTransactionDetailModal] =
@@ -131,6 +132,7 @@ const Accounts = () => {
   const detailsRowClick = (
     datetimeFromChild,
     descriptionFromChild,
+    notesFromChild,
     amountFromChild,
     categoryFromChild,
     accountFromChild,
@@ -139,6 +141,7 @@ const Accounts = () => {
   ) => {
     setSelectedTransactionDatetime(datetimeFromChild);
     setSelectedTransactionDescription(descriptionFromChild);
+    setSelectedTransactionNotes(notesFromChild);
     setSelectedTransactionAmount(amountFromChild);
     setSelectedTransactionCategory(categoryFromChild);
     setSelectedTransactionAccount(accountFromChild);
@@ -192,6 +195,7 @@ const Accounts = () => {
           onClose={() => setShowTransactionDetailModal(false)}
           datetime={selectedTransactionDatetime}
           description={selectedTransactionDescription}
+          notes={selectedTransactionNotes}
           amount={selectedTransactionAmount}
           category={selectedTransactionCategory}
           account={selectedTransactionAccount}

@@ -22,6 +22,7 @@ const Transactions = () => {
     useState("");
   const [selectedTransactionDescription, setSelectedTransactionDescription] =
     useState("");
+  const [selectedTransactionNotes, setSelectedTransactionNotes] = useState("");
   const [selectedTransactionAmount, setSelectedTransactionAmount] =
     useState("");
   const [selectedTransactionCategory, setSelectedTransactionCategory] =
@@ -80,6 +81,7 @@ const Transactions = () => {
   const handleRowClick = (
     datetimeFromChild,
     descriptionFromChild,
+    notesFromChild,
     amountFromChild,
     categoryFromChild,
     accountFromChild,
@@ -88,6 +90,7 @@ const Transactions = () => {
   ) => {
     setSelectedTransactionDatetime(datetimeFromChild);
     setSelectedTransactionDescription(descriptionFromChild);
+    setSelectedTransactionNotes(notesFromChild);
     setSelectedTransactionAmount(amountFromChild);
     setSelectedTransactionCategory(categoryFromChild);
     setSelectedTransactionAccount(accountFromChild);
@@ -103,6 +106,7 @@ const Transactions = () => {
           onClose={() => setShowTransactionDetailModal(false)}
           datetime={selectedTransactionDatetime}
           description={selectedTransactionDescription}
+          notes={selectedTransactionNotes}
           amount={selectedTransactionAmount}
           category={selectedTransactionCategory}
           account={selectedTransactionAccount}

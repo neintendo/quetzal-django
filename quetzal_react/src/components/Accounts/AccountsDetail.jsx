@@ -136,6 +136,7 @@ const AccountsDetail = ({ searchTerm, accountName, detailsRowClick }) => {
                   detailsRowClick(
                     val.datetime,
                     val.description,
+                    val.notes,
                     val.amount,
                     val.category,
                     val.account,
