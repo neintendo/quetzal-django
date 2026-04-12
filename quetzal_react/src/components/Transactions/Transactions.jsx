@@ -2,6 +2,7 @@ import "../../styles/Transactions/Transactions.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import TransactionsTable from "../Transactions/TransactionsTable";
+import TransactionDetail from "./TransactionDetail";
 
 const Transactions = () => {
   const [transactionsData, setTransactionsData] = useState([]);
@@ -15,6 +16,21 @@ const Transactions = () => {
   const [showFilterView, setShowFilterView] = useState(false);
   const isFilterActive =
     startDate || endDate || account || category || currency || transactionType;
+  const [showTransactionDetailModal, setShowTransactionDetailModal] =
+    useState(false);
+  const [selectedTransactionDatetime, setSelectedTransactionDatetime] =
+    useState("");
+  const [selectedTransactionDescription, setSelectedTransactionDescription] =
+    useState("");
+  const [selectedTransactionAmount, setSelectedTransactionAmount] =
+    useState("");
+  const [selectedTransactionCategory, setSelectedTransactionCategory] =
+    useState("");
+  const [selectedTransactionAccount, setSelectedTransactionAccount] =
+    useState("");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("");
+  const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
+    useState("");
 
   const fetchData = () => {
     Promise.all([
@@ -61,8 +77,39 @@ const Transactions = () => {
     setShowFilterView(!showFilterView);
   };
 
+  const handleRowClick = (
+    datetimeFromChild,
+    descriptionFromChild,
+    amountFromChild,
+    categoryFromChild,
+    accountFromChild,
+    currencyFromChild,
+    typeFromChild,
+  ) => {
+    setSelectedTransactionDatetime(datetimeFromChild);
+    setSelectedTransactionDescription(descriptionFromChild);
+    setSelectedTransactionAmount(amountFromChild);
+    setSelectedTransactionCategory(categoryFromChild);
+    setSelectedTransactionAccount(accountFromChild);
+    setSelectedTransactionCurrency(currencyFromChild);
+    setSelectedTransactionType(typeFromChild);
+    setShowTransactionDetailModal(true);
+  };
+
   return (
     <>
+      {showTransactionDetailModal && (
+        <TransactionDetail
+          onClose={() => setShowTransactionDetailModal(false)}
+          datetime={selectedTransactionDatetime}
+          description={selectedTransactionDescription}
+          amount={selectedTransactionAmount}
+          category={selectedTransactionCategory}
+          account={selectedTransactionAccount}
+          currency={selectedTransactionCurrency}
+          type={selectedTransactionType}
+        />
+      )}
       <div className="transactions">
         <div className="transactions-table-container">
           <div className="transactions-table-header">
@@ -264,6 +311,7 @@ const Transactions = () => {
           <TransactionsTable
             transactionsData={transactionsData}
             searchTerm={searchTerm}
+            onRowClick={handleRowClick}
           />
         </div>
       </div>

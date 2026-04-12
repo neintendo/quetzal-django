@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/Transactions/TransactionsTable.css";
 
-const TransactionsTable = ({ transactionsData, searchTerm }) => {
+const TransactionsTable = ({ transactionsData, searchTerm, onRowClick }) => {
   const [sortHeader, setSortHeader] = useState({
     key: "datetime",
     direction: "desc",
@@ -109,7 +109,20 @@ const TransactionsTable = ({ transactionsData, searchTerm }) => {
           </tr>
           {sortedData.map((val, key) => {
             return (
-              <tr key={key}>
+              <tr
+                onClick={() =>
+                  onRowClick(
+                    val.datetime,
+                    val.description,
+                    val.amount,
+                    val.category,
+                    val.account,
+                    val.currency,
+                    val.transaction_type,
+                  )
+                }
+                key={key}
+              >
                 <td style={{ width: 150 }}>{val.datetime}</td>
                 <td>{val.description}</td>
                 <td>{val.amount}</td>
