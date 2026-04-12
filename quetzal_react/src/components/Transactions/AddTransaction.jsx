@@ -7,6 +7,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("");
   const [description, setDescription] = useState("");
+  const [notes, setNotes] = useState("");
   const [datetime, setDatetime] = useState("");
   const [account_name, setAccount] = useState("");
   const [destination_account_name, setDestAccount] = useState("");
@@ -37,28 +38,21 @@ function AddTransaction({ route, onSuccess, onClose }) {
     try {
       let requestData;
 
-      if (transaction_type != "transfer") {
-        requestData = {
-          amount,
-          currency,
-          description,
-          datetime,
-          account_name,
-          category_name,
-          transaction_type,
-        };
-      } else {
-        console.log("TRANSFER ON");
-        requestData = {
-          amount,
-          currency,
-          description,
-          datetime,
-          account_name,
-          category_name,
-          transaction_type,
-          destination_account_name,
-        };
+      requestData = {
+        amount,
+        currency,
+        description,
+        datetime,
+        account_name,
+        category_name,
+        transaction_type,
+      };
+
+      if (transaction_type === "transfer") {
+        requestData.destination_account_name = destination_account_name;
+      }
+      if (notes !== "") {
+        requestData.notes = notes;
       }
 
       const res = await api.post(route, requestData);
@@ -132,6 +126,13 @@ function AddTransaction({ route, onSuccess, onClose }) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description"
           required
+        />
+        <input
+          className="add-transaction-form-input"
+          type="text"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Notes"
         />
         <input
           className="add-transaction-form-input"
