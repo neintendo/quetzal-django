@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../../styles/Accounts/AccountsDetail.css";
 
-const AccountsDetail = ({ searchTerm, accountName }) => {
+const AccountsDetail = ({ searchTerm, accountName, detailsRowClick }) => {
   const [accTransactionData, setAccTransactionData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "datetime",
@@ -131,7 +131,20 @@ const AccountsDetail = ({ searchTerm, accountName }) => {
           </tr>
           {sortedData.map((val, key) => {
             return (
-              <tr key={key}>
+              <tr
+                onClick={() =>
+                  detailsRowClick(
+                    val.datetime,
+                    val.description,
+                    val.amount,
+                    val.category,
+                    val.account,
+                    val.currency,
+                    val.transaction_type,
+                  )
+                }
+                key={key}
+              >
                 <td style={{ width: 150 }}>{val.datetime}</td>
                 <td style={{ width: 150 }}>
                   {val.transaction_type === "expense"

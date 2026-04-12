@@ -6,6 +6,7 @@ import AccountsGraph from "./AccountsGraph";
 import AccountsTable from "../Accounts/AccountsTable";
 import AddAccount from "./AddAccount";
 import EditAccount from "./EditAccount";
+import TransactionDetail from "../Transactions/TransactionDetail";
 
 const Accounts = () => {
   const [accountAggregates, setAccountAggregates] = useState(null);
@@ -20,6 +21,23 @@ const Accounts = () => {
   const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAccEditModal, setShowAccEditModal] = useState(false);
+  const [showTransactionDetailModal, setShowTransactionDetailModal] =
+    useState(false);
+
+  const [selectedTransactionDatetime, setSelectedTransactionDatetime] =
+    useState("");
+  const [selectedTransactionDescription, setSelectedTransactionDescription] =
+    useState("");
+  const [selectedTransactionAmount, setSelectedTransactionAmount] =
+    useState("");
+  const [selectedTransactionCategory, setSelectedTransactionCategory] =
+    useState("");
+  const [selectedTransactionAccount, setSelectedTransactionAccount] =
+    useState("");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("");
+  const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
+    useState("");
+
   const [graphMax, setGraphMax] = useState(false);
   const [graphMin, setGraphMin] = useState(true);
   const [tableMax, setTableMax] = useState(false);
@@ -110,6 +128,25 @@ const Accounts = () => {
     setTableNav(true);
   };
 
+  const detailsRowClick = (
+    datetimeFromChild,
+    descriptionFromChild,
+    amountFromChild,
+    categoryFromChild,
+    accountFromChild,
+    currencyFromChild,
+    typeFromChild,
+  ) => {
+    setSelectedTransactionDatetime(datetimeFromChild);
+    setSelectedTransactionDescription(descriptionFromChild);
+    setSelectedTransactionAmount(amountFromChild);
+    setSelectedTransactionCategory(categoryFromChild);
+    setSelectedTransactionAccount(accountFromChild);
+    setSelectedTransactionCurrency(currencyFromChild);
+    setSelectedTransactionType(typeFromChild);
+    setShowTransactionDetailModal(true);
+  };
+
   const accountDetailBalance = accountsData.find(
     (account) => account.id === selectedAccount,
   );
@@ -148,6 +185,18 @@ const Accounts = () => {
           accountType={selectedAccountType}
           accountCurrency={selectedAccountCurrency}
           onAccountDelete={handleAccountDelete}
+        />
+      )}
+      {showTransactionDetailModal && (
+        <TransactionDetail
+          onClose={() => setShowTransactionDetailModal(false)}
+          datetime={selectedTransactionDatetime}
+          description={selectedTransactionDescription}
+          amount={selectedTransactionAmount}
+          category={selectedTransactionCategory}
+          account={selectedTransactionAccount}
+          currency={selectedTransactionCurrency}
+          type={selectedTransactionType}
         />
       )}
       <div className="accounts">
@@ -265,6 +314,7 @@ const Accounts = () => {
                 <AccountsDetail
                   searchTerm={searchTerm}
                   accountName={selectedAccountName}
+                  detailsRowClick={detailsRowClick}
                 />
               ) : (
                 <AccountsTable
