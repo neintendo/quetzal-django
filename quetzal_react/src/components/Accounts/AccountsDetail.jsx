@@ -134,6 +134,7 @@ const AccountsDetail = ({ searchTerm, accountName, detailsRowClick }) => {
               <tr
                 onClick={() =>
                   detailsRowClick(
+                    val.id,
                     val.datetime,
                     val.description,
                     val.notes,

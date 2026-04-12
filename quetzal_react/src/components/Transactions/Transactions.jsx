@@ -18,6 +18,7 @@ const Transactions = () => {
     startDate || endDate || account || category || currency || transactionType;
   const [showTransactionDetailModal, setShowTransactionDetailModal] =
     useState(false);
+  const [selectedTransactionID, setSelectedTransactionID] = useState("");
   const [selectedTransactionDatetime, setSelectedTransactionDatetime] =
     useState("");
   const [selectedTransactionDescription, setSelectedTransactionDescription] =
@@ -56,6 +57,10 @@ const Transactions = () => {
     fetchData();
   }, [startDate, endDate, account, category, currency, transactionType]);
 
+  const refresh = () => {
+    fetchData();
+  };
+
   const uniqueAccounts = [
     ...new Set(transactionsData.map((transaction) => transaction.account)),
   ].sort();
@@ -79,6 +84,7 @@ const Transactions = () => {
   };
 
   const handleRowClick = (
+    idFromChild,
     datetimeFromChild,
     descriptionFromChild,
     notesFromChild,
@@ -88,6 +94,7 @@ const Transactions = () => {
     currencyFromChild,
     typeFromChild,
   ) => {
+    setSelectedTransactionID(idFromChild);
     setSelectedTransactionDatetime(datetimeFromChild);
     setSelectedTransactionDescription(descriptionFromChild);
     setSelectedTransactionNotes(notesFromChild);
@@ -99,19 +106,33 @@ const Transactions = () => {
     setShowTransactionDetailModal(true);
   };
 
+  const handleTransactionUpdate = () => {
+    setShowTransactionDetailModal(false);
+    refresh();
+  };
+
+  const handleTransactionDelete = () => {
+    setShowTransactionDetailModal(false);
+    refresh();
+  };
+
   return (
     <>
       {showTransactionDetailModal && (
         <TransactionDetail
+          route={`/transactions/${selectedTransactionID}/`}
           onClose={() => setShowTransactionDetailModal(false)}
-          datetime={selectedTransactionDatetime}
-          description={selectedTransactionDescription}
-          notes={selectedTransactionNotes}
-          amount={selectedTransactionAmount}
-          category={selectedTransactionCategory}
-          account={selectedTransactionAccount}
-          currency={selectedTransactionCurrency}
-          type={selectedTransactionType}
+          onSuccess={handleTransactionUpdate}
+          onTransactionDelete={handleTransactionDelete}
+          readID={selectedTransactionID}
+          readDatetime={selectedTransactionDatetime}
+          readDescription={selectedTransactionDescription}
+          readNotes={selectedTransactionNotes}
+          readAmount={selectedTransactionAmount}
+          readCategory={selectedTransactionCategory}
+          readAccount={selectedTransactionAccount}
+          readCurrency={selectedTransactionCurrency}
+          readType={selectedTransactionType}
         />
       )}
       <div className="transactions">

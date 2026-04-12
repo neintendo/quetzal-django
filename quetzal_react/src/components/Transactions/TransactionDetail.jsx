@@ -1,17 +1,130 @@
+import { useEffect, useState } from "react";
+import api from "../../api";
 import "../../styles/Transactions/TransactionDetail.css";
 
 const TransactionDetail = ({
+  route,
   onClose,
-  datetime,
-  description,
-  notes,
-  amount,
-  category,
-  account,
-  currency,
-  type,
+  onSuccess,
+  onTransactionDelete,
+  readDatetime,
+  readDescription,
+  readNotes,
+  readAmount,
+  readCategory,
+  readAccount,
+  readCurrency,
+  readType,
 }) => {
-  let dateStr = datetime.replace(" ", "T");
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Form handling
+  const [amount, setAmount] = useState(readAmount);
+  const [currency, setCurrency] = useState(readCurrency);
+  const [description, setDescription] = useState(readDescription);
+  const [notes, setNotes] = useState(readNotes);
+  const [datetime, setDatetime] = useState(readDatetime);
+  const [account_name, setAccount] = useState(readAccount);
+  const [destination_account_name, setDestAccount] = useState();
+  const [category_name, setCategory] = useState(readCategory);
+  const [transaction_type, setType] = useState(readType);
+  const [method, setMethod] = useState("put");
+  const [loading, setLoading] = useState(false);
+  const [loadingB, setLoadingB] = useState(false);
+  const [userAccounts, setUserAccounts] = useState([]);
+
+  const getUserAccounts = () => {
+    api
+      .get("accounts/")
+      .then((res) => res.data)
+      .then((data) => {
+        setUserAccounts(data);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    getUserAccounts();
+  }, []);
+
+  const toggleExpansion = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleSubmit = async (e) => {
+    {
+      method === "delete" ? setLoadingB(true) : setLoading(true);
+    }
+    e.preventDefault();
+
+    if (method === "delete") {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this transaction? This action cannot be undone!",
+      );
+      if (!confirmed) {
+        setLoadingB(false);
+        return;
+      }
+    }
+
+    try {
+      let requestData;
+
+      if (method === "put") {
+        requestData = {
+          amount,
+          currency,
+          description,
+          datetime,
+          account_name,
+          category_name,
+          transaction_type,
+        };
+
+        if (transaction_type === "transfer") {
+          requestData.destination_account_name = destination_account_name;
+        }
+        if (notes !== "") {
+          requestData.notes = notes;
+        }
+      }
+
+      const res = await api[method](route, requestData);
+
+      if (res.status === 200) {
+        alert("Transaction updated successfully!");
+      }
+      if (res.status === 204) {
+        alert("Transaction deleted successfully!");
+        onTransactionDelete();
+      }
+
+      if (onSuccess) onSuccess();
+      if (onClose) onClose();
+    } catch (error) {
+      if (error.response) {
+        console.error("Error data:", error.response.data);
+        console.error("Error status:", error.response.status);
+        // Shows status errors from the backend to the user.
+        alert(JSON.stringify(error.response.data));
+      } else if (error.request) {
+        console.error("No response received", error.request);
+        alert(
+          "No response from server. Please check if the backend is running :)",
+        );
+      } else {
+        console.error("Error:", error.message);
+        alert(error.message);
+      }
+    } finally {
+      {
+        method === "delete" ? setLoadingB(false) : setLoading(false);
+      }
+    }
+  };
+
+  let dateStr = readDatetime.replace(" ", "T");
   const newDate = Date.parse(dateStr);
 
   return (
@@ -43,24 +156,172 @@ const TransactionDetail = ({
           <div className="details-splitter-container">
             <div className="details-left">
               <div className="desc-cat">
-                <div className="description">{description}</div>
-                <div className="category">{category}</div>
+                <div className="description">{readDescription}</div>
+                <div className="category">{readCategory}</div>
               </div>
             </div>
             <div className="details-right">
               <div className="bal-type-acc">
-                <div className="type">{type}</div>
+                <div className="type">{readType}</div>
                 <div className="balance">
                   {Intl.NumberFormat(undefined, {
                     style: "currency",
-                    currency: currency,
-                  }).format(amount)}
+                    currency: readCurrency,
+                  }).format(readAmount)}
                 </div>
-                <div>{account}</div>
+                <div>{readAccount}</div>
               </div>
             </div>
           </div>
-          {notes !== "" ? <div className="notes-container">{notes}</div> : ""}
+          {readNotes !== "" ? (
+            <div className="notes-container">{readNotes}</div>
+          ) : (
+            ""
+          )}
+          <div className="expanded-modal">
+            {isExpanded ? (
+              <div
+                className="collapse-button"
+                onClick={toggleExpansion}
+                title="Collapse Modal"
+              >
+                {"<"}
+              </div>
+            ) : (
+              <div
+                className="expand-button"
+                onClick={toggleExpansion}
+                title="Expand Modal"
+              >
+                {">"}
+              </div>
+            )}
+            {isExpanded ? (
+              <form
+                onSubmit={handleSubmit}
+                className="transaction-form-container"
+              >
+                <input
+                  className="edit-transaction-form-input"
+                  type="datetime-local"
+                  value={datetime}
+                  onChange={(e) => setDatetime(e.target.value)}
+                  required
+                />
+                <input
+                  className="edit-transaction-form-input"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="Amount"
+                  required
+                />
+                <input
+                  className="edit-transaction-form-input"
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  required
+                />
+                <input
+                  className="edit-transaction-form-input"
+                  type="text"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Notes"
+                />
+                <input
+                  className="edit-transaction-form-input"
+                  type="text"
+                  value={category_name}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="Category"
+                  required
+                />
+                <select
+                  className="edit-transaction-form-input"
+                  type="text"
+                  value={transaction_type}
+                  onChange={(e) => setType(e.target.value)}
+                  placeholder="Transaction Type"
+                  required
+                >
+                  <optgroup label="Transaction Type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                    <option value="transfer">Transfer</option>
+                  </optgroup>
+                </select>
+                <select
+                  className="edit-transaction-form-input"
+                  type="text"
+                  value={account_name}
+                  onChange={(e) => {
+                    setAccount(e.target.value);
+                    const selectedAccount = userAccounts?.find(
+                      (account) => account.name === e.target.value,
+                    );
+                    setCurrency(selectedAccount?.currency || "");
+                  }}
+                  required
+                >
+                  <optgroup label="Account">
+                    <option>- Select Account -</option>
+                    {userAccounts &&
+                      Array.isArray(userAccounts) &&
+                      [...userAccounts]
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((account, index) => (
+                          <option key={index} value={account.name}>
+                            {account.name} ({account.currency})
+                          </option>
+                        ))}
+                  </optgroup>
+                </select>
+                {transaction_type === "transfer" && (
+                  <select
+                    className="edit-transaction-form-input"
+                    type="text"
+                    value={destination_account_name}
+                    onChange={(e) => setDestAccount(e.target.value)}
+                  >
+                    <optgroup label="Destination Account">
+                      <option>- Select Destination Account -</option>
+                      {userAccounts &&
+                        Array.isArray(userAccounts) &&
+                        [...userAccounts]
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((account, index) =>
+                            account.currency === currency &&
+                            account_name !== account.name ? (
+                              <option key={index} value={account.name}>
+                                {account.name} ({account.currency})
+                              </option>
+                            ) : null,
+                          )}
+                    </optgroup>
+                  </select>
+                )}
+                <button
+                  className="edit-transaction-form-button"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? "LOADING..." : "Update Transaction"}
+                </button>
+                <hr></hr>
+                <button
+                  className="delete-transaction-form-button"
+                  onClick={() => setMethod("delete")}
+                  type="submit"
+                  disabled={loadingB}
+                >
+                  {loadingB ? "LOADING..." : "Delete Transaction"}
+                </button>
+              </form>
+            ) : null}
+          </div>
         </div>
       </div>
     </>

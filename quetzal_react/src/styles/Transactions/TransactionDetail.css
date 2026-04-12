@@ -61,6 +61,10 @@
     gap: 4px;
 }
 
+.datetime {
+    font-size: 14px;
+}
+
 .balance {
     font-size: 24px;
 }
@@ -84,6 +88,63 @@
     width: 100%;
 }
 
+.transaction-form-container {
+    background-color: #eeeeee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 24px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.edit-transaction-form-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.edit-transaction-form-button {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #444444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.edit-transaction-form-button:hover {
+    background-color: #666666;
+}
+
+.delete-transaction-form-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #990000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.delete-transaction-form-button:hover {
+    background-color: #cc0000;
+}
+hr {
+    width: 95%;
+    border: 0.5px solid #bbbbbb;
+}
+
 .modal-close-button {
     display: flex;
     align-items: center;
@@ -103,10 +164,43 @@
     background-color: #dddddd;
 }
 
-.datetime {
-    font-size: 14px;
+.expanded-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.expand-button {
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
 }
 
-.modal-close-button {
+.collapse-button {
+    writing-mode: vertical-lr;
+    text-orientation: sideways;
+}
+
+.expand-button,
+.collapse-button {
+    font-size: 12px;
+    transition:
+        background-color 250ms ease,
+        font-size 250ms ease;
+}
+
+.expand-button:hover,
+.collapse-button:hover {
+    font-size: 20px;
+}
+
+.modal-close-button,
+.expand-button,
+.collapse-button {
     cursor: pointer;
+}
+
+.details-splitter-container,
+.notes-container,
+.datetime {
+    cursor: default;
 }

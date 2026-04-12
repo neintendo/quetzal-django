@@ -112,6 +112,7 @@ const TransactionsTable = ({ transactionsData, searchTerm, onRowClick }) => {
               <tr
                 onClick={() =>
                   onRowClick(
+                    val.id,
                     val.datetime,
                     val.description,
                     val.notes,
