@@ -68,7 +68,7 @@ const Accounts = () => {
     fetchData();
   };
 
-  const currencyFormatter = new Intl.NumberFormat(undefined, {
+  const currencyFormatter = new Intl.NumberFormat("en", {
     style: "currency",
     currency:
       currencyFilter != null
@@ -247,7 +247,7 @@ const Accounts = () => {
                 }}
               >
                 {tableNav
-                  ? new Intl.NumberFormat(undefined, {
+                  ? new Intl.NumberFormat("en", {
                       style: "currency",
                       currency: accountDetailBalance.currency,
                     }).format(accountDetailBalance.balance)
