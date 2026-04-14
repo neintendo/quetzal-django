@@ -12,7 +12,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
   const [account_name, setAccount] = useState("");
   const [destination_account_name, setDestAccount] = useState("");
   const [category_name, setCategory] = useState("");
-  const [transaction_type, setType] = useState("");
+  const [transaction_type, setType] = useState("income");
   const [userAccounts, setUserAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
