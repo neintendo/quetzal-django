@@ -323,41 +323,28 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @db_transaction.atomic
     def perform_update(self, serializer):
-        old_transaction = self.get_object()
-        old_amount = old_transaction.amount
-        old_category_type = old_transaction.transaction_type
 
-        # Reverts the old transaction's effect
-        account = old_transaction.account
-        if old_category_type == "income":
-            account.balance -= old_amount
-        elif old_category_type == "expense":
-            account.balance += old_amount
-        elif old_category_type == "transfer":
-            old_transaction.account.balance += old_amount
-            old_transaction.destination_account.balance -= old_amount
-            old_transaction.account.save()
-            old_transaction.destination_account.save()
-        account.save()
+        # Old transaction details
+        old = self.get_object()
 
-        # Saves the updated transaction
-        updated_transaction = serializer.save()
-        new_type = updated_transaction.transaction_type
-        new_amount = updated_transaction.amount
+        # Revert
+        if old.transaction_type == "income":
+            old.account.balance -= old.amount
+        elif old.transaction_type == "expense":
+            old.account.balance += old.amount
+        old.account.save()
 
-        # Apply the new transaction's effect
-        if new_type == "income":
-            updated_transaction.account.balance += new_amount
-            updated_transaction.account.save()
-        elif new_type == "expense":
-            updated_transaction.account.balance -= new_amount
-            updated_transaction.account.save()
-        elif new_type == "transfer":
-            updated_transaction.account.balance -= new_amount
-            updated_transaction.destination_account.balance += new_amount
-            updated_transaction.account.save()
-            updated_transaction.destination_account.save()
-        account.save()
+        # Rework transfers later
+
+        # New transaction details
+        new = serializer.save()
+
+        # Update transaction
+        if new.transaction_type == "income":
+            new.account.balance += new.amount
+        elif new.transaction_type == "expense":
+            new.account.balance -= new.amount
+        new.account.save()
 
     @db_transaction.atomic
     def perform_destroy(self, instance):
