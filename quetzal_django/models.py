@@ -175,6 +175,7 @@ class ExchangeRates(models.Model):
     rates = models.JSONField()
 
     class Meta:
+        verbose_name_plural = "Exchange Rates"
         ordering = ["-date"]
         indexes = [
             models.Index(fields=["-date"]),
@@ -218,6 +219,7 @@ class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
+        verbose_name_plural = "Categories"
         # Account names are unique per user.
         unique_together = ["name", "user"]
 
