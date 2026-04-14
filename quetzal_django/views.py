@@ -1,3 +1,4 @@
+import socket
 from collections import defaultdict
 from datetime import datetime
 from decimal import Decimal
@@ -168,7 +169,7 @@ class AccountsGraphView(APIView):
         total_t = 0
 
         # Graph conversion for all currencies
-        if (currency is None or currency == "") and account is None:
+        if (currency is None or currency == "") and (account is None or account == ""):
             for transaction in transactions:
                 month_key = transaction.datetime.strftime("%Y-%m")
                 amount = transaction.amount

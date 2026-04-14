@@ -25,6 +25,7 @@ const Accounts = () => {
   const [showTransactionDetailModal, setShowTransactionDetailModal] =
     useState(false);
   const [transDetailRefresher, setTransDetailRefresher] = useState(0);
+  const [editAccountRefresher, setEditAccountRefresher] = useState(0);
 
   // Transaction Modal
   const [selectedTransactionID, setSelectedTransactionID] = useState("");
@@ -116,6 +117,8 @@ const Accounts = () => {
   };
 
   const handleAccountDelete = () => {
+    setEditAccountRefresher(editAccountRefresher + 1);
+    setSelectedAccount("");
     setTableNav(false);
   };
 
@@ -266,6 +269,7 @@ const Accounts = () => {
               currencyFilter={currencyFilter}
               selectedAccount={selectedAccount}
               transDetailRefresher={transDetailRefresher}
+              editAccountRefresher={editAccountRefresher}
             />
           </div>
         ) : (

@@ -29,6 +29,7 @@ const AccountsGraph = ({
   currencyFilter,
   selectedAccount,
   transDetailRefresher,
+  editAccountRefresher,
 }) => {
   const [transactionData, setTransactionData] = useState(null);
 
@@ -47,7 +48,12 @@ const AccountsGraph = ({
     };
 
     getTransactionData();
-  }, [currencyFilter, selectedAccount, transDetailRefresher]);
+  }, [
+    currencyFilter,
+    selectedAccount,
+    transDetailRefresher,
+    editAccountRefresher,
+  ]);
 
   if (!transactionData) {
     return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
