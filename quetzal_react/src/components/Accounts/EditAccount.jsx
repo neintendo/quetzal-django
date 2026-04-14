@@ -12,6 +12,7 @@ function EditAccount({
   accountType,
   accountCurrency,
   onAccountDelete,
+  accountsData,
 }) {
   const [name, setName] = useState(account);
   const [type, setType] = useState(accountType);
@@ -19,6 +20,7 @@ function EditAccount({
   const [method, setMethod] = useState("put");
   const [loading, setLoading] = useState(false);
   const [loadingB, setLoadingB] = useState(false);
+  const [accountTypes] = useState(accountsData);
 
   const handleSubmit = async (e) => {
     {
@@ -103,12 +105,24 @@ function EditAccount({
         />
         <input
           className="edit-account-form-input"
+          list="types"
           type="text"
           value={type}
           onChange={(e) => setType(e.target.value)}
           placeholder="Account Type"
           required
         />
+        <datalist id="types">
+          {accountTypes &&
+            Array.isArray(accountTypes) &&
+            [...new Set(accountTypes.map((account) => account.type))]
+              .sort()
+              .map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+        </datalist>
         <select
           className="add-account-form-input"
           type="text"

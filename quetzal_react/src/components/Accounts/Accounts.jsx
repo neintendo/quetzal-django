@@ -208,6 +208,7 @@ const Accounts = () => {
           accountType={selectedAccountType}
           accountCurrency={selectedAccountCurrency}
           onAccountDelete={handleAccountDelete}
+          accountsData={accountsData}
         />
       )}
       {showTransactionDetailModal && (
