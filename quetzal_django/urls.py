@@ -4,8 +4,8 @@ from .authentication import UserLoginView, UserLogoutView, UserRegistrationView
 from .views import (
     AccountDetailView,
     AccountsAggregateView,
-    AccountsListCreateView,
     AccountsGraphView,
+    AccountsListCreateView,
     CategoriesDetailView,
     CategoriesListCreateView,
     TransactionAggregateView,
@@ -21,6 +21,7 @@ urlpatterns = [
     path("auth/logout/", UserLogoutView.as_view(), name="logout"),
     # User Profile
     path("profile/", UserProfileView.as_view(), name="profile"),
+    path("profile-update/", UserProfileView.as_view(), name="profile-update"),
     # Accounts
     path("accounts/", AccountsListCreateView.as_view(), name="account-list-create"),
     path("accounts/<int:pk>/", AccountDetailView.as_view(), name="account-detail"),
@@ -30,7 +31,6 @@ urlpatterns = [
         name="accounts-aggregate",
     ),
     path("accounts/graph/", AccountsGraphView.as_view(), name="accounts-graph"),
-
     # Categories
     path(
         "categories/", CategoriesListCreateView.as_view(), name="category-list-create"
