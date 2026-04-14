@@ -83,13 +83,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
-        read_only_fields = ("user",)
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # Replace the internal type value with the human-readable display value
-        representation["type"] = instance.get_type_display()
-        return representation
+        read_only_fields = ("user", "id")
 
 
 # Transaction Serializer.
