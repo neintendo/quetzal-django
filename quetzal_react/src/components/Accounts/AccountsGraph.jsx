@@ -25,7 +25,11 @@ ChartJS.register(
   Filler,
 );
 
-const AccountsGraph = ({ currencyFilter, selectedAccount }) => {
+const AccountsGraph = ({
+  currencyFilter,
+  selectedAccount,
+  transDetailRefresher,
+}) => {
   const [transactionData, setTransactionData] = useState(null);
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const AccountsGraph = ({ currencyFilter, selectedAccount }) => {
     };
 
     getTransactionData();
-  }, [currencyFilter, selectedAccount]);
+  }, [currencyFilter, selectedAccount, transDetailRefresher]);
 
   if (!transactionData) {
     return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
