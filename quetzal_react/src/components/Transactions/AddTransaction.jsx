@@ -14,15 +14,14 @@ function AddTransaction({ route, onSuccess, onClose }) {
   const [category_name, setCategory] = useState("");
   const [transaction_type, setType] = useState("income");
   const [userAccounts, setUserAccounts] = useState([]);
+  const [userCategories, setUserCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getUserAccounts = () => {
-    api
-      .get("accounts/")
-      .then((res) => res.data)
-      .then((data) => {
-        setUserAccounts(data);
-        console.log(data);
+    Promise.all([api.get("accounts/"), api.get("categories/")])
+      .then(([accRes, catRes]) => {
+        setUserAccounts(accRes.data);
+        setUserCategories(catRes.data);
       })
       .catch((err) => alert(err));
   };
@@ -135,6 +134,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
           placeholder="Notes"
         />
         <input
+          list="categories"
           className="add-transaction-form-input"
           type="text"
           value={category_name}
@@ -142,6 +142,17 @@ function AddTransaction({ route, onSuccess, onClose }) {
           placeholder="Category"
           required
         />
+        <datalist id="categories">
+          {userCategories &&
+            Array.isArray(userCategories) &&
+            [...userCategories]
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category, index) => (
+                <option key={index} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+        </datalist>
         <select
           className="add-transaction-form-input"
           type="text"
