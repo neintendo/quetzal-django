@@ -73,7 +73,7 @@ const Accounts = () => {
   const currencyFormatter = new Intl.NumberFormat("en", {
     style: "currency",
     currency:
-      currencyFilter != null
+      currencyFilter != ""
         ? currencyFilter || "USD"
         : profile?.main_currency || "USD", // USD is just a fallback
   });
@@ -249,7 +249,7 @@ const Accounts = () => {
               <div
                 className="accounts-graph-balance"
                 onClick={() => {
-                  setCurrencyFilter(null);
+                  setCurrencyFilter("");
                   setTableNav(false);
                   setSelectedAccount();
                 }}
