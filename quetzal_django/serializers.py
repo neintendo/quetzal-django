@@ -201,7 +201,29 @@ class TransactionSerializer(serializers.ModelSerializer):
         return transaction
 
     def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+
+        account_name = validated_data.pop("account_name", None)
+        destination_account_name = validated_data.pop("destination_account_name", None)
+        category_name = validated_data.pop("category_name", None)
+
+        if account_name:
+            instance.account, _ = Account.objects.get_or_create(
+                name=account_name, user=self.context["request"].user
+            )
+        if destination_account_name:
+            instance.destination_account, _ = Account.objects.get_or_create(
+                name=destination_account_name, user=self.context["request"].user
+            )
+        if category_name:
+            instance.category, _ = Category.objects.get_or_create(
+                name=category_name, user=self.context["request"].user
+            )
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
 
     def to_representation(self, instance):
         # Custom representation to show names instead of IDs
