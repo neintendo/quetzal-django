@@ -4,11 +4,12 @@ import "../../styles/Accounts/AddAccountForm.css";
 import currencyList from "../Utilities/CurrencyList";
 import api from "../../api";
 
-function AddAccount({ route, onSuccess, onClose }) {
+function AddAccount({ route, onSuccess, onClose, accountsData }) {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [currency, setCurrency] = useState("");
   const [loading, setLoading] = useState(false);
+  const [accountTypes] = useState(accountsData);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -74,12 +75,24 @@ function AddAccount({ route, onSuccess, onClose }) {
         />
         <input
           className="add-account-form-input"
+          list="types"
           type="text"
           value={type}
           onChange={(e) => setType(e.target.value)}
           placeholder="Type"
           required
         />
+        <datalist id="types">
+          {accountTypes &&
+            Array.isArray(accountTypes) &&
+            [...new Set(accountTypes.map((account) => account.type))]
+              .sort()
+              .map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+        </datalist>
         <select
           className="add-account-form-input"
           type="text"

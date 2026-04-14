@@ -197,6 +197,7 @@ const Accounts = () => {
           route="/accounts/"
           onClose={() => setShowAddModal(false)}
           onSuccess={handleAccountAdded}
+          accountsData={accountsData}
         />
       )}
       {showAccEditModal && (
