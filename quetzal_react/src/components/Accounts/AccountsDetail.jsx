@@ -3,7 +3,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../../styles/Accounts/AccountsDetail.css";
 
-const AccountsDetail = ({ searchTerm, accountName, detailsRowClick }) => {
+const AccountsDetail = ({
+  searchTerm,
+  accountName,
+  detailsRowClick,
+  transDetailRefresher,
+}) => {
   const [accTransactionData, setAccTransactionData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "datetime",
@@ -23,7 +28,7 @@ const AccountsDetail = ({ searchTerm, accountName, detailsRowClick }) => {
     };
 
     getAccTransactionData();
-  }, [accountName]);
+  }, [accountName, transDetailRefresher]);
 
   const requestSort = (key) => {
     let direction = "asc";

@@ -24,6 +24,7 @@ const Accounts = () => {
   const [showAccEditModal, setShowAccEditModal] = useState(false);
   const [showTransactionDetailModal, setShowTransactionDetailModal] =
     useState(false);
+  const [transDetailRefresher, setTransDetailRefresher] = useState(0);
 
   // Transaction Modal
   const [selectedTransactionID, setSelectedTransactionID] = useState("");
@@ -120,11 +121,13 @@ const Accounts = () => {
 
   const handleTransactionUpdate = () => {
     setShowTransactionDetailModal(false);
+    setTransDetailRefresher(transDetailRefresher + 1);
     refresh();
   };
 
   const handleTransactionDelete = () => {
     setShowTransactionDetailModal(false);
+    setTransDetailRefresher(transDetailRefresher + 1);
     refresh();
   };
 
@@ -262,6 +265,7 @@ const Accounts = () => {
             <AccountsGraph
               currencyFilter={currencyFilter}
               selectedAccount={selectedAccount}
+              transDetailRefresher={transDetailRefresher}
             />
           </div>
         ) : (
@@ -337,6 +341,7 @@ const Accounts = () => {
                   searchTerm={searchTerm}
                   accountName={selectedAccountName}
                   detailsRowClick={detailsRowClick}
+                  transDetailRefresher={transDetailRefresher}
                 />
               ) : (
                 <AccountsTable
