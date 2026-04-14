@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import currencyList from "./Utilities/CurrencyList";
 import "../styles/Form.css";
 
 function Form({ route, method }) {
@@ -97,15 +98,6 @@ function Form({ route, method }) {
           required
         />
       )}
-      {method === "register" && (
-        <input
-          className="form-input"
-          type="text"
-          value={main_currency}
-          onChange={(e) => setCurrency(e.target.value)}
-          placeholder="Main Currency (default: USD)"
-        />
-      )}
       <input
         className="form-input"
         type="password"
@@ -114,6 +106,21 @@ function Form({ route, method }) {
         placeholder="Password"
         required
       />
+      {method === "register" && (
+        <select
+          className="form-input"
+          type="text"
+          value={main_currency}
+          onChange={(e) => setCurrency(e.target.value)}
+        >
+          <option>- Select Main Currency -</option>
+          {currencyList.map(([sym, name]) => (
+            <option key={name} value={sym}>
+              {sym} - {name}
+            </option>
+          ))}
+        </select>
+      )}
       {/* Button disabled when loading to prevent double submission */}
       <button className="form-button" type="submit" disabled={loading}>
         {loading ? "LOADING..." : name}
