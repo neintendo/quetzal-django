@@ -49,16 +49,16 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     # Validation method for logging in :)
-    def validate(self, data):
-        username = data.get("username")
-        password = data.get("password")
+    def validate(self, attrs):
+        username = attrs.get("username")
+        password = attrs.get("password")
 
         if username and password:
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
-                    data["user"] = user
-                    return data
+                    attrs["user"] = user
+                    return attrs
                 else:
                     raise serializers.ValidationError("User Account Is Disabled.")
             else:
@@ -128,18 +128,18 @@ class TransactionSerializer(serializers.ModelSerializer):
             "notes": {"required": False},
         }
 
-    def validate(self, data):
+    def validate(self, attrs):
         # Validate amount
-        if data.get("amount") <= 0:
+        if attrs.get("amount") <= 0:
             raise serializers.ValidationError("Amount must be greater than 0")
 
         # Validation checks for transfers
-        if data.get("transaction_type") == "transfer":
+        if attrs.get("transaction_type") == "transfer":
             # Prevent transfers to the same account
-            if data.get("account_name") == data.get("destination_account_name"):
+            if attrs.get("account_name") == attrs.get("destination_account_name"):
                 raise serializers.ValidationError("Cannot transfer to the same account")
 
-        return data
+        return attrs
 
     def create(self, validated_data):
         # Get the current user from the request context
@@ -199,6 +199,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         transaction = Transaction.objects.create(**transaction_data)
 
         return transaction
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
 
     def to_representation(self, instance):
         # Custom representation to show names instead of IDs
