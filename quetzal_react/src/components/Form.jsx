@@ -35,7 +35,7 @@ function Form({ route, method }) {
           email,
           display_name,
           password,
-          main_currency: main_currency || "USD",
+          main_currency,
         };
       }
       const res = await api.post(route, requestData);
