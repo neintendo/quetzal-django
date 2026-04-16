@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import django_filters
@@ -80,7 +80,7 @@ class AccountsAggregateView(APIView):
 
         # Creates a new array with converted balances
         converted_balances = []
-        date_obj = datetime.now()
+        date_obj = datetime.now(timezone.utc)
         print("DATE", date_obj)
         accounts_converted = 0
 
