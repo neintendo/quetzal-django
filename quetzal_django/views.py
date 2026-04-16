@@ -6,9 +6,10 @@ import django_filters
 import requests
 from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
+from django.forms.formsets import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from psycopg2.sql import NULL
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, serializers, status
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -342,6 +343,7 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     @db_transaction.atomic
     def perform_update(self, serializer):
 
+        typeBool = bool
         # Old transaction details
         old = self.get_object()
 
@@ -373,11 +375,13 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
             case "transfer":
                 # If the current transaction being edited is the mirror
                 if old.destination_account is None:
+                    typeBool = False
                     old.account.balance -= old.amount
                     if linked_acc is not None:
                         linked_acc.balance += old.amount
                 # If the current transaction being edited is the original
                 elif old.destination_account is not None:
+                    typeBool = True
                     old.account.balance += old.amount
                     if linked_acc is not None:
                         linked_acc.balance -= old.amount
@@ -388,6 +392,28 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         # New transaction details
         new = serializer.save()
+
+        # Validation checks
+        if typeBool is False and new.destination_account is not None:
+            raise serializers.ValidationError(
+                "Cannot edit destination account after transfer creation"
+            )
+        if typeBool is False and new.account != old.account:
+            raise serializers.ValidationError(
+                "Cannot edit origin account after transfer creation"
+            )
+        if typeBool is True and new.destination_account != old.destination_account:
+            raise serializers.ValidationError(
+                "Cannot edit destination account after transfer creation"
+            )
+        if typeBool is True and new.account != old.account:
+            raise serializers.ValidationError(
+                "Cannot edit origin account after transfer creation"
+            )
+        if linked_acc is not None and new.transaction_type != "transfer":
+            raise serializers.ValidationError(
+                "Cannot change transaction type after creating a transfer"
+            )
 
         # Update transaction
         if old.linked_transaction is not None:
