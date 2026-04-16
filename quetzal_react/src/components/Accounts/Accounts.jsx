@@ -144,6 +144,7 @@ const Accounts = () => {
     setSelectedAccountName(accountNameFromChild);
     setSelectedAccountType(accountTypeFromChild);
     setSelectedAccountCurrency(currencyFromChild);
+    setSearchTerm("");
     setTableNav(true);
   };
 
@@ -284,6 +285,7 @@ const Accounts = () => {
                 <div
                   onClick={() => {
                     setTableNav(false);
+                    setSearchTerm("");
                     setSelectedAccount();
                   }}
                   className="accounts-table-title-active"
