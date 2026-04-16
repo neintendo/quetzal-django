@@ -121,6 +121,7 @@ const TransactionsTable = ({ transactionsData, searchTerm, onRowClick }) => {
                     val.account,
                     val.currency,
                     val.transaction_type,
+                    val.linked_transaction,
                   )
                 }
                 key={key}

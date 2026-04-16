@@ -15,6 +15,7 @@ const TransactionDetail = ({
   readAccount,
   readCurrency,
   readType,
+  readLinkedTransaction,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -28,6 +29,7 @@ const TransactionDetail = ({
   const [destination_account_name, setDestAccount] = useState();
   const [category_name, setCategory] = useState(readCategory);
   const [transaction_type, setType] = useState(readType);
+  const [linked_transaction] = useState(readLinkedTransaction);
   const [method, setMethod] = useState("put");
   const [loading, setLoading] = useState(false);
   const [loadingB, setLoadingB] = useState(false);
@@ -239,70 +241,75 @@ const TransactionDetail = ({
                   placeholder="Category"
                   required
                 />
-                <select
-                  className="edit-transaction-form-input"
-                  type="text"
-                  value={transaction_type}
-                  onChange={(e) => setType(e.target.value)}
-                  placeholder="Transaction Type"
-                  required
-                >
-                  <optgroup label="Transaction Type">
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                    <option value="transfer">Transfer</option>
-                  </optgroup>
-                </select>
-                <select
-                  className="edit-transaction-form-input"
-                  type="text"
-                  value={account_name}
-                  onChange={(e) => {
-                    setAccount(e.target.value);
-                    const selectedAccount = userAccounts?.find(
-                      (account) => account.name === e.target.value,
-                    );
-                    setCurrency(selectedAccount?.currency || "");
-                  }}
-                  required
-                >
-                  <optgroup label="Account">
-                    <option>- Select Account -</option>
-                    {userAccounts &&
-                      Array.isArray(userAccounts) &&
-                      [...userAccounts]
-                        .sort((a, b) => a.name.localeCompare(b.name))
-                        .map((account, index) => (
-                          <option key={index} value={account.name}>
-                            {account.name} ({account.currency})
-                          </option>
-                        ))}
-                  </optgroup>
-                </select>
-                {transaction_type === "transfer" && (
+                {linked_transaction === null && (
                   <select
                     className="edit-transaction-form-input"
                     type="text"
-                    value={destination_account_name}
-                    onChange={(e) => setDestAccount(e.target.value)}
+                    value={transaction_type}
+                    onChange={(e) => setType(e.target.value)}
+                    placeholder="Transaction Type"
+                    required
                   >
-                    <optgroup label="Destination Account">
-                      <option>- Select Destination Account -</option>
+                    <optgroup label="Transaction Type">
+                      <option value="income">Income</option>
+                      <option value="expense">Expense</option>
+                      <option value="transfer">Transfer</option>
+                    </optgroup>
+                  </select>
+                )}
+                {linked_transaction === null && (
+                  <select
+                    className="edit-transaction-form-input"
+                    type="text"
+                    value={account_name}
+                    onChange={(e) => {
+                      setAccount(e.target.value);
+                      const selectedAccount = userAccounts?.find(
+                        (account) => account.name === e.target.value,
+                      );
+                      setCurrency(selectedAccount?.currency || "");
+                    }}
+                    required
+                  >
+                    <optgroup label="Account">
+                      <option>- Select Account -</option>
                       {userAccounts &&
                         Array.isArray(userAccounts) &&
                         [...userAccounts]
                           .sort((a, b) => a.name.localeCompare(b.name))
-                          .map((account, index) =>
-                            account.currency === currency &&
-                            account_name !== account.name ? (
-                              <option key={index} value={account.name}>
-                                {account.name} ({account.currency})
-                              </option>
-                            ) : null,
-                          )}
+                          .map((account, index) => (
+                            <option key={index} value={account.name}>
+                              {account.name} ({account.currency})
+                            </option>
+                          ))}
                     </optgroup>
                   </select>
                 )}
+                {transaction_type === "transfer" &&
+                  linked_transaction === null && (
+                    <select
+                      className="edit-transaction-form-input"
+                      type="text"
+                      value={destination_account_name}
+                      onChange={(e) => setDestAccount(e.target.value)}
+                    >
+                      <optgroup label="Destination Account">
+                        <option>- Select Destination Account -</option>
+                        {userAccounts &&
+                          Array.isArray(userAccounts) &&
+                          [...userAccounts]
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((account, index) =>
+                              account.currency === currency &&
+                              account_name !== account.name ? (
+                                <option key={index} value={account.name}>
+                                  {account.name} ({account.currency})
+                                </option>
+                              ) : null,
+                            )}
+                      </optgroup>
+                    </select>
+                  )}
                 <button
                   className="edit-transaction-form-button"
                   type="submit"

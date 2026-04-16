@@ -148,6 +148,7 @@ const AccountsDetail = ({
                     val.account,
                     val.currency,
                     val.transaction_type,
+                    val.linked_transaction,
                   )
                 }
                 key={key}

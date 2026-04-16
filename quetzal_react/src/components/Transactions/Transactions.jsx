@@ -31,6 +31,8 @@ const Transactions = () => {
   const [selectedTransactionAccount, setSelectedTransactionAccount] =
     useState("");
   const [selectedTransactionType, setSelectedTransactionType] = useState("");
+  const [selectedLinkedTransaction, setSelectedLinkedTransaction] =
+    useState("");
   const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
     useState("");
 
@@ -93,6 +95,7 @@ const Transactions = () => {
     accountFromChild,
     currencyFromChild,
     typeFromChild,
+    linkTransactionFromChild,
   ) => {
     setSelectedTransactionID(idFromChild);
     setSelectedTransactionDatetime(datetimeFromChild);
@@ -103,6 +106,7 @@ const Transactions = () => {
     setSelectedTransactionAccount(accountFromChild);
     setSelectedTransactionCurrency(currencyFromChild);
     setSelectedTransactionType(typeFromChild);
+    setSelectedLinkedTransaction(linkTransactionFromChild);
     setShowTransactionDetailModal(true);
   };
 
@@ -133,6 +137,7 @@ const Transactions = () => {
           readAccount={selectedTransactionAccount}
           readCurrency={selectedTransactionCurrency}
           readType={selectedTransactionType}
+          readLinkedTransaction={selectedLinkedTransaction}
         />
       )}
       <div className="transactions">

@@ -2,5 +2,5 @@
 .env
 db_reset.sh
 *.pyc
-test_accounts_curl
-test_transactions_curl
+test_accounts_curl.sh
+test_transactions_curl.sh
