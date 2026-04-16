@@ -114,12 +114,14 @@ class TransactionSerializer(serializers.ModelSerializer):
             "destination_account",
             "category",
             "transaction_type",
+            "linked_transaction",
         ]
         read_only_fields = ("user",)
         extra_kwargs = {
             "transaction_type": {"required": True},
             "currency": {"required": False},
             "notes": {"required": False},
+            "linked_transaction": {"required": False},
         }
 
     def validate(self, attrs):

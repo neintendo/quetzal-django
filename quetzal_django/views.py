@@ -308,11 +308,26 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 print("Cannot transfer between accounts with different currencies!")
                 return None
 
-            # Deducts from the origin account and adds to destination account
             elif transaction.account and transaction.destination_account:
+                mirrored_transaction = Transaction.objects.create(
+                    user=transaction.user,
+                    account=transaction.destination_account,
+                    datetime=transaction.datetime,
+                    amount=transaction.amount,
+                    description="From: {0}".format(transaction.account),
+                    transaction_type="income",
+                    currency=transaction.currency,
+                    category=transaction.category,
+                    linked_transaction=transaction,
+                )
+
+                transaction.linked_transaction = mirrored_transaction
+                transaction.save(update_fields=["linked_transaction"])
+
+                # Deducts from the origin account and adds to destination account
                 transaction.account.balance -= transaction.amount
-                transaction.destination_account.balance += transaction.amount
                 transaction.account.save()
+                transaction.destination_account.balance += transaction.amount
                 transaction.destination_account.save()
 
 

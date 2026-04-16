@@ -250,6 +250,9 @@ class Transaction(models.Model):
         blank=True,
         related_name="incoming_transactions",
     )
+    linked_transaction = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True
+    )
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, null=True, blank=True
     )
