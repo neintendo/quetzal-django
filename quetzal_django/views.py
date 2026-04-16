@@ -7,6 +7,7 @@ import requests
 from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
 from django_filters.rest_framework import DjangoFilterBackend
+from psycopg2.sql import NULL
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -315,7 +316,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                     datetime=transaction.datetime,
                     amount=transaction.amount,
                     description="From: {0}".format(transaction.account),
-                    transaction_type="income",
+                    transaction_type="transfer",
                     currency=transaction.currency,
                     category=transaction.category,
                     linked_transaction=transaction,
@@ -344,24 +345,77 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         # Old transaction details
         old = self.get_object()
 
-        # Revert
-        if old.transaction_type == "income":
-            old.account.balance -= old.amount
-        elif old.transaction_type == "expense":
-            old.account.balance += old.amount
-        old.account.save()
+        # Get linked_transaction if it exists.
+        linked_acc = None
+        linked_transaction = None
 
-        # Rework transfers later
+        if old.linked_transaction:
+            try:
+                linked_transaction = Transaction.objects.get(
+                    id=old.linked_transaction.id
+                )
+                linked_acc = Account.objects.get(id=linked_transaction.account.id)
+            except Exception as e:
+                linked_acc = None
+                linked_transaction = None
+                print(e)
+
+        # Revert transaction
+        revert_transaction_type = old.transaction_type
+        if old.linked_transaction is not None:
+            revert_transaction_type == "transfer"
+
+        match revert_transaction_type:
+            case "income":
+                old.account.balance -= old.amount
+            case "expense":
+                old.account.balance += old.amount
+            case "transfer":
+                # If the current transaction being edited is the mirror
+                if old.destination_account is None:
+                    old.account.balance -= old.amount
+                    if linked_acc is not None:
+                        linked_acc.balance += old.amount
+                # If the current transaction being edited is the original
+                elif old.destination_account is not None:
+                    old.account.balance += old.amount
+                    if linked_acc is not None:
+                        linked_acc.balance -= old.amount
+
+        old.account.save()
+        if linked_acc is not None:
+            linked_acc.save()
 
         # New transaction details
         new = serializer.save()
 
         # Update transaction
-        if new.transaction_type == "income":
-            new.account.balance += new.amount
-        elif new.transaction_type == "expense":
-            new.account.balance -= new.amount
+        if old.linked_transaction is not None:
+            new.transaction_type = "transfer"
+
+        match new.transaction_type:
+            case "income":
+                new.account.balance += new.amount
+            case "expense":
+                new.account.balance -= new.amount
+            case "transfer":
+                if old.destination_account is None:
+                    new.account.balance += new.amount
+                    if linked_acc and linked_transaction is not None:
+                        linked_acc.balance -= new.amount
+                        linked_transaction.amount = new.amount
+
+                elif old.destination_account is not None:
+                    new.account.balance -= new.amount
+                    if linked_acc and linked_transaction is not None:
+                        linked_acc.balance += new.amount
+                        linked_transaction.amount = new.amount
+
         new.account.save()
+
+        if linked_acc and linked_transaction is not None:
+            linked_acc.save()
+            linked_transaction.save()
 
     @db_transaction.atomic
     def perform_destroy(self, instance):
