@@ -253,7 +253,11 @@ const TransactionDetail = ({
                     <optgroup label="Transaction Type">
                       <option value="income">Income</option>
                       <option value="expense">Expense</option>
-                      <option value="transfer">Transfer</option>
+                      {linked_transaction !== null ? (
+                        <option value="transfer">Transfer</option>
+                      ) : (
+                        ""
+                      )}
                     </optgroup>
                   </select>
                 )}
