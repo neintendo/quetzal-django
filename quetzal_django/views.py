@@ -394,6 +394,12 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         new = serializer.save()
 
         # Validation checks
+        if (
+            old.transaction_type == "income" or old.transaction_type == "expense"
+        ) and new.transaction_type == "transfer":
+            raise serializers.ValidationError(
+                "Cannot edit an income/expense transaction type to 'transfer'. Create a new transfer transaction instead."
+            )
         if typeBool is False and new.destination_account is not None:
             raise serializers.ValidationError(
                 "Cannot edit destination account after transfer creation"
