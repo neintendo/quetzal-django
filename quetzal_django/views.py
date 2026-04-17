@@ -105,7 +105,7 @@ class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class AccountsAggregateView(APIView):
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         # All user accounts
