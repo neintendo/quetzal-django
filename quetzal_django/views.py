@@ -60,6 +60,44 @@ class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Account.objects.filter(user=self.request.user)
 
+    def perform_destroy(self, instance):
+
+        instance_transactions = Transaction.objects.filter(account=instance)
+        linked_acc = None
+
+        for transaction in instance_transactions:
+            if transaction.transaction_type == "transfer":
+                try:
+                    isMirror = False
+                    if (transaction.destination_account) is None:
+                        raise Exception
+
+                except Exception:
+                    isMirror = True
+                    try:
+                        linked_acc = Account.objects.get(
+                            id=transaction.linked_transaction.account.id
+                        )
+                    except Exception as e:
+                        linked_acc = None
+                        print(e)
+
+                if isMirror is False:
+                    transaction.destination_account.balance -= transaction.amount
+                    transaction.destination_account.save()
+                    Transaction.objects.filter(
+                        id=transaction.linked_transaction.id
+                    ).delete()
+                elif isMirror is True:
+                    if linked_acc is not None:
+                        linked_acc.balance += transaction.amount
+                        linked_acc.save()
+                        Transaction.objects.filter(
+                            id=transaction.linked_transaction.id
+                        ).delete()
+
+        instance.delete()
+
 
 class AccountsAggregateView(APIView):
     permissions_classes = [IsAuthenticated]
