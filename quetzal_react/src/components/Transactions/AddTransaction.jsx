@@ -28,7 +28,19 @@ function AddTransaction({ route, onSuccess, onClose }) {
 
   useEffect(() => {
     getUserAccounts();
-  }, []);
+
+    function clickOutside(event) {
+      const modal = document.getElementById("divListen");
+      if (modal && !modal.contains(event.target)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -92,7 +104,11 @@ function AddTransaction({ route, onSuccess, onClose }) {
 
   return (
     <div className="add-transaction-modal">
-      <form onSubmit={handleSubmit} className="add-transaction-form-container">
+      <form
+        onSubmit={handleSubmit}
+        className="add-transaction-form-container"
+        id="divListen"
+      >
         <div className="modal-title-container">
           <div className="modal-title">Add Transaction</div>
           <div

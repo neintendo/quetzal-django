@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/Accounts/EditAccount.css";
 import "../../styles/Accounts/EditAccountForm.css";
 import currencyList from "../Utilities/CurrencyList";
@@ -21,6 +21,20 @@ function EditAccount({
   const [loading, setLoading] = useState(false);
   const [loadingB, setLoadingB] = useState(false);
   const [accountTypes] = useState(accountsData);
+
+  useEffect(() => {
+    function clickOutside(event) {
+      const modal = document.getElementById("divListen");
+      if (modal && !modal.contains(event.target)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e) => {
     {
@@ -84,7 +98,11 @@ function EditAccount({
 
   return (
     <div className="edit-account-modal">
-      <form onSubmit={handleSubmit} className="edit-account-form-container">
+      <form
+        onSubmit={handleSubmit}
+        className="edit-account-form-container"
+        id="divListen"
+      >
         <div className="modal-title-container">
           <div className="modal-title">Edit Account</div>
           <div

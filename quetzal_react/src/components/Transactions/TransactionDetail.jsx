@@ -48,7 +48,19 @@ const TransactionDetail = ({
 
   useEffect(() => {
     getUserAccounts();
-  }, []);
+
+    function clickOutside(event) {
+      const modal = document.getElementById("divListen");
+      if (modal && !modal.contains(event.target)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [onClose]);
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
@@ -132,7 +144,7 @@ const TransactionDetail = ({
   return (
     <>
       <div className="transaction-detail-modal-container">
-        <div className="transaction-detail-modal">
+        <div className="transaction-detail-modal" id="divListen">
           <div className="datetime-close">
             <div className="datetime">
               {new Intl.DateTimeFormat(undefined, {

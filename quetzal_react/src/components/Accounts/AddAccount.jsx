@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/Accounts/AddAccount.css";
 import "../../styles/Accounts/AddAccountForm.css";
 import currencyList from "../Utilities/CurrencyList";
@@ -10,6 +10,20 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
   const [currency, setCurrency] = useState("");
   const [loading, setLoading] = useState(false);
   const [accountTypes] = useState(accountsData);
+
+  useEffect(() => {
+    function clickOutside(event) {
+      const modal = document.getElementById("divListen");
+      if (modal && !modal.contains(event.target)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -54,7 +68,11 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
 
   return (
     <div className="add-account-modal">
-      <form onSubmit={handleSubmit} className="add-account-form-container">
+      <form
+        onSubmit={handleSubmit}
+        className="add-account-form-container"
+        id="divListen"
+      >
         <div className="modal-title-container">
           <div className="modal-title">Add Account</div>
           <div
