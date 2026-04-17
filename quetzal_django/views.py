@@ -40,9 +40,10 @@ class UserProfileView(APIView):
 
 class UserListCreateView(generics.ListCreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return User.objects
+        return User.objects.all()
 
 
 # Accounts
