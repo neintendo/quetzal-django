@@ -147,9 +147,7 @@ class AccountsGraphView(APIView):
 
     def get(self, request):
         # All user transactions.
-        transactions = (Transaction.objects.filter(user=request.user)).exclude(
-            transaction_type="transfer"
-        )
+        transactions = Transaction.objects.filter(user=request.user)
 
         # Filters request by currency
         currency = request.GET.get("currency")
@@ -187,24 +185,49 @@ class AccountsGraphView(APIView):
                     converted_transactions += 1
                     amount = Decimal(str(converted_amount))
 
-                if transaction.transaction_type == "income":
-                    monthly_data[month_key] += amount
-                    total_t += 1
-                elif transaction.transaction_type == "expense":
-                    monthly_data[month_key] -= amount
-                    total_t += 1
+                match transaction.transaction_type:
+                    case "income":
+                        monthly_data[month_key] += amount
+                        total_t += 1
+                    case "expense":
+                        monthly_data[month_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] -= amount
+
         # No graph conversions for a single currency
         else:
             for transaction in transactions:
                 month_key = transaction.datetime.strftime("%Y-%m")
                 amount = transaction.amount
 
-                if transaction.transaction_type == "income":
-                    monthly_data[month_key] += amount
-                    total_t += 1
-                elif transaction.transaction_type == "expense":
-                    monthly_data[month_key] -= amount
-                    total_t += 1
+                match transaction.transaction_type:
+                    case "income":
+                        monthly_data[month_key] += amount
+                        total_t += 1
+                    case "expense":
+                        monthly_data[month_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] -= amount
 
         list_month = []
         for count in monthly_data:
