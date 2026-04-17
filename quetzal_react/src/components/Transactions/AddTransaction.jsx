@@ -198,7 +198,15 @@ function AddTransaction({ route, onSuccess, onClose }) {
             className="add-transaction-form-input"
             type="text"
             value={destination_account_name}
-            onChange={(e) => setDestAccount(e.target.value)}
+            onChange={(e) => {
+              const selectedAccount = userAccounts?.find(
+                (account) => account.name === e.target.value,
+              );
+              setDestAccount(e.target.value);
+              setDescription(
+                `To: ${e.target.value} (${selectedAccount.currency})`,
+              );
+            }}
           >
             <optgroup label="Destination Account">
               <option>- Select Destination Account -</option>
