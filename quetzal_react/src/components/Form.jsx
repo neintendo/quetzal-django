@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
@@ -6,6 +6,7 @@ import currencyList from "./Utilities/CurrencyList";
 import "../styles/Form.css";
 
 function Form({ route, method }) {
+  const [users, setUsers] = useState([]);
   const [username, setUsername] = useState("");
   const [display_name, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +18,20 @@ function Form({ route, method }) {
   const link_path = method === "login" ? "/register" : "/login";
   const link_text =
     method === "login" ? "Don't have an account?" : "Already have an account?";
+
+  useEffect(() => {
+    const getUsers = () => {
+      api
+        .get("users/")
+        .then((res) => res.data)
+        .then((data) => {
+          setUsers(data);
+        })
+        .catch((err) => alert(err));
+    };
+
+    getUsers();
+  }, []);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -67,14 +82,38 @@ function Form({ route, method }) {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>{name}</h2>
-      <input
-        className="form-input"
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-        required
-      />
+      {method === "login" ? (
+        <select
+          className="form-input"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+        >
+          <optgroup label="User">
+            <option>- Select User -</option>
+            {users &&
+              Array.isArray(users) &&
+              [...users]
+                .sort((a, b) => a.display_name.localeCompare(b.display_name))
+                .map((users, index) => (
+                  <option key={index} value={users.username}>
+                    {users.display_name}
+                  </option>
+                ))}
+          </optgroup>
+        </select>
+      ) : (
+        <input
+          className="form-input"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+        />
+      )}
 
       {method === "register" && (
         <input
