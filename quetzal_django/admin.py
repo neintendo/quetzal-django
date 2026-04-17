@@ -37,15 +37,16 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "user",
         "account",
-        "destination_account",
         "datetime",
         "amount",
         "currency",
         "category",
         "description",
         "transaction_type",
+        "linked_transaction__id",
     )
 
 
