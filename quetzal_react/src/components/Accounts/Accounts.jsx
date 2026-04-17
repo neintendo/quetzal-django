@@ -27,7 +27,7 @@ const Accounts = () => {
   const [transDetailRefresher, setTransDetailRefresher] = useState(0);
   const [editAccountRefresher, setEditAccountRefresher] = useState(0);
 
-  // Transaction Modal
+  // consts sent to Transaction Modal from Accounts Detail
   const [selectedTransactionID, setSelectedTransactionID] = useState("");
   const [selectedTransactionDatetime, setSelectedTransactionDatetime] =
     useState("");
@@ -45,6 +45,7 @@ const Accounts = () => {
   const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
     useState("");
 
+  // consts to track fullscreen state of Graph & Table
   const [graphMax, setGraphMax] = useState(false);
   const [graphMin, setGraphMin] = useState(true);
   const [tableMax, setTableMax] = useState(false);
@@ -136,6 +137,7 @@ const Accounts = () => {
     refresh();
   };
 
+  // Handle table row clicks in AccountsTable
   const handleRowClick = (
     accountIdFromChild,
     accountNameFromChild,
@@ -150,6 +152,7 @@ const Accounts = () => {
     setTableNav(true);
   };
 
+  // Handle table row clicks in AccountsDetail
   const detailsRowClick = (
     idFromChild,
     datetimeFromChild,
