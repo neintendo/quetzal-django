@@ -7,7 +7,6 @@ import "../styles/Form.css";
 
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [display_name, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [main_currency, setCurrency] = useState("");
@@ -32,7 +31,6 @@ function Form({ route, method }) {
       } else {
         requestData = {
           username,
-          email,
           display_name,
           password,
           main_currency,
@@ -69,16 +67,6 @@ function Form({ route, method }) {
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>{name}</h2>
-      {method === "register" && (
-        <input
-          className="form-input"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-      )}
       <input
         className="form-input"
         type="text"

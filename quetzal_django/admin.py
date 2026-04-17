@@ -16,7 +16,6 @@ class UserAdmin(admin.ModelAdmin):
         "id",
         "username",
         "display_name",
-        "email",
         "main_currency",
     )
 

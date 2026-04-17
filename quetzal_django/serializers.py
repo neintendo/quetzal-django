@@ -9,7 +9,7 @@ from .models import Account, Category, Transaction, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "display_name", "main_currency"]
+        fields = ["id", "username", "display_name", "main_currency"]
 
 
 # User Registration Serializer.
@@ -21,7 +21,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
-            "email",
             "display_name",
             "password",
             "main_currency",

@@ -21,7 +21,6 @@ class UserRegistrationView(APIView):
                     "user": {
                         "id": user.id,
                         "username": user.username,
-                        "email": user.email,
                         "display_name": user.display_name,
                         "main_currency": user.main_currency,
                     },
@@ -47,7 +46,6 @@ class UserLoginView(APIView):
                     "user": {
                         "id": user.id,
                         "username": user.username,
-                        "email": user.email,
                         "display_name": user.display_name,
                         "main_currency": user.main_currency,
                     },
