@@ -51,10 +51,7 @@ const AccountsDetail = ({
     let aValue = a[sortHeader.key];
     let bValue = b[sortHeader.key];
 
-    if (
-      sortHeader.key === "amount" ||
-      sortHeader.key === "destination_account"
-    ) {
+    if (sortHeader.key === "amount") {
       if (sortHeader.key === "amount") {
         aValue = parseFloat(aValue);
         a.transaction_type === "expense" ? (aValue *= -1) : aValue;
@@ -125,14 +122,6 @@ const AccountsDetail = ({
                   : "↓"
                 : ""}
             </th>
-            <th onClick={() => requestSort("destination_account")}>
-              Dest. Account{" "}
-              {sortHeader.key === "destination_account"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
           </tr>
           {sortedData.map((val, key) => {
             return (
@@ -169,7 +158,6 @@ const AccountsDetail = ({
                 >
                   {val.transaction_type}
                 </td>
-                <td style={{ width: 150 }}>{val.destination_account}</td>
               </tr>
             );
           })}
