@@ -6,16 +6,13 @@ import django_filters
 import requests
 from django.db import transaction as db_transaction
 from django.db.models import Q, Sum
-from django.forms.formsets import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
-from psycopg2.sql import NULL
 from rest_framework import generics, permissions, serializers, status
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Account, Category, Transaction
+from .models import Account, Category, Transaction, User
 from .serializers import (
     AccountSerializer,
     CategorySerializer,
@@ -39,6 +36,13 @@ class UserProfileView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserListCreateView(generics.ListCreateAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects
 
 
 # Accounts
