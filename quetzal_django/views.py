@@ -363,11 +363,7 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
                 print(e)
 
         # Revert transaction
-        revert_transaction_type = old.transaction_type
-        if old.linked_transaction is not None:
-            revert_transaction_type == "transfer"
-
-        match revert_transaction_type:
+        match old.transaction_type:
             case "income":
                 old.account.balance -= old.amount
             case "expense":
@@ -449,20 +445,49 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
             linked_acc.save()
             linked_transaction.save()
 
+    # Revert the transaction's effect on account balance
     @db_transaction.atomic
     def perform_destroy(self, instance):
-        # Revert the transaction's effect on account balance
-        account = instance.account
 
-        if instance.transaction_type == "income":
-            account.balance -= instance.amount
-        elif instance.transaction_type == "expense":
-            account.balance += instance.amount
-        elif instance.transaction_type == "transfer":
-            instance.account.balance += instance.amount
-            instance.destination_account.balance -= instance.amount
-            instance.account.save()
-            instance.destination_account.save()
+        account = instance.account
+        isMirror = bool
+        linked_acc = None
+
+        try:
+            isMirror = False
+            cmp = self.get_object()
+            if (cmp.destination_account) is None:
+                raise Exception
+
+        except Exception:
+            isMirror = True
+            try:
+                linked_transaction = Transaction.objects.get(
+                    id=instance.linked_transaction.id
+                )
+                linked_acc = Account.objects.get(id=linked_transaction.account.id)
+            except Exception as e:
+                linked_acc = None
+                print(e)
+
+        match instance.transaction_type:
+            case "income":
+                account.balance -= instance.amount
+            case "expense":
+                account.balance += instance.amount
+            case "transfer":
+                if isMirror is False:
+                    print("false")
+                    instance.destination_account.balance -= instance.amount
+                    instance.destination_account.save()
+                    instance.account.balance += instance.amount
+                    instance.account.save()
+                elif isMirror is True:
+                    instance.account.balance -= instance.amount
+                    instance.account.save()
+                    if linked_acc is not None:
+                        linked_acc.balance += instance.amount
+                        linked_acc.save()
         account.save()
         instance.delete()
 
