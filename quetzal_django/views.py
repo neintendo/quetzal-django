@@ -442,6 +442,8 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         new.account.save()
 
         if linked_acc and linked_transaction is not None:
+            linked_transaction.datetime = new.datetime
+            linked_transaction.category = new.category
             linked_acc.save()
             linked_transaction.save()
 
