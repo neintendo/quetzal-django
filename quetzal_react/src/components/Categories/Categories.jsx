@@ -5,23 +5,27 @@ import CategoriesTable from "./CategoriesTable";
 
 const Categories = () => {
   const [categoriesData, setCategoriesData] = useState([]);
-
+  const [tableToggle, setTableToggle] = useState(false);
+  const [categoryType, setCategoryType] = useState("expense");
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchData = () => {
     api
-      .get("categories/")
+      .get("categories/", { params: { type: categoryType } })
       .then((categoriesRes) => {
         setCategoriesData(categoriesRes.data);
       })
       .catch((err) => alert(err));
   };
 
-  console.log(categoriesData);
-
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [categoryType]);
+
+  const toggleTable = () => {
+    setTableToggle(!tableToggle);
+    setCategoryType(categoryType === "expense" ? "income" : "expense");
+  };
 
   return (
     <>
@@ -31,15 +35,17 @@ const Categories = () => {
           <div className="categories-table-header">
             <div
               className="categories-table-title"
+              onClick={() => {
+                toggleTable();
+                setSearchTerm("");
+              }}
               // title="Double Click to Minimise / Maximise"
             >
-              Categories
+              {tableToggle ? "Income" : "Expenses"}
             </div>
             <input
               className="table-header-input"
-              // placeholder={
-              //   tableNav ? `Search ${selectedAccountName}` : "Search Account"
-              // }
+              placeholder={tableToggle ? "Search Income" : "Search Expenses"}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

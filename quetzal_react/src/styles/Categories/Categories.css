@@ -54,6 +54,14 @@
 .categories-table-title {
     padding: 8px;
     border: 1px solid #bbbbbb;
+    background-color: #cccccc;
+    border: none;
+    transition: background-color 250ms ease;
+    border: 1px solid #bbbbbb;
+}
+
+.categories-table-title:hover {
+    background-color: #eeeeee;
 }
 
 .categories-table-title-active {
@@ -125,4 +133,8 @@
 
 .edit-category-button:hover {
     background-color: #eeeeee;
+}
+
+.categories-table-title {
+    cursor: pointer;
 }
