@@ -306,7 +306,19 @@ class CategoriesListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Category.objects.filter(user=self.request.user)
+        categories = Category.objects.filter(user=self.request.user)
+
+        # Filter by name
+        name = self.request.GET.get("name")
+        if name:
+            categories = categories.filter(name__icontains=name)
+
+        # Filter by type
+        category_type = self.request.GET.get("type")
+        if category_type:
+            categories = categories.filter(type=category_type)
+
+        return categories
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
