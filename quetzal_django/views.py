@@ -332,6 +332,110 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Category.objects.filter(user=self.request.user)
 
 
+class CategoriesGraphView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user transactions.
+        transactions = Transaction.objects.filter(user=request.user)
+
+        # Filters request by currency
+        currency = request.GET.get("currency")
+        if currency:
+            transactions = transactions.filter(currency=currency)
+
+        # Filters request by account
+        account = request.GET.get("account")
+        if account:
+            transactions = transactions.filter(account=account)
+
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
+
+        categorised_data = {
+            "income": defaultdict(Decimal),
+            "expenses": defaultdict(Decimal),
+            "transfers": defaultdict(Decimal),
+        }
+        converted_transactions = 0
+        total_t = 0
+
+        # Graph conversion for all currencies
+        if (currency is None or currency == "") and (account is None or account == ""):
+            for transaction in transactions:
+                category_key = str(transaction.category)
+                amount = transaction.amount
+
+                # For non main_currency conversions only
+                if transaction.currency != main_currency and transaction.amount != 0:
+                    converted_amount = conversion(
+                        transaction.amount,
+                        transaction.currency,
+                        main_currency,
+                        transaction.datetime,
+                    )
+                    converted_transactions += 1
+                    amount = Decimal(str(converted_amount))
+
+                match transaction.transaction_type:
+                    case "income":
+                        categorised_data["income"][category_key] += amount
+                        total_t += 1
+                    case "expense":
+                        categorised_data["expenses"][category_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            categorised_data["transfers"][category_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            categorised_data["transfers"][category_key] -= amount
+
+        # No graph conversions for a single currency
+        else:
+            for transaction in transactions:
+                category_key = str(transaction.category)
+
+                amount = transaction.amount
+
+                match transaction.transaction_type:
+                    case "income":
+                        categorised_data["income"][category_key] += amount
+                        total_t += 1
+                    case "expense":
+                        categorised_data["expenses"][category_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            categorised_data["transfers"][category_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            categorised_data["transfers"][category_key] -= amount
+
+        income_total = sum(categorised_data["income"].values())
+        expense_total = sum(categorised_data["expenses"].values())
+
+        return Response(
+            {
+                "transactions_by_category": categorised_data,
+                "income_total": income_total,
+                "expenses_total": expense_total,
+                "converted_transactions": converted_transactions,
+                "total_transctions": total_t,
+            }
+        )
+
+
 # Class for transaction filtering.
 class TransactionFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name="datetime", lookup_expr="gte")
