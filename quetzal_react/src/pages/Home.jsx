@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Accounts from "../components/Accounts/Accounts";
 import Transactions from "../components/Transactions/Transactions";
+import Categories from "../components/Categories/Categories";
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -33,8 +34,10 @@ function Home() {
         return <Accounts />;
       case "transactions":
         return <Transactions />;
+      case "categories":
+        return <Categories />;
       default:
-        return <Accounts />;
+        return <Categories />;
     }
   };
 

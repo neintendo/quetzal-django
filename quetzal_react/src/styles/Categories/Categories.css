@@ -1,0 +1,128 @@
+.categories {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 2;
+    padding: 16px;
+    padding-left: 0px;
+    gap: 16px;
+    height: calc(100vh - 76.5px);
+}
+
+.categories-chart {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    background-color: #dddddd;
+    align-items: start;
+    padding: 16px;
+    padding-bottom: 8px;
+    width: calc(100% - 32px);
+    min-height: 4%;
+    height: 50%;
+    border: 1px solid #bbbbbb;
+    position: relative;
+}
+
+.categories-table-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #dddddd;
+    padding: 16px;
+    width: calc(100% - 32px);
+    height: 100%;
+    border: 1px solid #bbbbbb;
+    scroll-snap-type: y proximity;
+    overflow-y: auto;
+    scroll-padding: 20%;
+}
+
+.categories-table-header {
+    position: sticky;
+    background-color: #dddddd;
+    display: flex;
+    top: 0px;
+    z-index: 30;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-content: space-between;
+    box-sizing: border-box;
+    box-shadow: 0 -30px 0 #dddddd;
+    gap: 8px;
+}
+
+.categories-table-title {
+    padding: 8px;
+    border: 1px solid #bbbbbb;
+}
+
+.categories-table-title-active {
+    white-space: nowrap;
+    background-color: #bbbbbb;
+    padding: 8px;
+    border: 1px solid #999999;
+    transition: background-color 250ms ease;
+}
+.categories-table-title-active:hover {
+    background-color: #cccccc;
+}
+
+.table-header-input {
+    font-size: 12px;
+    background-color: #dddddd;
+    width: 100%;
+    border: 1px solid #bbbbbb;
+    box-sizing: border-box;
+    transition: background-color 250ms ease;
+}
+.table-header-input::placeholder {
+    font-size: 12px;
+    text-align: center;
+}
+
+.table-header-input:hover {
+    background-color: #eeeeee;
+    transition: background-color 250ms ease;
+    border: 1px solid #999999;
+}
+
+.table-header-button-container {
+    display: flex;
+    justify-content: right;
+    gap: 8px;
+}
+
+.add-category-container {
+    display: flex;
+}
+.edit-category-container {
+    display: flex;
+}
+
+.add-category-button {
+    align-items: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    transition: background-color 250ms ease;
+    border: 1px solid #bbbbbb;
+    width: 144px;
+}
+
+.add-category-button:hover {
+    background-color: #eeeeee;
+}
+
+.edit-category-button {
+    align-items: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    transition: background-color 250ms ease;
+    border: 1px solid #bbbbbb;
+    width: 144px;
+}
+
+.edit-category-button:hover {
+    background-color: #eeeeee;
+}
