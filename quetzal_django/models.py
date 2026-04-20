@@ -215,12 +215,20 @@ class Account(models.Model):
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    type = models.CharField(
+        max_length=20,
+        choices=[
+            ("income", "Income"),
+            ("expense", "Expense"),
+            ("transfer", "Transfer"),
+        ],
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Categories"
         # Account names are unique per user.
-        unique_together = ["name", "user"]
+        unique_together = ["name", "user", "type"]
 
     def __str__(self):
         return f"{self.name}"
