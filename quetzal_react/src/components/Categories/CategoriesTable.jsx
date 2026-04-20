@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/Categories/CategoriesTable.css";
 
-const CategoriesTable = ({ searchTerm, categoriesData }) => {
+const CategoriesTable = ({ searchTerm, enhancedCategoriesData }) => {
   const [sortHeader, setSortHeader] = useState({
     key: "name",
     direction: "asc",
@@ -15,7 +15,7 @@ const CategoriesTable = ({ searchTerm, categoriesData }) => {
     setSortHeader({ key, direction });
   };
 
-  const filteredData = categoriesData.filter((item) => {
+  const filteredData = enhancedCategoriesData.filter((item) => {
     const matchesSearch = item.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -28,7 +28,7 @@ const CategoriesTable = ({ searchTerm, categoriesData }) => {
     let aValue = a[sortHeader.key];
     let bValue = b[sortHeader.key];
 
-    if (sortHeader.key === "balance") {
+    if (sortHeader.key === "total") {
       aValue = parseFloat(aValue);
       bValue = parseFloat(bValue);
 
@@ -62,6 +62,14 @@ const CategoriesTable = ({ searchTerm, categoriesData }) => {
                   : "↓"
                 : ""}
             </th>
+            <th onClick={() => requestSort("total")}>
+              Total{" "}
+              {sortHeader.key === "total"
+                ? sortHeader.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
           </tr>
           {sortedData.map((val, key) => {
             return (
@@ -72,6 +80,7 @@ const CategoriesTable = ({ searchTerm, categoriesData }) => {
                 key={key}
               >
                 <td>{val.name}</td>
+                <td>{val.total}</td>
               </tr>
             );
           })}

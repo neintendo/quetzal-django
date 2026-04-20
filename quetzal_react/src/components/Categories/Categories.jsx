@@ -5,22 +5,47 @@ import CategoriesTable from "./CategoriesTable";
 
 const Categories = () => {
   const [categoriesData, setCategoriesData] = useState([]);
+  const [categoriesGraphData, setCategoriesGraphData] = useState([]);
   const [tableToggle, setTableToggle] = useState(false);
   const [categoryType, setCategoryType] = useState("expense");
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchData = () => {
-    api
-      .get("categories/", { params: { type: categoryType } })
-      .then((categoriesRes) => {
+    Promise.all([
+      api.get("categories/", { params: { type: categoryType } }),
+      api.get("categories/graph/"),
+    ])
+      .then(([categoriesRes, categoriesGraphRes]) => {
         setCategoriesData(categoriesRes.data);
+        setCategoriesGraphData(categoriesGraphRes.data);
       })
       .catch((err) => alert(err));
   };
 
   useEffect(() => {
     fetchData();
-  }, [categoryType]);
+  }, []);
+
+  const enhancedCategoriesData = categoriesData.map((category) => {
+    let total = 0;
+
+    if (category.type === "expense") {
+      total =
+        categoriesGraphData?.transactions_by_category?.expenses?.[
+          category.name
+        ] * -1 || 0;
+    } else if (category.type === "income") {
+      total =
+        categoriesGraphData?.transactions_by_category?.income?.[
+          category.name
+        ] || 0;
+    }
+
+    return {
+      ...category,
+      total: total,
+    };
+  });
 
   const toggleTable = () => {
     setTableToggle(!tableToggle);
@@ -59,7 +84,7 @@ const Categories = () => {
           </div>
           <CategoriesTable
             searchTerm={searchTerm}
-            categoriesData={categoriesData}
+            enhancedCategoriesData={enhancedCategoriesData}
           />
         </div>
       </div>
