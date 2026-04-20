@@ -174,8 +174,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         # Get or create category (_ is a placeholder value)
         category, _ = Category.objects.get_or_create(
-            name=category_name,
-            user=user,
+            name=category_name, user=user, defaults={"type": transaction_type}
         )
 
         # Automatically inherits the currency from the account being used
