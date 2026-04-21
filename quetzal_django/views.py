@@ -194,13 +194,11 @@ class AccountsGraphView(APIView):
 
         # Filters request by currency
         currency = request.GET.get("currency")
-        print("Currency:", currency)
         if currency:
             transactions = transactions.filter(currency=currency)
 
         # Filters request by account
         account = request.GET.get("account")
-        print("Account:", account)
         if account:
             transactions = transactions.filter(account=account)
 
@@ -347,7 +345,15 @@ class CategoriesGraphView(APIView):
         # Filters request by account
         account = request.GET.get("account")
         if account:
-            transactions = transactions.filter(account=account)
+            transactions = transactions.filter(account__name=account)
+
+        start_date = request.GET.get("start_date")
+        if start_date:
+            transactions = transactions.filter(datetime__date__gte=start_date)
+
+        end_date = request.GET.get("end_date")
+        if end_date:
+            transactions = transactions.filter(datetime__date__lte=end_date)
 
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")

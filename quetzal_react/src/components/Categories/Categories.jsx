@@ -7,33 +7,54 @@ import AddCategory from "./AddCategory";
 const Categories = () => {
   const [categoriesData, setCategoriesData] = useState([]);
   const [categoriesGraphData, setCategoriesGraphData] = useState([]);
+  const [transactionsData, setTransactionsData] = useState([]);
   const [tableToggle, setTableToggle] = useState(false);
   const [categoryType, setCategoryType] = useState("expense");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [showFilterView, setShowFilterView] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [account, setAccount] = useState("");
   const [currency, setCurrency] = useState("");
+  const isFilterActive = startDate || endDate || account || currency;
 
   const fetchData = () => {
     Promise.all([
       api.get("categories/", { params: { type: categoryType } }),
-      api.get("categories/graph/"),
+      api.get("categories/graph/", {
+        params: {
+          start_date: startDate,
+          end_date: endDate,
+          account: account,
+          currency: currency,
+        },
+      }),
       api.get("profile/"),
+      api.get("transactions/", {
+        params: {
+          start_date: startDate,
+          end_date: endDate,
+          account: account,
+          currency: currency,
+        },
+      }),
     ])
-      .then(([categoriesRes, categoriesGraphRes, profileRes]) => {
-        setCategoriesData(categoriesRes.data);
-        setCategoriesGraphData(categoriesGraphRes.data);
-        setProfile(profileRes.data);
-      })
+      .then(
+        ([categoriesRes, categoriesGraphRes, profileRes, transactionsRes]) => {
+          setCategoriesData(categoriesRes.data);
+          setCategoriesGraphData(categoriesGraphRes.data);
+          setProfile(profileRes.data);
+          setTransactionsData(transactionsRes.data);
+        },
+      )
       .catch((err) => alert(err));
   };
 
   useEffect(() => {
     fetchData();
-  }, [categoryType]);
+  }, [categoryType, startDate, endDate, account, currency]);
 
   const refresh = () => {
     fetchData();
@@ -76,6 +97,23 @@ const Categories = () => {
     refresh();
   };
 
+  const uniqueAccounts = [
+    ...new Map(
+      transactionsData.map((t) => [
+        `${t.account}|${t.currency}`,
+        { account: t.account, currency: t.currency },
+      ]),
+    ).values(),
+  ].sort((a, b) => a.account.localeCompare(b.account));
+
+  const uniqueCurrencies = [
+    ...new Set(transactionsData.map((transaction) => transaction.currency)),
+  ].sort();
+
+  const toggleFilterView = () => {
+    setShowFilterView(!showFilterView);
+  };
+
   return (
     <>
       {showAddModal && (
@@ -87,8 +125,19 @@ const Categories = () => {
       )}
       <div className="categories">
         <div className="categories-chart">
-          <div className="categories-chart-balance-container">
-            <div className="categories-chart-balance">
+          <div
+            className={
+              showFilterView
+                ? "categories-chart-balance-container-expanded"
+                : isFilterActive
+                  ? "categories-chart-balance-container-active"
+                  : "categories-chart-balance-container"
+            }
+          >
+            <div
+              className="categories-chart-balance"
+              onClick={() => toggleFilterView()}
+            >
               {categoriesGraphData.converted_transactions !== 0
                 ? tableToggle
                   ? `± ${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
@@ -96,6 +145,127 @@ const Categories = () => {
                 : tableToggle
                   ? `${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
                   : `${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`}
+            </div>
+            <div
+              className={
+                showFilterView
+                  ? "categories-filter-container-active"
+                  : "categories-filter-container"
+              }
+            >
+              <div
+                className="categories-textselect-container"
+                style={{ "padding-left": 20 }}
+              >
+                <div className="categories-filters-filter">
+                  Date Range
+                  {startDate ? (
+                    <div
+                      className="filter-clear-button"
+                      onClick={() => {
+                        (setStartDate(""), setEndDate(""));
+                      }}
+                    >
+                      X
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="categories-start-end-date-container">
+                  <input
+                    className="category-filters-date"
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => {
+                      setStartDate(e.target.value);
+                    }}
+                  ></input>
+                  <div style={{ fontSize: 11 }}>to </div>
+                  <input
+                    className="category-filters-date"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => {
+                      setEndDate(e.target.value);
+                    }}
+                  ></input>
+                </div>
+              </div>
+              <div className="categories-textselect-container">
+                <div className="categories-filters-filter">
+                  Account
+                  {account ? (
+                    <div
+                      className="filter-clear-button"
+                      onClick={() => {
+                        setAccount("");
+                        setCurrency("");
+                      }}
+                    >
+                      X
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <select
+                  className="categories-filters-select"
+                  type="text"
+                  value={account}
+                  onChange={(e) => {
+                    {
+                      const selectedAccount = uniqueAccounts.find(
+                        (item) => item.account === e.target.value,
+                      );
+                      setAccount(e.target.value);
+                      setCurrency(selectedAccount?.currency || "");
+                    }
+                  }}
+                >
+                  <option value="">- Select Account -</option>
+                  {uniqueAccounts.map(({ account }) => (
+                    <option key={account} value={account}>
+                      {account}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div
+                className="categories-textselect-container"
+                style={{ "padding-right": 20 }}
+              >
+                <div className="categories-filters-filter">
+                  Currency
+                  {currency ? (
+                    <div
+                      className="filter-clear-button"
+                      onClick={() => {
+                        setCurrency("");
+                      }}
+                    >
+                      X
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <select
+                  className="categories-filters-select"
+                  type="text"
+                  value={currency}
+                  onChange={(e) => {
+                    setCurrency(e.target.value);
+                  }}
+                >
+                  <option value="">- Select Currency -</option>
+                  {uniqueCurrencies.map((currency) => (
+                    <option key={currency} value={currency}>
+                      {currency}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>

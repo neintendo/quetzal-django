@@ -24,7 +24,9 @@
     position: relative;
 }
 
-.categories-chart-balance-container {
+.categories-chart-balance-container,
+.categories-chart-balance-container-active,
+.categories-chart-balance-container-expanded {
     position: absolute;
     background-color: #dddddd;
     display: inline-block;
@@ -34,8 +36,18 @@
         background-color 250ms ease,
         font-size 250ms ease;
     max-height: calc(100% - 32px);
+    /*max-width: 60%;*/
     overflow-y: auto;
     z-index: 31;
+}
+
+.categories-chart-balance-container-active {
+    background-color: #bbbbbb;
+    border: 1px solid #999999;
+}
+.categories-chart-balance-container-expanded {
+    background-color: #cccccc;
+    font-size: 18px;
 }
 
 .categories-chart-balance-container:hover {
@@ -43,8 +55,86 @@
     font-size: 18px;
 }
 
+.categories-chart-balance-container-active:hover {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+
 .categories-chart-balance {
     padding: 8px;
+}
+
+.categories-filter-container-active,
+.categories-filter-container {
+    gap: 8px;
+    display: none;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-top: 1px solid #bbbbbb;
+    width: 100%;
+}
+.categories-filter-container-active {
+    display: flex;
+}
+
+.categories-textselect-container {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.categories-filters-filter {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+}
+
+.categories-filters-select {
+    height: 36px;
+    margin: 4px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 256px;
+}
+
+.category-filters-date {
+    height: 36px;
+    margin: 4px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.categories-start-end-date-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.filter-clear-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #bbbbbb;
+    font-size: 11px;
+    border: 1px solid #bbbbbb;
+    transition: background-color 250ms ease;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+    z-index: 1;
+}
+
+.filter-clear-button:hover {
+    background-color: #eeeeee;
 }
 
 .categories-table-container {
@@ -159,6 +249,10 @@
 }
 
 .categories-table-title,
-.categories-chart-balance-container {
+.categories-chart-balance {
     cursor: pointer;
+}
+
+.categories-filter-container-active {
+    cursor: default;
 }
