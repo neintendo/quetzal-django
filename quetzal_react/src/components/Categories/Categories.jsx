@@ -2,6 +2,7 @@ import "../../styles/Categories/Categories.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import CategoriesTable from "./CategoriesTable";
+import AddCategory from "./AddCategory";
 
 const Categories = () => {
   const [categoriesData, setCategoriesData] = useState([]);
@@ -9,6 +10,7 @@ const Categories = () => {
   const [tableToggle, setTableToggle] = useState(false);
   const [categoryType, setCategoryType] = useState("expense");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchData = () => {
     Promise.all([
@@ -24,7 +26,11 @@ const Categories = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [categoryType]);
+
+  const refresh = () => {
+    fetchData();
+  };
 
   const enhancedCategoriesData = categoriesData.map((category) => {
     let total = 0;
@@ -52,8 +58,20 @@ const Categories = () => {
     setCategoryType(categoryType === "expense" ? "income" : "expense");
   };
 
+  const handleCategoryAdded = () => {
+    setShowAddModal(false);
+    refresh();
+  };
+
   return (
     <>
+      {showAddModal && (
+        <AddCategory
+          route="/categories/"
+          onClose={() => setShowAddModal(false)}
+          onSuccess={handleCategoryAdded}
+        />
+      )}
       <div className="categories">
         <div className="categories-chart"></div>
         <div className="categories-table-container">
@@ -75,8 +93,12 @@ const Categories = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="table-header-button-container">
-              <div className="edit-account-container">
-                <button className="edit-account-button" type="button">
+              <div className="edit-category-container">
+                <button
+                  className="edit-category-button"
+                  type="button"
+                  onClick={() => setShowAddModal(true)}
+                >
                   {"+ Add Category"}
                 </button>
               </div>
