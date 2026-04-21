@@ -159,7 +159,7 @@ const Categories = () => {
               >
                 <div className="categories-filters-filter">
                   Date Range
-                  {startDate ? (
+                  {startDate || endDate ? (
                     <div
                       className="filter-clear-button"
                       onClick={() => {

@@ -163,7 +163,7 @@ const Transactions = () => {
                 <div className="transactions-table-textselect-container">
                   <div className="transactions-table-filters-filter">
                     Date Range
-                    {startDate ? (
+                    {startDate || endDate ? (
                       <div
                         className="filter-clear-button"
                         onClick={() => {
