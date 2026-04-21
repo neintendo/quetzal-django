@@ -11,15 +11,22 @@ const Categories = () => {
   const [categoryType, setCategoryType] = useState("expense");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [account, setAccount] = useState("");
+  const [currency, setCurrency] = useState("");
 
   const fetchData = () => {
     Promise.all([
       api.get("categories/", { params: { type: categoryType } }),
       api.get("categories/graph/"),
+      api.get("profile/"),
     ])
-      .then(([categoriesRes, categoriesGraphRes]) => {
+      .then(([categoriesRes, categoriesGraphRes, profileRes]) => {
         setCategoriesData(categoriesRes.data);
         setCategoriesGraphData(categoriesGraphRes.data);
+        setProfile(profileRes.data);
       })
       .catch((err) => alert(err));
   };
@@ -53,6 +60,12 @@ const Categories = () => {
     };
   });
 
+  const currencyFormatter = new Intl.NumberFormat("en", {
+    style: "currency",
+    currency:
+      currency != "" ? currency || "USD" : profile?.main_currency || "USD", // USD is just a fallback
+  });
+
   const toggleTable = () => {
     setTableToggle(!tableToggle);
     setCategoryType(categoryType === "expense" ? "income" : "expense");
@@ -73,7 +86,19 @@ const Categories = () => {
         />
       )}
       <div className="categories">
-        <div className="categories-chart"></div>
+        <div className="categories-chart">
+          <div className="categories-chart-balance-container">
+            <div className="categories-chart-balance">
+              {categoriesGraphData.converted_transactions !== 0
+                ? tableToggle
+                  ? `± ${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
+                  : `± ${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`
+                : tableToggle
+                  ? `${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
+                  : `${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`}
+            </div>
+          </div>
+        </div>
         <div className="categories-table-container">
           <div className="categories-table-header">
             <div

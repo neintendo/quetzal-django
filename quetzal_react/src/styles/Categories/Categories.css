@@ -24,6 +24,29 @@
     position: relative;
 }
 
+.categories-chart-balance-container {
+    position: absolute;
+    background-color: #dddddd;
+    display: inline-block;
+    border: 1px solid #bbbbbb;
+    outline: 8px solid #dddddd;
+    transition:
+        background-color 250ms ease,
+        font-size 250ms ease;
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    z-index: 31;
+}
+
+.categories-chart-balance-container:hover {
+    background-color: #cccccc;
+    font-size: 18px;
+}
+
+.categories-chart-balance {
+    padding: 8px;
+}
+
 .categories-table-container {
     display: flex;
     flex-direction: column;
@@ -135,6 +158,7 @@
     background-color: #eeeeee;
 }
 
-.categories-table-title {
+.categories-table-title,
+.categories-chart-balance-container {
     cursor: pointer;
 }
