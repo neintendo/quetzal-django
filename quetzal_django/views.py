@@ -375,7 +375,7 @@ class CategoriesGraphView(APIView):
                         transaction.datetime,
                     )
                     converted_transactions += 1
-                    amount = Decimal(str(converted_amount))
+                    amount = round(Decimal(str(converted_amount)), 2)
 
                 match transaction.transaction_type:
                     case "income":
@@ -401,7 +401,7 @@ class CategoriesGraphView(APIView):
             for transaction in transactions:
                 category_key = str(transaction.category)
 
-                amount = transaction.amount
+                amount = round(transaction.amount, 2)
 
                 match transaction.transaction_type:
                     case "income":
@@ -428,8 +428,8 @@ class CategoriesGraphView(APIView):
         return Response(
             {
                 "transactions_by_category": categorised_data,
-                "income_total": income_total,
-                "expenses_total": expense_total,
+                "income_total": round(income_total, 2),
+                "expenses_total": round(expense_total, 2),
                 "converted_transactions": converted_transactions,
                 "total_transctions": total_t,
             }
