@@ -9,7 +9,7 @@
     height: calc(100vh - 76.5px);
 }
 
-.categories-chart {
+.categories-doughnut {
     display: flex;
     gap: 8px;
     flex-direction: column;
@@ -19,14 +19,14 @@
     padding-bottom: 8px;
     width: calc(100% - 32px);
     min-height: 4%;
-    height: 50%;
+    height: 30%;
     border: 1px solid #bbbbbb;
     position: relative;
 }
 
-.categories-chart-balance-container,
-.categories-chart-balance-container-active,
-.categories-chart-balance-container-expanded {
+.categories-doughnut-balance-container,
+.categories-doughnut-balance-container-active,
+.categories-doughnut-balance-container-expanded {
     position: absolute;
     background-color: #dddddd;
     display: inline-block;
@@ -41,26 +41,26 @@
     z-index: 31;
 }
 
-.categories-chart-balance-container-active {
+.categories-doughnut-balance-container-active {
     background-color: #bbbbbb;
     border: 1px solid #999999;
 }
-.categories-chart-balance-container-expanded {
+.categories-doughnut-balance-container-expanded {
     background-color: #cccccc;
     font-size: 18px;
 }
 
-.categories-chart-balance-container:hover {
+.categories-doughnut-balance-container:hover {
     background-color: #cccccc;
     font-size: 18px;
 }
 
-.categories-chart-balance-container-active:hover {
+.categories-doughnut-balance-container-active:hover {
     background-color: #cccccc;
     font-size: 18px;
 }
 
-.categories-chart-balance {
+.categories-doughnut-balance {
     padding: 8px;
 }
 
@@ -249,7 +249,7 @@
 }
 
 .categories-table-title,
-.categories-chart-balance {
+.categories-doughnut-balance {
     cursor: pointer;
 }
 

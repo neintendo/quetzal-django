@@ -2,6 +2,7 @@ import "../../styles/Categories/Categories.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import CategoriesTable from "./CategoriesTable";
+import CategoriesDoughnut from "./CategoriesDoughnut";
 import AddCategory from "./AddCategory";
 
 const Categories = () => {
@@ -124,18 +125,18 @@ const Categories = () => {
         />
       )}
       <div className="categories">
-        <div className="categories-chart">
+        <div className="categories-doughnut">
           <div
             className={
               showFilterView
-                ? "categories-chart-balance-container-expanded"
+                ? "categories-doughnut-balance-container-expanded"
                 : isFilterActive
-                  ? "categories-chart-balance-container-active"
-                  : "categories-chart-balance-container"
+                  ? "categories-doughnut-balance-container-active"
+                  : "categories-doughnut-balance-container"
             }
           >
             <div
-              className="categories-chart-balance"
+              className="categories-doughnut-balance"
               onClick={() => toggleFilterView()}
             >
               {categoriesGraphData.converted_transactions !== 0
@@ -155,7 +156,7 @@ const Categories = () => {
             >
               <div
                 className="categories-textselect-container"
-                style={{ "padding-left": 20 }}
+                style={{ paddingLeft: 20 }}
               >
                 <div className="categories-filters-filter">
                   Date Range
@@ -233,7 +234,7 @@ const Categories = () => {
               </div>
               <div
                 className="categories-textselect-container"
-                style={{ "padding-right": 20 }}
+                style={{ paddingRight: 20 }}
               >
                 <div className="categories-filters-filter">
                   Currency
@@ -268,6 +269,7 @@ const Categories = () => {
               </div>
             </div>
           </div>
+          <CategoriesDoughnut enhancedCategoriesData={enhancedCategoriesData} />
         </div>
         <div className="categories-table-container">
           <div className="categories-table-header">
