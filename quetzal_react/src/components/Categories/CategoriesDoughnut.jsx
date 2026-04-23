@@ -58,6 +58,12 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
     cutout: "70%",
     radius: "95%",
     plugins: {
+      tooltip: {
+        titleFont: { family: "DepartureMono-Regular", size: 11 },
+        bodyFont: { family: "DepartureMono-Regular", size: 10 },
+        titleColor: "#eeeeee",
+        bodyColor: "#eeeeee",
+      },
       legend: {
         display: true,
         position: "right",
