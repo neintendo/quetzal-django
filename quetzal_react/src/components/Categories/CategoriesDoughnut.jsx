@@ -14,15 +14,18 @@ ChartJS.register(ArcElement, Tooltip, Legend, DoughnutController);
 const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
   if (!enhancedCategoriesData) {
     return (
-      <div className="categories-graph-loading">[ Loading Charts... ]</div>
+      <div className="categories-doughnut-loading">[ Loading Doughnut... ]</div>
     );
   }
 
   // Map categories
   const labels = [
-    ...new Set(enhancedCategoriesData.map((category) => category.name)),
+    ...new Set(
+      enhancedCategoriesData
+        .filter((category) => category.total !== 0)
+        .map((category) => category.name),
+    ),
   ].sort();
-  console.log(enhancedCategoriesData);
 
   // Maps amounts
   const amounts = labels.map((label) => {
@@ -82,7 +85,11 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
   return (
     <>
       <div className="categories-doughnut-canvas">
-        <Doughnut id="cat_chart" options={options} data={canvasData} />
+        {labels.length === 0 ? (
+          <div className="categories-doughnut-loading">[ No Data ]</div>
+        ) : (
+          <Doughnut id="cat_chart" options={options} data={canvasData} />
+        )}
       </div>
     </>
   );
