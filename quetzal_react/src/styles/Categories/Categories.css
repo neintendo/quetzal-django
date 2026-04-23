@@ -17,50 +17,45 @@
     align-items: start;
     padding: 16px;
     padding-bottom: 8px;
-    width: calc(100% - 32px);
+    width: 35%;
     min-height: 4%;
-    height: 30%;
+    height: 50%;
     border: 1px solid #bbbbbb;
     position: relative;
 }
 
-.categories-doughnut-balance-container,
-.categories-doughnut-balance-container-active,
-.categories-doughnut-balance-container-expanded {
-    position: absolute;
-    background-color: #dddddd;
+.categories-balance-container,
+.categories-balance-container-active,
+.categories-balance-container-expanded {
+    background-color: #cccccc;
     display: inline-block;
     border: 1px solid #bbbbbb;
-    outline: 8px solid #dddddd;
     transition:
         background-color 250ms ease,
         font-size 250ms ease;
-    max-height: calc(100% - 32px);
-    /*max-width: 60%;*/
+    width: auto;
     overflow-y: auto;
+    white-space: nowrap;
     z-index: 31;
 }
 
-.categories-doughnut-balance-container-active {
+.categories-balance-container-active {
     background-color: #bbbbbb;
     border: 1px solid #999999;
 }
-.categories-doughnut-balance-container-expanded {
+.categories-balance-container-expanded {
     background-color: #cccccc;
-    font-size: 18px;
 }
 
-.categories-doughnut-balance-container:hover {
-    background-color: #cccccc;
-    font-size: 18px;
+.categories-balance-container:hover {
+    background-color: #eeeeee;
 }
 
-.categories-doughnut-balance-container-active:hover {
-    background-color: #cccccc;
-    font-size: 18px;
+.categories-balance-container-active:hover {
+    background-color: #eeeeee;
 }
 
-.categories-doughnut-balance {
+.categories-balance {
     padding: 8px;
 }
 
@@ -151,24 +146,24 @@
 }
 
 .categories-table-header {
-    position: sticky;
     background-color: #dddddd;
-    display: flex;
+    position: sticky;
     top: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
     z-index: 30;
     grid-column: 1 / -1;
     grid-row: 1;
-    justify-content: space-between;
     box-sizing: border-box;
     box-shadow: 0 -30px 0 #dddddd;
-    gap: 8px;
 }
 
 .categories-table-title {
     padding: 8px;
-    border: 1px solid #bbbbbb;
     background-color: #cccccc;
-    border: none;
     transition: background-color 250ms ease;
     border: 1px solid #bbbbbb;
 }
@@ -189,9 +184,11 @@
 }
 
 .table-header-input {
+    display: flex;
     font-size: 12px;
     background-color: #dddddd;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     border: 1px solid #bbbbbb;
     box-sizing: border-box;
     transition: background-color 250ms ease;
@@ -249,7 +246,7 @@
 }
 
 .categories-table-title,
-.categories-doughnut-balance {
+.categories-balance {
     cursor: pointer;
 }
 
