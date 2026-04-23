@@ -1,11 +1,10 @@
 import "../styles/Sidebar.css";
 import api from "../api";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Sidebar = ({ isOpen, onPageClick }) => {
   const [profile, setProfile] = useState(null);
-  const [showProfile, setShowProfile] = useState(true);
   const [currentPage, setCurrentPage] = useState("");
   const navigate = useNavigate();
 
@@ -23,12 +22,6 @@ const Sidebar = ({ isOpen, onPageClick }) => {
   useEffect(() => {
     getProfile();
   }, []);
-
-  const toggleView = () => {
-    setShowProfile(!showProfile); // Switches true to false, false to true
-  };
-
-  console.log("dsd", onPageClick);
 
   return (
     <>
@@ -84,42 +77,25 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           </div>
         </div>
         <div className="sidebar-bottom">
-          <div className="sidebar-menu">
-            {showProfile ? (
-              // Show profile
-              <div className="sidebar-profile">
-                {profile ? (
-                  <div>▒ {profile.display_name}</div>
-                ) : (
-                  <div>LOADING...</div>
-                )}
-              </div>
-            ) : (
-              // Show options
-              <div className="sidebar-options">
-                <div className="sidebar-options-icons" title="Help">
-                  {"?"}
+          <div className="sidebar-menu" onClick={() => navigate("/logout")}>
+            <div className="sidebar-profile">
+              {profile ? (
+                <div>
+                  <span
+                    style={{
+                      color: "#888888",
+                      textAlign: "center",
+                    }}
+                  >
+                    ▋
+                  </span>{" "}
+                  {profile.display_name}
                 </div>
-                <div className="sidebar-options-icons" title="Settings">
-                  {"⌥"}
-                </div>
-                <div
-                  className="sidebar-options-icons"
-                  title="Logout"
-                  onClick={() => navigate("/logout")}
-                >
-                  {"↳"}
-                </div>
-              </div>
-            )}
-
-            <div
-              className="sidebar-options-toggle"
-              title="Options"
-              onClick={toggleView}
-            >
-              {showProfile ? "▫" : "▪"}
+              ) : (
+                <div>LOADING...</div>
+              )}
             </div>
+            <div className="sidebar-settings-arrow">{"›"}</div>
           </div>
         </div>
       </nav>
