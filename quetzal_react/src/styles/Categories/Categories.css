@@ -90,6 +90,7 @@
 }
 
 .categories-filters-select {
+    background-color: #dddddd;
     margin: 4px 0;
     border: 1px solid #999999;
     border-radius: 4px;
@@ -99,15 +100,15 @@
 }
 
 .category-filters-date {
-    height: 80%;
-    margin: 4px 0;
+    background-color: #dddddd;
     border: 1px solid #999999;
     border-radius: 4px;
+    margin: 4px 0;
     box-sizing: border-box;
     width: 100px;
+    height: 75%;
     align-items: center;
     justify-content: space-evenly;
-    height: 75%;
 }
 
 .categories-start-end-date-container {
