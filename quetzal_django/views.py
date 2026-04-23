@@ -213,7 +213,7 @@ class AccountsGraphView(APIView):
         if (currency is None or currency == "") and (account is None or account == ""):
             for transaction in transactions:
                 month_key = transaction.datetime.strftime("%Y-%m")
-                amount = transaction.amount
+                amount = round(transaction.amount, 2)
 
                 # For non main_currency conversions only
                 if transaction.currency != main_currency and transaction.amount != 0:
@@ -224,7 +224,7 @@ class AccountsGraphView(APIView):
                         transaction.datetime,
                     )
                     converted_transactions += 1
-                    amount = Decimal(str(converted_amount))
+                    amount = round(Decimal(str(converted_amount)), 2)
 
                 match transaction.transaction_type:
                     case "income":
@@ -249,7 +249,7 @@ class AccountsGraphView(APIView):
         else:
             for transaction in transactions:
                 month_key = transaction.datetime.strftime("%Y-%m")
-                amount = transaction.amount
+                amount = round(transaction.amount, 2)
 
                 match transaction.transaction_type:
                     case "income":
