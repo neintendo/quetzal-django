@@ -58,44 +58,48 @@
     padding: 8px;
 }
 
-.categories-filter-container-active,
 .categories-filter-container {
-    gap: 8px;
-    display: none;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    border-top: 1px solid #bbbbbb;
-    width: 100%;
-}
-.categories-filter-container-active {
+    background-color: #cccccc;
+    gap: 48px;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: normal;
+    border: 1px solid #bbbbbb;
+    flex: 1;
+    min-width: 0;
+    height: inherit;
 }
 
 .categories-textselect-container {
     display: flex;
     gap: 8px;
-    flex-direction: column;
-    padding: 8px;
+    flex-direction: row;
+    height: 100%;
+    flex: 1;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .categories-filters-filter {
     display: flex;
     flex-direction: row;
     font-size: 14px;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .categories-filters-select {
-    height: 36px;
     margin: 4px 0;
     border: 1px solid #999999;
     border-radius: 4px;
     box-sizing: border-box;
-    width: 256px;
+    width: 100%;
+    height: 75%;
 }
 
 .category-filters-date {
-    height: 36px;
+    height: 80%;
     margin: 4px 0;
     border: 1px solid #999999;
     border-radius: 4px;
@@ -103,6 +107,7 @@
     width: 100px;
     align-items: center;
     justify-content: space-evenly;
+    height: 75%;
 }
 
 .categories-start-end-date-container {
@@ -111,6 +116,7 @@
     gap: 8px;
     align-items: center;
     justify-content: space-evenly;
+    height: 100%;
 }
 
 .filter-clear-button {
@@ -144,20 +150,24 @@
     scroll-padding: 20%;
 }
 
-.categories-table-header {
+.categories-table-header-container {
     background-color: #dddddd;
     position: sticky;
     top: 0px;
+    box-shadow: 0 -30px 0 #dddddd;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 8px;
+    flex-direction: column;
     width: 100%;
     z-index: 30;
     grid-column: 1 / -1;
     grid-row: 1;
-    box-sizing: border-box;
-    box-shadow: 0 -30px 0 #dddddd;
+    gap: 8px;
+}
+.categories-table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .categories-table-title {
@@ -249,6 +259,6 @@
     cursor: pointer;
 }
 
-.categories-filter-container-active {
+.categories-filter-container {
     cursor: default;
 }
