@@ -57,6 +57,20 @@ const Categories = () => {
     fetchData();
   }, [categoryType, startDate, endDate, account, currency]);
 
+  useEffect(() => {
+    function clickOutside(event) {
+      const filterView = document.getElementById("filterListen");
+      if (filterView && !filterView.contains(event.target)) {
+        setShowFilterView(false);
+      }
+    }
+    document.addEventListener("mousedown", clickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside);
+    };
+  }, []);
+
   const refresh = () => {
     fetchData();
   };
@@ -134,6 +148,7 @@ const Categories = () => {
                   ? "categories-doughnut-balance-container-active"
                   : "categories-doughnut-balance-container"
             }
+            id="filterListen"
           >
             <div
               className="categories-doughnut-balance"
