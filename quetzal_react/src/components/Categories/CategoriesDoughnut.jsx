@@ -61,8 +61,12 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
       legend: {
         display: true,
         position: "right",
+        align: "center",
         labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
           padding: 16,
+          boxHeight: 6,
         },
       },
     },
