@@ -1,9 +1,8 @@
 .categories-doughnut-canvas {
     display: flex;
     align-items: start;
-    width: calc(100% - 32px);
+    width: 100%;
     height: calc(100% - 8px);
-    z-index: 30;
 }
 
 .categories-doughnut-loading {

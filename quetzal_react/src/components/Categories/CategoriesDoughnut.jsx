@@ -63,6 +63,8 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
         position: "right",
         align: "center",
         labels: {
+          font: { family: "DepartureMono-Regular", size: 11 },
+          color: "#444444",
           usePointStyle: true,
           pointStyle: "circle",
           padding: 16,
