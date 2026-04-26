@@ -139,8 +139,17 @@ const Categories = () => {
         />
       )}
       <div className="categories">
-        <div className="categories-doughnut">
-          <CategoriesDoughnut enhancedCategoriesData={enhancedCategoriesData} />
+        <div className="chartjs-container">
+          <div className="categories-doughnut">
+            <CategoriesDoughnut
+              enhancedCategoriesData={enhancedCategoriesData}
+            />
+          </div>
+          <div className="categories-radar">
+            <CategoriesDoughnut
+              enhancedCategoriesData={enhancedCategoriesData}
+            />
+          </div>
         </div>
         <div className="categories-table-container">
           <div className="categories-table-header-container">
