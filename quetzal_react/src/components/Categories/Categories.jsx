@@ -3,6 +3,7 @@ import api from "../../api";
 import { useState, useEffect } from "react";
 import CategoriesTable from "./CategoriesTable";
 import CategoriesDoughnut from "./CategoriesDoughnut";
+import CategoriesRadar from "./CategoriesRadar";
 import AddCategory from "./AddCategory";
 
 const Categories = () => {
@@ -146,9 +147,7 @@ const Categories = () => {
             />
           </div>
           <div className="categories-radar">
-            <CategoriesDoughnut
-              enhancedCategoriesData={enhancedCategoriesData}
-            />
+            <CategoriesRadar enhancedCategoriesData={enhancedCategoriesData} />
           </div>
         </div>
         <div className="categories-table-container">
