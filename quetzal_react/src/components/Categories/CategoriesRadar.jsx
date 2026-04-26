@@ -20,8 +20,12 @@ ChartJS.register(
   RadarController,
 );
 
-const CategoriesRadar = ({ enhancedCategoriesData }) => {
-  if (!enhancedCategoriesData) {
+const CategoriesRadar = ({
+  enhancedCategoriesData,
+  enhancedRadarData,
+  enhancedRadarPrevData,
+}) => {
+  if (!enhancedRadarData) {
     return <div className="categories-radar-loading">[ Loading Radar... ]</div>;
   }
 
@@ -36,7 +40,12 @@ const CategoriesRadar = ({ enhancedCategoriesData }) => {
 
   // Maps amounts
   const amounts = labels.map((label) => {
-    const a = enhancedCategoriesData.find((item) => item.name === label);
+    const a = enhancedRadarData.find((item) => item.name === label);
+    return a?.total || 0;
+  });
+
+  const amountsRadar = labels.map((label) => {
+    const a = enhancedRadarPrevData.find((item) => item.name === label);
     return a?.total || 0;
   });
 
@@ -44,19 +53,19 @@ const CategoriesRadar = ({ enhancedCategoriesData }) => {
     labels: labels,
     datasets: [
       {
-        label: "Dataset One",
+        label: "Current Month",
         data: amounts,
         backgroundColor: "rgba(68, 68, 68, 0.33)",
         borderColor: "#444444",
         borderWidth: 1,
       },
-      // {
-      //   label: "Dataset Two",
-      //   data: amounts,
-      //   backgroundColor: "rgba(119, 119, 119, 0.33)",
-      //   borderColor: "#888888",
-      //   borderWidth: 1,
-      // },
+      {
+        label: "Previous Month",
+        data: amountsRadar,
+        backgroundColor: "rgba(119, 119, 119, 0.33)",
+        borderColor: "#888888",
+        borderWidth: 1,
+      },
     ],
   };
 

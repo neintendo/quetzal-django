@@ -1,5 +1,6 @@
+import calendar
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 
 import django_filters
@@ -337,6 +338,8 @@ class CategoriesGraphView(APIView):
         # All user transactions.
         transactions = Transaction.objects.filter(user=request.user)
 
+        radar_check = request.GET.get("radar_check")
+
         # Filters request by currency
         currency = request.GET.get("currency")
         if currency:
@@ -347,13 +350,43 @@ class CategoriesGraphView(APIView):
         if account:
             transactions = transactions.filter(account__name=account)
 
-        start_date = request.GET.get("start_date")
-        if start_date:
-            transactions = transactions.filter(datetime__date__gte=start_date)
+        # Filter by date
+        if not radar_check:
+            start_date = request.GET.get("start_date")
+            if start_date:
+                transactions = transactions.filter(datetime__date__gte=start_date)
 
-        end_date = request.GET.get("end_date")
-        if end_date:
-            transactions = transactions.filter(datetime__date__lte=end_date)
+            end_date = request.GET.get("end_date")
+            if end_date:
+                transactions = transactions.filter(datetime__date__lte=end_date)
+
+        # Previous month filter for radar graph.
+        elif radar_check:
+            date_now = datetime.now()
+            month, year = date_now.month, date_now.year
+            if month == 1:
+                year -= 1
+                month = 12
+            else:
+                month -= 1
+                month_range = calendar.monthrange(date_now.year, month)
+                date_now = date_now.replace(month=month, day=month_range[1])
+
+            rd_end_date = date_now.replace(month=month, year=year)
+            mon_end = calendar.monthrange(rd_end_date.year, rd_end_date.month)
+            rd_end_date = rd_end_date.replace(
+                day=mon_end[1], hour=23, minute=59, second=59
+            )
+            rd_start_date = rd_end_date
+            rd_start_date = rd_start_date.replace(day=1)
+
+            if rd_start_date:
+                transactions = transactions.filter(datetime__date__gte=rd_start_date)
+
+            if rd_end_date:
+                transactions = transactions.filter(datetime__date__lte=rd_end_date)
+
+            print("start_date: {0} - end date {1}".format(rd_start_date, rd_end_date))
 
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")

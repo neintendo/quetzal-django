@@ -5,10 +5,14 @@ import CategoriesTable from "./CategoriesTable";
 import CategoriesDoughnut from "./CategoriesDoughnut";
 import CategoriesRadar from "./CategoriesRadar";
 import AddCategory from "./AddCategory";
+import CurrentMonth from "../Utilities/CurrentMonth";
 
 const Categories = () => {
+  const { currentMonth } = CurrentMonth();
   const [categoriesData, setCategoriesData] = useState([]);
   const [categoriesGraphData, setCategoriesGraphData] = useState([]);
+  const [categoriesRadarPrevData, setCategoriesRadarPrevData] = useState([]);
+  const [categoriesRadarMonthData, setCategoriesRadarMonthData] = useState([]);
   const [transactionsData, setTransactionsData] = useState([]);
   const [tableToggle, setTableToggle] = useState(false);
   const [categoryType, setCategoryType] = useState("expense");
@@ -33,6 +37,22 @@ const Categories = () => {
           currency: currency,
         },
       }),
+      // Current month dataset for radar
+      api.get("categories/graph/", {
+        params: {
+          start_date: currentMonth,
+          account: account,
+          currency: currency,
+        },
+      }),
+      // Average dataset for radar
+      api.get("categories/graph/", {
+        params: {
+          account: account,
+          currency: currency,
+          radar_check: "true",
+        },
+      }),
       api.get("profile/"),
       api.get("transactions/", {
         params: {
@@ -44,9 +64,18 @@ const Categories = () => {
       }),
     ])
       .then(
-        ([categoriesRes, categoriesGraphRes, profileRes, transactionsRes]) => {
+        ([
+          categoriesRes,
+          categoriesGraphRes,
+          categoriesRadarMonthRes,
+          categoriesRadarPrevRes,
+          profileRes,
+          transactionsRes,
+        ]) => {
           setCategoriesData(categoriesRes.data);
           setCategoriesGraphData(categoriesGraphRes.data);
+          setCategoriesRadarMonthData(categoriesRadarMonthRes.data);
+          setCategoriesRadarPrevData(categoriesRadarPrevRes.data);
           setProfile(profileRes.data);
           setTransactionsData(transactionsRes.data);
         },
@@ -87,6 +116,48 @@ const Categories = () => {
     } else if (category.type === "income") {
       total =
         categoriesGraphData?.transactions_by_category?.income?.[
+          category.name
+        ] || 0;
+    }
+
+    return {
+      ...category,
+      total: total,
+    };
+  });
+
+  const enhancedRadarData = categoriesData.map((category) => {
+    let total = 0;
+
+    if (category.type === "expense") {
+      total =
+        categoriesRadarMonthData?.transactions_by_category?.expenses?.[
+          category.name
+        ] * -1 || 0;
+    } else if (category.type === "income") {
+      total =
+        categoriesRadarMonthData?.transactions_by_category?.income?.[
+          category.name
+        ] || 0;
+    }
+
+    return {
+      ...category,
+      total: total,
+    };
+  });
+
+  const enhancedRadarPrevData = categoriesData.map((category) => {
+    let total = 0;
+
+    if (category.type === "expense") {
+      total =
+        categoriesRadarPrevData?.transactions_by_category?.expenses?.[
+          category.name
+        ] * -1 || 0;
+    } else if (category.type === "income") {
+      total =
+        categoriesRadarPrevData?.transactions_by_category?.income?.[
           category.name
         ] || 0;
     }
@@ -147,7 +218,11 @@ const Categories = () => {
             />
           </div>
           <div className="categories-radar">
-            <CategoriesRadar enhancedCategoriesData={enhancedCategoriesData} />
+            <CategoriesRadar
+              enhancedCategoriesData={enhancedCategoriesData}
+              enhancedRadarData={enhancedRadarData}
+              enhancedRadarPrevData={enhancedRadarPrevData}
+            />
           </div>
         </div>
         <div className="categories-table-container">
