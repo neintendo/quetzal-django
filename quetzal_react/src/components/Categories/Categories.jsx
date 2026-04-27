@@ -5,7 +5,9 @@ import CategoriesTable from "./CategoriesTable";
 import CategoriesDoughnut from "./CategoriesDoughnut";
 import CategoriesRadar from "./CategoriesRadar";
 import AddCategory from "./AddCategory";
+import EditCategory from "./EditCategory";
 import CurrentMonth from "../Utilities/CurrentMonth";
+import CategoriesDetail from "./CategoriesDetail";
 
 const Categories = () => {
   const { currentMonth } = CurrentMonth();
@@ -25,6 +27,11 @@ const Categories = () => {
   const [account, setAccount] = useState("");
   const [currency, setCurrency] = useState("");
   const isFilterActive = startDate || endDate || account || currency;
+  const [selectedCategoryID, setSelectedCategoryID] = useState("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
+  const [selectedCategoryTotal, setSelectedCategoryTotal] = useState("");
+  const [tableNav, setTableNav] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const fetchData = () => {
     Promise.all([
@@ -184,6 +191,18 @@ const Categories = () => {
     refresh();
   };
 
+  const handleCategoryEdited = () => {
+    setShowEditModal(false);
+    refresh();
+  };
+
+  const handleCategoryDelete = () => {
+    setShowEditModal(false);
+    setTableNav(false);
+    setSelectedCategoryName(false);
+    refresh();
+  };
+
   const uniqueAccounts = [
     ...new Map(
       transactionsData.map((t) => [
@@ -201,6 +220,18 @@ const Categories = () => {
     setShowFilterView(!showFilterView);
   };
 
+  const handleRowClick = (
+    idFromChild,
+    categoryNameFromChild,
+    totalFromChild,
+  ) => {
+    setSelectedCategoryID(idFromChild);
+    setSelectedCategoryName(categoryNameFromChild);
+    setSelectedCategoryTotal(totalFromChild);
+    setSearchTerm("");
+    setTableNav(true);
+  };
+
   return (
     <>
       {showAddModal && (
@@ -208,6 +239,15 @@ const Categories = () => {
           route="/categories/"
           onClose={() => setShowAddModal(false)}
           onSuccess={handleCategoryAdded}
+        />
+      )}
+      {showEditModal && (
+        <EditCategory
+          route={`/categories/${selectedCategoryID}/`}
+          onClose={() => setShowEditModal(false)}
+          onSuccess={handleCategoryEdited}
+          onCategoryDelete={handleCategoryDelete}
+          category={selectedCategoryName}
         />
       )}
       <div className="categories">
@@ -229,14 +269,28 @@ const Categories = () => {
           <div className="categories-table-header-container">
             <div className="categories-table-header">
               <div
-                className="categories-table-title"
+                className={
+                  tableNav
+                    ? "categories-table-title-active"
+                    : "categories-table-title"
+                }
                 onClick={() => {
-                  toggleTable();
-                  setSearchTerm("");
+                  if (!tableNav) {
+                    toggleTable();
+                    setSearchTerm("");
+                  }
                 }}
                 // title="Double Click to Minimise / Maximise"
               >
-                {tableToggle ? "Income" : "Expenses"}
+                {tableNav ? (
+                  <div onClick={() => setTableNav(false)}>
+                    {selectedCategoryName}
+                  </div>
+                ) : tableToggle ? (
+                  "Income"
+                ) : (
+                  "Expenses"
+                )}
               </div>
               <div
                 className={
@@ -252,31 +306,53 @@ const Categories = () => {
                   className="categories-balance"
                   onClick={() => toggleFilterView()}
                 >
-                  {categoriesGraphData.converted_transactions !== 0
-                    ? tableToggle
-                      ? `± ${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
-                      : `± ${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`
-                    : tableToggle
-                      ? `${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
-                      : `${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`}
+                  {tableNav
+                    ? // Total for category detail
+                      categoriesGraphData.converted_transactions !== 0
+                      ? `± ${currencyFormatter.format(selectedCategoryTotal) ?? "..."}`
+                      : `${currencyFormatter.format(selectedCategoryTotal) ?? "..."}`
+                    : // Total for category table
+                      categoriesGraphData.converted_transactions !== 0
+                      ? tableToggle
+                        ? `± ${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
+                        : `± ${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`
+                      : tableToggle
+                        ? `${currencyFormatter.format(categoriesGraphData?.income_total) ?? "..."}`
+                        : `${currencyFormatter.format(categoriesGraphData?.expenses_total * -1) ?? "..."}`}
                 </div>
               </div>
               <input
                 className="table-header-input"
-                placeholder={tableToggle ? "Search Income" : "Search Expenses"}
+                placeholder={
+                  tableNav
+                    ? `Search ${selectedCategoryName}`
+                    : tableToggle
+                      ? "Search Income"
+                      : "Search Expenses"
+                }
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
 
               <div className="table-header-button-container">
-                <div className="edit-category-container">
-                  <button
-                    className="edit-category-button"
-                    type="button"
-                    onClick={() => setShowAddModal(true)}
-                  >
-                    {"+ Add Category"}
-                  </button>
+                <div className="add-edit-category-container">
+                  {tableNav ? (
+                    <button
+                      className="add-edit-category-button"
+                      type="button"
+                      onClick={() => setShowEditModal(true)}
+                    >
+                      {"Edit Category"}
+                    </button>
+                  ) : (
+                    <button
+                      className="add-edit-category-button"
+                      type="button"
+                      onClick={() => setShowAddModal(true)}
+                    >
+                      {"+ Add Category"}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -395,10 +471,18 @@ const Categories = () => {
             )}
           </div>
 
-          <CategoriesTable
-            searchTerm={searchTerm}
-            enhancedCategoriesData={enhancedCategoriesData}
-          />
+          {tableNav ? (
+            <CategoriesDetail
+              searchTerm={searchTerm}
+              categoryName={selectedCategoryName}
+            />
+          ) : (
+            <CategoriesTable
+              onRowClick={handleRowClick}
+              searchTerm={searchTerm}
+              enhancedCategoriesData={enhancedCategoriesData}
+            />
+          )}
         </div>
       </div>
     </>

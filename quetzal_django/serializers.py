@@ -83,6 +83,9 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
         read_only_fields = ("user", "id")
+        extra_kwargs = {
+            "type": {"required": False},
+        }
 
 
 # Transaction Serializer.

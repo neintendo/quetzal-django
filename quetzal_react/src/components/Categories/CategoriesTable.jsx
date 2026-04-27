@@ -1,7 +1,11 @@
 import { useState } from "react";
 import "../../styles/Categories/CategoriesTable.css";
 
-const CategoriesTable = ({ searchTerm, enhancedCategoriesData }) => {
+const CategoriesTable = ({
+  searchTerm,
+  enhancedCategoriesData,
+  onRowClick,
+}) => {
   const [sortHeader, setSortHeader] = useState({
     key: "name",
     direction: "asc",
@@ -74,9 +78,7 @@ const CategoriesTable = ({ searchTerm, enhancedCategoriesData }) => {
           {sortedData.map((val, key) => {
             return (
               <tr
-                // onClick={() =>
-                //   onRowClick(val.id, val.name, val.type, val.currency)
-                // }
+                onClick={() => onRowClick(val.id, val.name, val.total)}
                 key={key}
               >
                 <td>{val.name}</td>

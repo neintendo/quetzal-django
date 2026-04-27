@@ -206,7 +206,7 @@
     transition: background-color 250ms ease;
 }
 .categories-table-title-active:hover {
-    background-color: #cccccc;
+    background-color: #eeeeee;
 }
 
 .table-header-input {
@@ -236,14 +236,11 @@
     gap: 8px;
 }
 
-.add-category-container {
-    display: flex;
-}
-.edit-category-container {
+.add-edit-category-container {
     display: flex;
 }
 
-.add-category-button {
+.add-edit-category-button {
     align-items: center;
     background-color: #cccccc;
     border: none;
@@ -253,25 +250,13 @@
     width: 144px;
 }
 
-.add-category-button:hover {
-    background-color: #eeeeee;
-}
-
-.edit-category-button {
-    align-items: center;
-    background-color: #cccccc;
-    border: none;
-    font-size: 13px;
-    transition: background-color 250ms ease;
-    border: 1px solid #bbbbbb;
-    width: 144px;
-}
-
-.edit-category-button:hover {
+.add-edit-category-button:hover {
     background-color: #eeeeee;
 }
 
 .categories-table-title,
+.categories-table-title-active,
+.add-edit-category-button,
 .categories-balance {
     cursor: pointer;
 }
