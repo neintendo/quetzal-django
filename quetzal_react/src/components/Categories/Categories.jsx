@@ -8,6 +8,7 @@ import AddCategory from "./AddCategory";
 import EditCategory from "./EditCategory";
 import CurrentMonth from "../Utilities/CurrentMonth";
 import CategoriesDetail from "./CategoriesDetail";
+import CategoriesChart from "./CategoriesChart";
 
 const Categories = () => {
   const { currentMonth } = CurrentMonth();
@@ -252,18 +253,29 @@ const Categories = () => {
       )}
       <div className="categories">
         <div className="chartjs-container">
-          <div className="categories-doughnut">
-            <CategoriesDoughnut
-              enhancedCategoriesData={enhancedCategoriesData}
-            />
-          </div>
-          <div className="categories-radar">
-            <CategoriesRadar
-              enhancedCategoriesData={enhancedCategoriesData}
-              enhancedRadarData={enhancedRadarData}
-              enhancedRadarPrevData={enhancedRadarPrevData}
-            />
-          </div>
+          {tableNav ? (
+            <div className="categories-chart">
+              <CategoriesChart
+                categoryID={selectedCategoryID}
+                conv_int={categoriesGraphData.converted_transactions}
+              />
+            </div>
+          ) : (
+            <>
+              <div className="categories-doughnut">
+                <CategoriesDoughnut
+                  enhancedCategoriesData={enhancedCategoriesData}
+                />
+              </div>
+              <div className="categories-radar">
+                <CategoriesRadar
+                  enhancedCategoriesData={enhancedCategoriesData}
+                  enhancedRadarData={enhancedRadarData}
+                  enhancedRadarPrevData={enhancedRadarPrevData}
+                />
+              </div>
+            </>
+          )}
         </div>
         <div className="categories-table-container">
           <div className="categories-table-header-container">

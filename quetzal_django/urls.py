@@ -6,6 +6,7 @@ from .views import (
     AccountsAggregateView,
     AccountsGraphView,
     AccountsListCreateView,
+    CategoriesChartView,
     CategoriesDetailView,
     CategoriesGraphView,
     CategoriesListCreateView,
@@ -40,6 +41,7 @@ urlpatterns = [
         "categories/", CategoriesListCreateView.as_view(), name="category-list-create"
     ),
     path("categories/graph/", CategoriesGraphView.as_view(), name="category-graph"),
+    path("categories/chart/", CategoriesChartView.as_view(), name="category-chart"),
     path(
         "categories/<int:pk>/", CategoriesDetailView.as_view(), name="category-detail"
     ),

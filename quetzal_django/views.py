@@ -299,6 +299,116 @@ class AccountsGraphView(APIView):
         )
 
 
+class CategoriesChartView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user transactions.
+        transactions = Transaction.objects.filter(user=request.user)
+
+        # Filters request by currency
+        currency = request.GET.get("currency")
+        if currency:
+            transactions = transactions.filter(currency=currency)
+
+        # Filters request by category
+        category = request.GET.get("category")
+        if category:
+            transactions = transactions.filter(category=category)
+
+        category_converted_transactions = int(
+            request.GET.get("category_converted_transactions")
+        )
+
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
+
+        monthly_data = defaultdict(Decimal)
+        converted_transactions = 0
+        total_t = 0
+
+        print(type(category_converted_transactions))
+        # Graph conversion for all currencies
+        if category_converted_transactions != 0:
+            for transaction in transactions:
+                month_key = transaction.datetime.strftime("%Y-%m")
+                amount = round(transaction.amount, 2)
+
+                # For non main_currency conversions only
+                if transaction.currency != main_currency and transaction.amount != 0:
+                    converted_amount = conversion(
+                        transaction.amount,
+                        transaction.currency,
+                        main_currency,
+                        transaction.datetime,
+                    )
+                    converted_transactions += 1
+                    amount = round(Decimal(str(converted_amount)), 2)
+
+                match transaction.transaction_type:
+                    case "income":
+                        monthly_data[month_key] += amount
+                        total_t += 1
+                    case "expense":
+                        monthly_data[month_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] -= amount
+
+        # No graph conversions for a single currency
+        else:
+            for transaction in transactions:
+                month_key = transaction.datetime.strftime("%Y-%m")
+                amount = round(transaction.amount, 2)
+
+                match transaction.transaction_type:
+                    case "income":
+                        monthly_data[month_key] += amount
+                        total_t += 1
+                    case "expense":
+                        monthly_data[month_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            monthly_data[month_key] -= amount
+
+        list_month = []
+        for count in monthly_data:
+            list_month.append(count)
+
+        values = list(monthly_data.values())
+
+        c = 0
+        for month in monthly_data:
+            monthly_data[month] = values[c]
+            c += 1
+
+        return Response(
+            {
+                "category_transactions_by_month": monthly_data,
+                "converted_transactions": converted_transactions,
+                "total_transctions": total_t,
+            }
+        )
+
+
 # Categories
 class CategoriesListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
