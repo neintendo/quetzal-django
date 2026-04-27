@@ -180,6 +180,7 @@ class ExchangeRates(models.Model):
         indexes = [
             models.Index(fields=["-date"]),
         ]
+        unique_together = ["date", "base"]
 
     def __str__(self):
         return f"{self.date} - {self.base} {self.rates}"
