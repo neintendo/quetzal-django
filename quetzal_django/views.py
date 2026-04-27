@@ -283,8 +283,6 @@ class AccountsGraphView(APIView):
             cumulative_total += value
             cumulative.append(cumulative_total)
 
-        print(cumulative)
-
         c = 0
         for month in monthly_data:
             monthly_data[month] = cumulative[c]
@@ -327,7 +325,6 @@ class CategoriesChartView(APIView):
         converted_transactions = 0
         total_t = 0
 
-        print(type(category_converted_transactions))
         # Graph conversion for all currencies
         if category_converted_transactions != 0:
             for transaction in transactions:
@@ -440,6 +437,44 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Category.objects.filter(user=self.request.user)
 
+    def perform_destroy(self, instance):
+
+        instance_transactions = Transaction.objects.filter(category=instance)
+        linked_acc = None
+
+        for transaction in instance_transactions:
+            if transaction.transaction_type == "transfer":
+                try:
+                    isMirror = False
+                    if (transaction.destination_account) is None:
+                        raise Exception
+
+                except Exception:
+                    isMirror = True
+                    try:
+                        linked_acc = Account.objects.get(
+                            id=transaction.linked_transaction.account.id
+                        )
+                    except Exception as e:
+                        linked_acc = None
+                        print(e)
+
+                if isMirror is False:
+                    transaction.destination_account.balance -= transaction.amount
+                    transaction.destination_account.save()
+                    Transaction.objects.filter(
+                        id=transaction.linked_transaction.id
+                    ).delete()
+                elif isMirror is True:
+                    if linked_acc is not None:
+                        linked_acc.balance += transaction.amount
+                        linked_acc.save()
+                        Transaction.objects.filter(
+                            id=transaction.linked_transaction.id
+                        ).delete()
+
+        instance.delete()
+
 
 class CategoriesGraphView(APIView):
     permission_classes = [IsAuthenticated]
@@ -495,8 +530,6 @@ class CategoriesGraphView(APIView):
 
             if rd_end_date:
                 transactions = transactions.filter(datetime__date__lte=rd_end_date)
-
-            print("start_date: {0} - end date {1}".format(rd_start_date, rd_end_date))
 
         # User's main currency
         main_currency = getattr(request.user, "main_currency", "USD")
@@ -810,7 +843,6 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
                 account.balance += instance.amount
             case "transfer":
                 if isMirror is False:
-                    print("false")
                     instance.destination_account.balance -= instance.amount
                     instance.destination_account.save()
                     instance.account.balance += instance.amount
