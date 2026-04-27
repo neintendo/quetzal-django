@@ -227,8 +227,8 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
-        # Account names are unique per user.
-        unique_together = ["name", "user", "type"]
+        # Category names are unique per user.
+        unique_together = ["name", "user"]
 
     def __str__(self):
         return f"{self.name}"
