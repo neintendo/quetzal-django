@@ -72,10 +72,8 @@
     background-color: #cccccc;
 }
 
-.categories-balance-container:hover {
-    background-color: #eeeeee;
-}
-
+.categories-balance-container:hover,
+.categories-balance-container-expanded:hover,
 .categories-balance-container-active:hover {
     background-color: #eeeeee;
 }

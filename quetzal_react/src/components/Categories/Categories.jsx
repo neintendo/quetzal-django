@@ -291,18 +291,17 @@ const Categories = () => {
                     toggleTable();
                     setSearchTerm("");
                   }
+                  if (tableNav) {
+                    setTableNav(false);
+                    setSearchTerm("");
+                  }
                 }}
-                // title="Double Click to Minimise / Maximise"
               >
-                {tableNav ? (
-                  <div onClick={() => setTableNav(false)}>
-                    {selectedCategoryName}
-                  </div>
-                ) : tableToggle ? (
-                  "Income"
-                ) : (
-                  "Expenses"
-                )}
+                {tableNav
+                  ? selectedCategoryName
+                  : tableToggle
+                    ? "Income"
+                    : "Expenses"}
               </div>
               <div
                 className={
