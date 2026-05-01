@@ -123,6 +123,11 @@
     height: 75%;
 }
 
+.categories-filters-select:disabled {
+    background-color: #bbbbbb;
+    color: #eeeeee;
+}
+
 .category-filters-date {
     background-color: #dddddd;
     border: 1px solid #999999;

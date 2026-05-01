@@ -459,6 +459,7 @@ const Categories = () => {
                     onChange={(e) => {
                       setCurrency(e.target.value);
                     }}
+                    disabled={account}
                   >
                     <option value="">- Select Currency -</option>
                     {uniqueCurrencies.map((currency) => (
@@ -467,7 +468,9 @@ const Categories = () => {
                       </option>
                     ))}
                   </select>
-                  {currency ? (
+                  {account ? (
+                    ""
+                  ) : currency ? (
                     <div
                       className="filter-clear-button"
                       onClick={() => {
