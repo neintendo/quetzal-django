@@ -197,6 +197,10 @@ const Categories = () => {
     refresh();
   };
 
+  const handleEditHeaderUpdate = (update) => {
+    setSelectedCategoryName(update);
+  };
+
   const handleCategoryDelete = () => {
     setShowEditModal(false);
     setTableNav(false);
@@ -253,6 +257,7 @@ const Categories = () => {
           onSuccess={handleCategoryEdited}
           onCategoryDelete={handleCategoryDelete}
           category={selectedCategoryName}
+          headerUpdate={handleEditHeaderUpdate}
         />
       )}
       <div className="categories">

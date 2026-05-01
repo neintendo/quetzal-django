@@ -9,6 +9,7 @@ function EditCategory({
   onClose,
   category,
   onCategoryDelete,
+  headerUpdate,
 }) {
   const [name, setName] = useState(category);
   const [method, setMethod] = useState("put");
@@ -57,6 +58,7 @@ function EditCategory({
       if (res.status === 200) {
         alert("Category updated successfully!");
         setName(name);
+        headerUpdate(name);
       }
       if (res.status === 204) {
         alert("Category deleted successfully!");
