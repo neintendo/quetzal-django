@@ -204,6 +204,10 @@ const Categories = () => {
     refresh();
   };
 
+  const handleDetailTotal = (net) => {
+    setSelectedCategoryTotal(net);
+  };
+
   const uniqueAccounts = [
     ...new Map(
       transactionsData.map((t) => [
@@ -486,6 +490,12 @@ const Categories = () => {
             <CategoriesDetail
               searchTerm={searchTerm}
               categoryName={selectedCategoryName}
+              startDate={startDate}
+              endDate={endDate}
+              account={account}
+              currency={currency}
+              total={selectedCategoryTotal}
+              onNet={handleDetailTotal}
             />
           ) : (
             <CategoriesTable

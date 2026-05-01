@@ -5,6 +5,11 @@ import "../../styles/Categories/CategoriesTable.css";
 const CategoriesDetail = ({
   searchTerm,
   categoryName,
+  startDate,
+  endDate,
+  account,
+  currency,
+  onNet,
   // detailsRowClick,
   // transDetailRefresher,
 }) => {
@@ -15,19 +20,44 @@ const CategoriesDetail = ({
   });
 
   useEffect(() => {
-    const getAccTransactionData = () => {
-      api
-        .get("transactions/", { params: { category: categoryName } })
-        .then((res) => res.data)
-        .then((data) => {
-          setAccTransactionData(data);
-          console.log(data);
+    const fetchData = () => {
+      Promise.all([
+        api.get("transactions/", {
+          params: {
+            category: categoryName,
+            start_date: startDate,
+            end_date: endDate,
+            account: account,
+            currency: currency,
+          },
+        }),
+        // Used to send balance affected by filters to Categories.jsx
+        api.get("transactions/aggregate", {
+          params: {
+            category: categoryName,
+            start_date: startDate,
+            end_date: endDate,
+            account: account,
+            currency: currency,
+          },
+        }),
+      ])
+        .then(([transactionsRes, aggregateRes]) => {
+          setAccTransactionData(transactionsRes.data);
+
+          if (onNet && aggregateRes.data?.net !== undefined) {
+            let net = aggregateRes.data.net;
+            if (net < 0) {
+              net *= -1;
+            }
+            onNet(net);
+          }
         })
         .catch((err) => alert(err));
     };
 
-    getAccTransactionData();
-  }, [categoryName]);
+    fetchData();
+  }, [categoryName, startDate, endDate, account, currency]);
 
   const requestSort = (key) => {
     let direction = "asc";
