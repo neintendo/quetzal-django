@@ -863,11 +863,16 @@ class TransactionAggregateView(APIView):
     def get(self, request):
         # All user transactions.
         transactions = Transaction.objects.filter(user=request.user)
+        main_currency = getattr(request.user, "main_currency", "USD")
 
         # Filtered transactions.
         transactions_type = request.GET.get("transaction_type")
         if transactions_type:
             transactions = transactions.filter(transaction_type=transactions_type)
+
+        currency = request.GET.get("currency")
+        if currency:
+            transactions = transactions.filter(currency=currency)
 
         category = request.GET.get("category")
         if category:
@@ -875,10 +880,7 @@ class TransactionAggregateView(APIView):
 
         account = request.GET.get("account")
         if account:
-            transactions = transactions.filter(
-                Q(account__name__icontains=account)
-                | Q(destination_account__name__icontains=account)
-            )
+            transactions = transactions.filter(account__name=account)
 
         start_date = request.GET.get("start_date")
         if start_date:
@@ -890,25 +892,51 @@ class TransactionAggregateView(APIView):
 
         income_expense_transactions = transactions.exclude(transaction_type="transfer")
 
+        acc_cur = False
+        # Skip conversion if both account and currency exist
+        if not (account or currency):
+            acc_cur = True
+
+        # Creates a new array with converted balances
+        converted_income = []
+        converted_expenses = []
+        transactions_converted = 0
+
+        for transaction in income_expense_transactions:
+            if transaction.currency != main_currency and acc_cur is True:
+                amount = conversion(
+                    transaction.amount,
+                    transaction.currency,
+                    main_currency,
+                    transaction.datetime,
+                )
+                match transaction.transaction_type:
+                    case "income":
+                        converted_income.append(amount)
+                    case "expense":
+                        converted_expenses.append(amount)
+                transactions_converted += 1
+
+            else:
+                match transaction.transaction_type:
+                    case "income":
+                        converted_income.append(float(transaction.amount))
+                    case "expense":
+                        converted_expenses.append(float(transaction.amount))
+
+        inc, exp = 0, 0
+        for a in converted_income:
+            inc += a
+        for b in converted_expenses:
+            exp += b
+
         # Calculate expenses, income & net worth (EXCLUDING transfers)
-        income = (
-            income_expense_transactions.filter(transaction_type="income").aggregate(
-                total=Sum("amount")
-            )["total"]
-            or 0
-        )
-        expenses = (
-            income_expense_transactions.filter(transaction_type="expense").aggregate(
-                total=Sum("amount")
-            )["total"]
-            or 0
-        )
-        net = income - expenses
+        net = inc - exp
 
         return Response(
             {
-                "income": float(income),
-                "expense": float(expenses),
+                "income": float(inc),
+                "expense": float(exp),
                 "net": float(net),
                 "transaction_count": transactions.count(),
                 "filters_applied": dict(request.GET),
