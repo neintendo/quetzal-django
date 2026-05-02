@@ -21,7 +21,7 @@ ChartJS.register(
   Legend,
 );
 
-const CategoriesChart = ({ categoryID, conv_int }) => {
+const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
   const [transactionData, setTransactionData] = useState(null);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const CategoriesChart = ({ categoryID, conv_int }) => {
     };
 
     getTransactionData();
-  }, [categoryID, conv_int]);
+  }, [categoryID, conv_int, transDetailRefresher]);
 
   if (!transactionData) {
     return <div className="categories-chart-loading">[ Loading Graph... ]</div>;

@@ -9,6 +9,7 @@ import EditCategory from "./EditCategory";
 import CurrentMonth from "../Utilities/CurrentMonth";
 import CategoriesDetail from "./CategoriesDetail";
 import CategoriesChart from "./CategoriesChart";
+import TransactionDetail from "../Transactions/TransactionDetail";
 
 const Categories = () => {
   const { currentMonth } = CurrentMonth();
@@ -33,6 +34,29 @@ const Categories = () => {
   const [selectedCategoryTotal, setSelectedCategoryTotal] = useState("");
   const [tableNav, setTableNav] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showTransactionDetailModal, setShowTransactionDetailModal] =
+    useState(false);
+  const [transDetailRefresher, setTransDetailRefresher] = useState(0);
+
+  // consts sent to Transaction Modal from Categories Detail
+  const [selectedTransactionID, setSelectedTransactionID] = useState("");
+  const [selectedTransactionDatetime, setSelectedTransactionDatetime] =
+    useState("");
+  const [selectedTransactionDescription, setSelectedTransactionDescription] =
+    useState("");
+  const [selectedTransactionNotes, setSelectedTransactionNotes] = useState("");
+
+  const [selectedTransactionAmount, setSelectedTransactionAmount] =
+    useState("");
+  const [selectedTransactionCategory, setSelectedTransactionCategory] =
+    useState("");
+  const [selectedTransactionAccount, setSelectedTransactionAccount] =
+    useState("");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("");
+  const [selectedLinkedTransaction, setSelectedLinkedTransaction] =
+    useState("");
+  const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
+    useState("");
 
   const fetchData = () => {
     Promise.all([
@@ -212,6 +236,44 @@ const Categories = () => {
     setSelectedCategoryTotal(net);
   };
 
+  const handleTransactionUpdate = () => {
+    setShowTransactionDetailModal(false);
+    setTransDetailRefresher(transDetailRefresher + 1);
+    refresh();
+  };
+
+  const handleTransactionDelete = () => {
+    setShowTransactionDetailModal(false);
+    setTransDetailRefresher(transDetailRefresher + 1);
+    refresh();
+  };
+
+  // Handle table row clicks in CategoriesDetail
+  const detailsRowClick = (
+    idFromChild,
+    datetimeFromChild,
+    descriptionFromChild,
+    notesFromChild,
+    amountFromChild,
+    categoryFromChild,
+    accountFromChild,
+    currencyFromChild,
+    typeFromChild,
+    linkTransactionFromChild,
+  ) => {
+    setSelectedTransactionID(idFromChild);
+    setSelectedTransactionDatetime(datetimeFromChild);
+    setSelectedTransactionDescription(descriptionFromChild);
+    setSelectedTransactionNotes(notesFromChild);
+    setSelectedTransactionAmount(amountFromChild);
+    setSelectedTransactionCategory(categoryFromChild);
+    setSelectedTransactionAccount(accountFromChild);
+    setSelectedTransactionCurrency(currencyFromChild);
+    setSelectedTransactionType(typeFromChild);
+    setSelectedLinkedTransaction(linkTransactionFromChild);
+    setShowTransactionDetailModal(true);
+  };
+
   const uniqueAccounts = [
     ...new Map(
       transactionsData.map((t) => [
@@ -260,6 +322,24 @@ const Categories = () => {
           headerUpdate={handleEditHeaderUpdate}
         />
       )}
+      {showTransactionDetailModal && (
+        <TransactionDetail
+          route={`/transactions/${selectedTransactionID}/`}
+          onClose={() => setShowTransactionDetailModal(false)}
+          onSuccess={handleTransactionUpdate}
+          onTransactionDelete={handleTransactionDelete}
+          readID={selectedTransactionID}
+          readDatetime={selectedTransactionDatetime}
+          readDescription={selectedTransactionDescription}
+          readNotes={selectedTransactionNotes}
+          readAmount={selectedTransactionAmount}
+          readCategory={selectedTransactionCategory}
+          readAccount={selectedTransactionAccount}
+          readCurrency={selectedTransactionCurrency}
+          readType={selectedTransactionType}
+          readLinkedTransaction={selectedLinkedTransaction}
+        />
+      )}
       <div className="categories">
         <div className="chartjs-container">
           {tableNav ? (
@@ -267,6 +347,7 @@ const Categories = () => {
               <CategoriesChart
                 categoryID={selectedCategoryID}
                 conv_int={categoriesGraphData.converted_transactions}
+                transDetailRefresher={transDetailRefresher}
               />
             </div>
           ) : (
@@ -502,8 +583,9 @@ const Categories = () => {
               endDate={endDate}
               account={account}
               currency={currency}
-              total={selectedCategoryTotal}
               onNet={handleDetailTotal}
+              detailsRowClick={detailsRowClick}
+              transDetailRefresher={transDetailRefresher}
             />
           ) : (
             <CategoriesTable

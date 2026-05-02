@@ -10,8 +10,8 @@ const CategoriesDetail = ({
   account,
   currency,
   onNet,
-  // detailsRowClick,
-  // transDetailRefresher,
+  detailsRowClick,
+  transDetailRefresher,
 }) => {
   const [accTransactionData, setAccTransactionData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
@@ -57,7 +57,16 @@ const CategoriesDetail = ({
     };
 
     fetchData();
-  }, [categoryName, startDate, endDate, account, currency]);
+  }, [
+    categoryName,
+    startDate,
+    endDate,
+    account,
+    currency,
+    onNet,
+    detailsRowClick,
+    transDetailRefresher,
+  ]);
 
   const requestSort = (key) => {
     let direction = "asc";
@@ -155,20 +164,20 @@ const CategoriesDetail = ({
           {sortedData.map((val, key) => {
             return (
               <tr
-                // onClick={() =>
-                //   detailsRowClick(
-                //     val.id,
-                //     val.datetime,
-                //     val.description,
-                //     val.notes,
-                //     val.amount,
-                //     val.category,
-                //     val.account,
-                //     val.currency,
-                //     val.transaction_type,
-                //     val.linked_transaction,
-                //   )
-                // }
+                onClick={() =>
+                  detailsRowClick(
+                    val.id,
+                    val.datetime,
+                    val.description,
+                    val.notes,
+                    val.amount,
+                    val.category,
+                    val.account,
+                    val.currency,
+                    val.transaction_type,
+                    val.linked_transaction,
+                  )
+                }
                 key={key}
               >
                 <td style={{ width: 150 }}>{val.datetime}</td>
