@@ -1,4 +1,7 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.functions import Now
 
@@ -264,7 +267,9 @@ class Transaction(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, null=True, blank=True
     )
-    amount = models.DecimalField(max_digits=15, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=15, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
+    )
     description = models.TextField()
     notes = models.TextField(null=True, blank=True)
     datetime = models.DateTimeField(db_default=Now())
