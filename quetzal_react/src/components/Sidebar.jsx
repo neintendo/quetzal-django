@@ -1,12 +1,14 @@
 import "../styles/Sidebar.css";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Settings from "./Settings/Settings";
 
 const Sidebar = ({ isOpen, onPageClick }) => {
   const [profile, setProfile] = useState(null);
   const [currentPage, setCurrentPage] = useState("");
-  const navigate = useNavigate();
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  // const navigate = useNavigate();
 
   const getProfile = () => {
     api
@@ -25,6 +27,9 @@ const Sidebar = ({ isOpen, onPageClick }) => {
 
   return (
     <>
+      {showSettingsModal && (
+        <Settings onClose={() => setShowSettingsModal(false)} />
+      )}
       <nav className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <div className="sidebar-top">
           <div
@@ -77,7 +82,10 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           </div>
         </div>
         <div className="sidebar-bottom">
-          <div className="sidebar-menu" onClick={() => navigate("/logout")}>
+          <div
+            className="sidebar-menu"
+            onClick={() => setShowSettingsModal(true)}
+          >
             <div className="sidebar-profile">
               {profile ? (
                 <div>

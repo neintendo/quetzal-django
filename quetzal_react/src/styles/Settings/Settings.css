@@ -1,0 +1,143 @@
+.settings-modal {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    box-sizing: border-box;
+    padding-bottom: 16px;
+    padding-top: 8px;
+}
+
+.modal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    border: 1px solid #bbbbbb;
+    transition: background-color 250ms ease;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+    z-index: 1;
+}
+
+.modal-close-button:hover {
+    background-color: #dddddd;
+}
+
+.modal-close-button {
+    cursor: pointer;
+}
+
+.modal-title-container {
+    cursor: default;
+}
+
+.settings-container {
+    background-color: #eeeeee;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    width: 50%;
+    height: auto;
+    min-height: 700px;
+    border-radius: 8px;
+}
+
+.settings-sidebar {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    width: 25%;
+    min-height: 100%;
+    /*border-right: 1px solid #999999;*/
+    background-color: #e0e0e0;
+    border-radius: 8px;
+}
+
+.settings-sidebar-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding: 8px;
+    background-color: #cccccc;
+    border-radius: 4px;
+}
+
+.sidebar-sections-container {
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-sections {
+    border-bottom: 4px solid transparent;
+    padding: 8px;
+    transition: font-size 250ms ease;
+    transition: background-color 250ms ease;
+}
+.sidebar-sections-active {
+    border-bottom: 4px solid transparent;
+    padding: 8px;
+    transition: font-size 250ms ease;
+    transition: background-color 250ms ease;
+    background-color: #cccccc;
+}
+
+.sidebar-sections:hover {
+    background-color: #cccccc;
+}
+
+.settings-form-input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.settings-form-button {
+    width: 95%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #444444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.settings-form-button:hover {
+    background-color: #666666;
+}
+
+.sidebar-sections,
+.sidebar-sections-active {
+    cursor: pointer;
+}
+
+.settings-sidebar-title {
+    cursor: default;
+}
