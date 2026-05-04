@@ -1,8 +1,27 @@
-import { useEffect } from "react";
 import "../../styles/Settings/Settings.css";
-useEffect;
+import { useEffect, useState } from "react";
+import SettingsProfile from "./SettingsProfile";
 
 const Settings = ({ onClose }) => {
+  const [page, setPage] = useState("profile");
+
+  const pageSwitch = () => {
+    switch (page) {
+      case "profile":
+        return <SettingsProfile route={"/profile-update/"} />;
+      // case "appearance":
+      //   return <Accounts />;
+      // case "preferences":
+      //   return <Transactions />;
+      // case "data":
+      //   return <Categories />;
+      // case "help":
+      //   return <Categories />;
+      default:
+        return <SettingsProfile route={"/profile-update/"} />;
+    }
+  };
+
   useEffect(() => {
     function clickOutside(event) {
       const modal = document.getElementById("divListen");
@@ -23,13 +42,55 @@ const Settings = ({ onClose }) => {
         <div className="settings-sidebar">
           <div className="settings-sidebar-title">Settings</div>
           <div className="sidebar-sections-container">
-            <div className="sidebar-sections">Profile</div>
-            <div className="sidebar-sections">Appearance</div>
-            <div className="sidebar-sections">Preferences</div>
-            <div className="sidebar-sections">Data</div>
-            <div className="sidebar-sections">{"Help & Support"}</div>
+            <div
+              onClick={() => setPage("profile")}
+              className={
+                page === "profile"
+                  ? "sidebar-sections-active"
+                  : "sidebar-sections"
+              }
+            >
+              Profile
+            </div>
+            <div
+              onClick={() => setPage("appearance")}
+              className={
+                page === "appearance"
+                  ? "sidebar-sections-active"
+                  : "sidebar-sections"
+              }
+            >
+              Appearance
+            </div>
+            <div
+              onClick={() => setPage("preferences")}
+              className={
+                page === "preferences"
+                  ? "sidebar-sections-active"
+                  : "sidebar-sections"
+              }
+            >
+              Preferences
+            </div>
+            <div
+              onClick={() => setPage("data")}
+              className={
+                page === "data" ? "sidebar-sections-active" : "sidebar-sections"
+              }
+            >
+              Data
+            </div>
+            <div
+              onClick={() => setPage("help")}
+              className={
+                page === "help" ? "sidebar-sections-active" : "sidebar-sections"
+              }
+            >
+              {"Help & Support"}
+            </div>
           </div>
         </div>
+        <div className="settings-content">{pageSwitch()}</div>
       </div>
     </div>
   );

@@ -74,7 +74,14 @@
     min-height: 100%;
     /*border-right: 1px solid #999999;*/
     background-color: #e0e0e0;
-    border-radius: 8px;
+}
+
+.settings-content {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    width: 75%;
+    min-height: 100%;
 }
 
 .settings-sidebar-title {

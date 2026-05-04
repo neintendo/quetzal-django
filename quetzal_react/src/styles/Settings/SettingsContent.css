@@ -1,0 +1,44 @@
+.settings-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 32px;
+}
+
+.settings-sub-content-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-content-header {
+    display: flex;
+    padding-bottom: 12px;
+    padding-left: 4px;
+    /*width: fit-content;*/
+    align-items: start;
+}
+
+.settings-content-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.settings-content-button {
+    width: 100%;
+    padding: 10px;
+    margin: 24px 0;
+    background-color: #444444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.settings-content-button:hover {
+    background-color: #666666;
+}
