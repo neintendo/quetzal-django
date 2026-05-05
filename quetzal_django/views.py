@@ -47,6 +47,16 @@ class UserListCreateView(generics.ListCreateAPIView):
         return User.objects.all()
 
 
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+    def get_object(self):
+        return self.request.user
+
+
 # Accounts
 class AccountsListCreateView(generics.ListCreateAPIView):
     serializer_class = AccountSerializer

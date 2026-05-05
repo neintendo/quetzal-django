@@ -13,6 +13,7 @@ from .views import (
     TransactionAggregateView,
     TransactionDetailView,
     TransactionListCreateView,
+    UserDetailView,
     UserListCreateView,
     UserProfileView,
 )
@@ -27,6 +28,7 @@ urlpatterns = [
     # User Profile
     path("profile/", UserProfileView.as_view(), name="profile"),
     path("profile-update/", UserProfileView.as_view(), name="profile-update"),
+    path("profile-delete/", UserDetailView.as_view(), name="profile-delete"),
     # Accounts
     path("accounts/", AccountsListCreateView.as_view(), name="account-list-create"),
     path("accounts/<int:pk>/", AccountDetailView.as_view(), name="account-detail"),
