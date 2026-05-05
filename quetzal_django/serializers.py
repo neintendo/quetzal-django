@@ -3,9 +3,8 @@ from rest_framework import serializers
 
 from .models import Account, Category, Transaction, User
 
+
 # Users
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -66,6 +65,12 @@ class UserLoginSerializer(serializers.Serializer):
                 )
         else:
             raise serializers.ValidationError("Must include 'username' & 'password'.")
+
+
+# Password change serializer.
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(min_length=8, required=True, write_only=True)
+    new_password = serializers.CharField(min_length=8, required=True, write_only=True)
 
 
 # Account Serializer.

@@ -1,12 +1,13 @@
 import calendar
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import django_filters
 import requests
+from django.contrib.auth import get_user_model
 from django.db import transaction as db_transaction
-from django.db.models import Q, Sum
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, serializers, status
 from rest_framework.permissions import IsAuthenticated
@@ -17,6 +18,7 @@ from .models import Account, Category, Transaction, User
 from .serializers import (
     AccountSerializer,
     CategorySerializer,
+    ChangePasswordSerializer,
     TransactionSerializer,
     UserSerializer,
 )
@@ -55,6 +57,42 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class ChangePassword(generics.GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+
+    def put(self, request, id):
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        old_password = request.data["old_password"]
+        new_password = request.data["new_password"]
+
+        try:
+            obj = get_user_model().objects.get(pk=id)
+        except get_user_model().DoesNotExist:
+            return Response(
+                {"Error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not obj.check_password(old_password):
+            return Response(
+                {"Error": "Current password is incorrect"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if old_password == new_password:
+            return Response(
+                {"Error": "New password must be different from current password"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        obj.set_password(new_password)
+        obj.save()
+
+        return Response({"Password changed successfully"}, status=status.HTTP_200_OK)
 
 
 # Accounts

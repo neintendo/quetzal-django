@@ -10,6 +10,7 @@ from .views import (
     CategoriesDetailView,
     CategoriesGraphView,
     CategoriesListCreateView,
+    ChangePassword,
     TransactionAggregateView,
     TransactionDetailView,
     TransactionListCreateView,
@@ -29,6 +30,7 @@ urlpatterns = [
     path("profile/", UserProfileView.as_view(), name="profile"),
     path("profile-update/", UserProfileView.as_view(), name="profile-update"),
     path("profile-delete/", UserDetailView.as_view(), name="profile-delete"),
+    path("change-password/<int:id>/", ChangePassword.as_view(), name="change_password"),
     # Accounts
     path("accounts/", AccountsListCreateView.as_view(), name="account-list-create"),
     path("accounts/<int:pk>/", AccountDetailView.as_view(), name="account-detail"),
