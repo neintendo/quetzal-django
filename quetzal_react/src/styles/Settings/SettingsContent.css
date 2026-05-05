@@ -42,3 +42,8 @@
 .settings-content-button:hover {
     background-color: #666666;
 }
+
+.settings-content-button:disabled {
+    background-color: #bbbbbb;
+    cursor: not-allowed;
+}

@@ -8,6 +8,12 @@ const SettingsProfile = ({ route }) => {
   const [display_name, setDisplayName] = useState("");
   const [main_currency, setMainCurrency] = useState("");
   // const [password, setPassword] = useState("");
+
+  // Used for disabling submit button
+  const [originalUsername, setOriginalUsername] = useState("");
+  const [originalDisplayName, setOriginalDisplayName] = useState("");
+  const [originalMainCurrency, setOriginalMainCurrency] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,16 +22,27 @@ const SettingsProfile = ({ route }) => {
         .get("profile/")
         .then((res) => res.data)
         .then((data) => {
-          // setProfile(data);
           setUsername(data.username);
           setDisplayName(data.display_name);
           setMainCurrency(data.main_currency);
+
+          // Used for comparison
+          setOriginalUsername(data.username);
+          setOriginalDisplayName(data.display_name);
+          setOriginalMainCurrency(data.main_currency);
         })
         .catch((err) => alert(err));
     };
 
     getProfile();
   }, []);
+
+  const hasChanges =
+    username !== originalUsername ||
+    display_name !== originalDisplayName ||
+    main_currency !== originalMainCurrency;
+
+  console.log("changes", hasChanges);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -104,7 +121,7 @@ const SettingsProfile = ({ route }) => {
       <button
         className="settings-content-button"
         type="submit"
-        disabled={loading}
+        disabled={!hasChanges || loading}
       >
         {loading ? "LOADING..." : "Save Changes"}
       </button>
