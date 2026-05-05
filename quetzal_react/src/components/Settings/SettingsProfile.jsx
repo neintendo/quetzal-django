@@ -7,7 +7,10 @@ const SettingsProfile = ({ route }) => {
   const [username, setUsername] = useState("");
   const [display_name, setDisplayName] = useState("");
   const [main_currency, setMainCurrency] = useState("");
-  // const [password, setPassword] = useState("");
+  const [userID, setUserID] = useState("");
+  const [old_password, setOldPassword] = useState("");
+  const [new_password, setNewPassword] = useState("");
+  const [confirm_password, setConfirmPassword] = useState("");
 
   // Used for disabling submit button
   const [originalUsername, setOriginalUsername] = useState("");
@@ -25,6 +28,7 @@ const SettingsProfile = ({ route }) => {
           setUsername(data.username);
           setDisplayName(data.display_name);
           setMainCurrency(data.main_currency);
+          setUserID(data.id);
 
           // Used for comparison
           setOriginalUsername(data.username);
@@ -37,28 +41,50 @@ const SettingsProfile = ({ route }) => {
     getProfile();
   }, []);
 
-  const hasChanges =
+  const hasChangesProfile =
     username !== originalUsername ||
     display_name !== originalDisplayName ||
     main_currency !== originalMainCurrency;
 
-  console.log("changes", hasChanges);
+  const hasChangesPassword =
+    old_password.length >= 8 &&
+    new_password.length >= 8 &&
+    new_password === confirm_password;
 
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
 
     try {
-      let requestData;
+      let requestData_profile;
+      let requestData_password = {};
 
-      requestData = { username, display_name, main_currency };
-
-      const res = await api.put(route, requestData);
-
-      if (res.status === 200) {
-        alert("Profile updated successfully!");
-        window.location.reload(true);
+      requestData_profile = { username, display_name, main_currency };
+      if (old_password || new_password) {
+        requestData_password.old_password = old_password;
+        requestData_password.new_password = new_password;
       }
+
+      if (hasChangesProfile) {
+        const res_pr = await api.put(route, requestData_profile);
+
+        if (res_pr.status === 200) {
+          alert("Profile updated successfully!");
+        }
+      }
+
+      if (hasChangesPassword) {
+        const res_ps = await api.put(
+          `/change-password/${userID}/`,
+          requestData_password,
+        );
+
+        if (res_ps.status === 200) {
+          alert("Password updated successfully!");
+        }
+      }
+
+      window.location.reload(true);
     } catch (error) {
       if (error.response) {
         console.error("Error data:", error.response.data);
@@ -118,10 +144,38 @@ const SettingsProfile = ({ route }) => {
           ))}
         </select>
       </div>
+      <div className="settings-sub-content-container">
+        <div className="settings-content-header">Password</div>
+        <div className="settings-content-multiple-input-container">
+          <input
+            className="settings-content-input"
+            type="password"
+            value={old_password}
+            onChange={(e) => setOldPassword(e.target.value)}
+            placeholder="Enter Old Password"
+          />
+          <input
+            className="settings-content-input"
+            type="password"
+            value={new_password}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Enter New Password"
+          />
+          {new_password && (
+            <input
+              className="settings-content-input"
+              type="password"
+              value={confirm_password}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm New Password"
+            />
+          )}
+        </div>
+      </div>
       <button
         className="settings-content-button"
         type="submit"
-        disabled={!hasChanges || loading}
+        disabled={(!hasChangesProfile && !hasChangesPassword) || loading}
       >
         {loading ? "LOADING..." : "Save Changes"}
       </button>
