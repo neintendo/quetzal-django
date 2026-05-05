@@ -52,7 +52,7 @@ const Settings = ({ onClose }) => {
                   : "sidebar-sections"
               }
             >
-              Profile
+              Account
             </div>
             <div
               onClick={() => setPage("appearance")}
@@ -83,12 +83,11 @@ const Settings = ({ onClose }) => {
               Data
             </div>
             <div
-              onClick={() => setPage("help")}
               className={
                 page === "help" ? "sidebar-sections-active" : "sidebar-sections"
               }
             >
-              {"Help & Support"}
+              {"Help & Support ›"}
             </div>
           </div>
           <div
@@ -107,6 +106,9 @@ const Settings = ({ onClose }) => {
           </div>
         </div>
         <div className="settings-content">{pageSwitch()}</div>
+        <div className="modal-close-button" onClick={() => onClose()}>
+          {"X"}
+        </div>
       </div>
     </div>
   );
