@@ -4,3 +4,5 @@ db_reset.sh
 *.pyc
 test_accounts_curl.sh
 test_transactions_curl.sh
+transfers_test.sh
+trans_curl.sh

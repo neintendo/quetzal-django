@@ -39,10 +39,6 @@
     cursor: pointer;
 }
 
-.modal-title-container {
-    cursor: default;
-}
-
 .settings-container {
     background-color: #eeeeee;
     display: flex;
@@ -61,8 +57,7 @@
     flex-direction: column;
     width: 25%;
     min-height: 100%;
-    /*border-right: 1px solid #999999;*/
-    background-color: #e0e0e0;
+    background-color: #dddddd;
 }
 
 .settings-content {
