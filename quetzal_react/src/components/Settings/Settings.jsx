@@ -1,9 +1,11 @@
 import "../../styles/Settings/Settings.css";
 import { useEffect, useState } from "react";
 import SettingsProfile from "./SettingsProfile";
+import { useNavigate } from "react-router-dom";
 
 const Settings = ({ onClose }) => {
   const [page, setPage] = useState("profile");
+  const navigate = useNavigate();
 
   const pageSwitch = () => {
     switch (page) {
@@ -88,6 +90,20 @@ const Settings = ({ onClose }) => {
             >
               {"Help & Support"}
             </div>
+          </div>
+          <div
+            className="sidebar-logout"
+            onClick={() => {
+              const confirmed = window.confirm(
+                "Are you sure you want to logout?",
+              );
+              if (confirmed) {
+                navigate("/logout");
+              }
+            }}
+            title="Logout"
+          >
+            {"↲"}
           </div>
         </div>
         <div className="settings-content">{pageSwitch()}</div>

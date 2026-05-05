@@ -89,7 +89,7 @@
     margin-bottom: 16px;
     padding: 8px;
     background-color: #cccccc;
-    border-radius: 4px;
+    border: 1px solid #bbbbbb;
 }
 
 .sidebar-sections-container {
@@ -140,8 +140,27 @@
     background-color: #666666;
 }
 
+.sidebar-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    position: absolute;
+    bottom: 24px;
+    background-color: #cccccc;
+    border: 1px solid #bbbbbb;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.sidebar-logout:hover {
+    background-color: #eeeeee;
+}
+
 .sidebar-sections,
-.sidebar-sections-active {
+.sidebar-sections-active,
+.sidebar-logout {
     cursor: pointer;
 }
 
