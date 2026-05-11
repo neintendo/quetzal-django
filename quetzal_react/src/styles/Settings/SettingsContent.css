@@ -33,7 +33,9 @@
     height: 36px;
 }
 
-.settings-content-button {
+.settings-content-button,
+.data-settings-content-button,
+.data-settings-content-button-delete {
     width: 100%;
     padding: 10px;
     margin: 24px 0;
@@ -45,7 +47,29 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.settings-content-button:hover {
+.data-settings-content-button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.data-settings-content-button-delete {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: #990000;
+}
+
+.data-settings-content-button-delete:hover {
+    background-color: #cc0000;
+}
+
+.warning-text {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #990000;
+    padding-left: 4px;
+}
+
+.settings-content-button:hover,
+.data-settings-content-button:hover {
     background-color: #666666;
 }
 

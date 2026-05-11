@@ -1,7 +1,8 @@
 import "../../styles/Settings/Settings.css";
 import { useEffect, useState } from "react";
-import SettingsProfile from "./SettingsProfile";
 import { useNavigate } from "react-router-dom";
+import SettingsProfile from "./SettingsProfile";
+import SettingsData from "./SettingsData";
 
 const Settings = ({ onClose }) => {
   const [page, setPage] = useState("profile");
@@ -15,10 +16,8 @@ const Settings = ({ onClose }) => {
       //   return <Accounts />;
       // case "preferences":
       //   return <Transactions />;
-      // case "data":
-      //   return <Categories />;
-      // case "help":
-      //   return <Categories />;
+      case "data":
+        return <SettingsData />;
       default:
         return <SettingsProfile route={"/profile-update/"} />;
     }
@@ -64,7 +63,7 @@ const Settings = ({ onClose }) => {
             >
               Appearance
             </div>
-            <div
+            {/* <div
               onClick={() => setPage("preferences")}
               className={
                 page === "preferences"
@@ -73,7 +72,7 @@ const Settings = ({ onClose }) => {
               }
             >
               Preferences
-            </div>
+            </div>*/}
             <div
               onClick={() => setPage("data")}
               className={
@@ -82,13 +81,16 @@ const Settings = ({ onClose }) => {
             >
               Data
             </div>
-            <div
+            <a
+              href="https://github.com/neintendo/quetzal"
+              target="_blank"
+              style={{ textDecoration: "none" }}
               className={
                 page === "help" ? "sidebar-sections-active" : "sidebar-sections"
               }
             >
               {"Help & Support ›"}
-            </div>
+            </a>
           </div>
           <div
             className="sidebar-logout"
