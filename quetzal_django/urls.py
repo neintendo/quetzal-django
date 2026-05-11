@@ -13,6 +13,7 @@ from .views import (
     ChangePassword,
     TransactionAggregateView,
     TransactionDetailView,
+    TransactionExportView,
     TransactionListCreateView,
     UserDetailView,
     UserListCreateView,
@@ -64,5 +65,10 @@ urlpatterns = [
         "transactions/aggregate/",
         TransactionAggregateView.as_view(),
         name="transaction-aggregate",
+    ),
+    path(
+        "transactions/export/",
+        TransactionExportView.as_view(),
+        name="transaction-export",
     ),
 ]

@@ -1,4 +1,5 @@
 import calendar
+import csv
 from collections import defaultdict
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -8,6 +9,7 @@ import requests
 from django.contrib.auth import get_user_model
 from django.db import transaction as db_transaction
 from django.db.models import Q
+from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, serializers, status
 from rest_framework.permissions import IsAuthenticated
@@ -990,3 +992,50 @@ class TransactionAggregateView(APIView):
                 "filters_applied": dict(request.GET),
             }
         )
+
+
+class TransactionExportView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        transactions = Transaction.objects.filter(user=request.user)
+        username = request.user.username
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = (
+            'attachment; filename="quetzal_transactions.csv"'
+        )
+
+        writer = csv.writer(response)
+        writer.writerow(
+            [
+                "Username",
+                "ID",
+                "Account",
+                "Datetime",
+                "Amount",
+                "Currency",
+                "Category",
+                "Description",
+                "Notes",
+                "Transaction Type",
+            ]
+        )
+
+        for transaction in transactions:
+            writer.writerow(
+                [
+                    username,
+                    transaction.id,
+                    transaction.account,
+                    transaction.datetime,
+                    transaction.amount,
+                    transaction.currency,
+                    transaction.category,
+                    transaction.description,
+                    transaction.notes,
+                    transaction.transaction_type,
+                ]
+            )
+
+        return response
