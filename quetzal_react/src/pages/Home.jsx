@@ -1,13 +1,14 @@
 import "../styles/Home.css";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import Dashboard from "../components/Dashboard/Dashboard";
 import Accounts from "../components/Accounts/Accounts";
 import Transactions from "../components/Transactions/Transactions";
 import Categories from "../components/Categories/Categories";
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [page, setPage] = useState(""); // Set default to dashboard later
+  const [page, setPage] = useState("dashboard");
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +31,8 @@ function Home() {
 
   const pageSwitch = () => {
     switch (page) {
+      case "dashboard":
+        return <Dashboard />;
       case "accounts":
         return <Accounts />;
       case "transactions":

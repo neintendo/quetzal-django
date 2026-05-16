@@ -1,14 +1,12 @@
 import "../styles/Sidebar.css";
 import api from "../api";
-// import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Settings from "./Settings/Settings";
 
 const Sidebar = ({ isOpen, onPageClick }) => {
   const [profile, setProfile] = useState(null);
-  const [currentPage, setCurrentPage] = useState("");
+  const [currentPage, setCurrentPage] = useState("dashboard");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  // const navigate = useNavigate();
 
   const getProfile = () => {
     api
