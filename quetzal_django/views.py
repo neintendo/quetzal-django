@@ -1018,6 +1018,8 @@ class TransactionExportView(APIView):
     def get(self, request):
         transactions = Transaction.objects.filter(user=request.user)
         username = request.user.username
+        for transaction in transactions:
+            print(transaction.account.name)
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = (
@@ -1046,8 +1048,10 @@ class TransactionExportView(APIView):
                 [
                     username,
                     transaction.id,
-                    transaction.account,
-                    transaction.destination_account,
+                    transaction.account.name,
+                    transaction.destination_account.name
+                    if transaction.destination_account
+                    else transaction.destination_account,
                     transaction.datetime,
                     transaction.amount,
                     transaction.currency,
