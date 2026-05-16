@@ -50,6 +50,7 @@ function ImportTransactions({ data }) {
     alert(
       `Import Complete - Success: ${successCount}, Failed: ${failCount}, Transfers: ${transferCount}`,
     );
+    window.location.reload(true);
   };
 
   useEffect(() => {
