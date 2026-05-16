@@ -73,6 +73,7 @@
     background-color: #666666;
 }
 
+.data-settings-content-button:disabled,
 .settings-content-button:disabled {
     background-color: #bbbbbb;
     cursor: not-allowed;
