@@ -1,8 +1,10 @@
 import "../../styles/Settings/SettingsContent.css";
 import api from "../../api";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
 import ImportTransactions from "./ImportTransactions";
+import { ACCESS_TOKEN } from "../../constants";
 
 const SettingsData = () => {
   const [transactionsData, setTransactionsData] = useState("");
@@ -10,20 +12,57 @@ const SettingsData = () => {
   const [parsedData, setParsedData] = useState([]);
   const [numberOfTransactions, setNumberOfTransactions] = useState(0);
   const [showImport, setShowImport] = useState(false);
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [resetPassword, setResetPassword] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
+
+  const fetchData = () => {
+    Promise.all([api.get("transactions/export/"), api.get("profile/")])
+      .then(([exportRes, profileRes]) => {
+        setTransactionsData(exportRes.data);
+        setUsername(profileRes.data.username);
+      })
+      .catch((err) => alert(err));
+  };
 
   useEffect(() => {
-    const getCSV = () => {
-      api
-        .get("transactions/export/")
-        .then((res) => res.data)
-        .then((data) => {
-          setTransactionsData(data);
-        })
-        .catch((err) => alert(err));
-    };
-
-    getCSV();
+    fetchData();
   }, []);
+
+  const deleteProfile = async (d) => {
+    d.preventDefault();
+
+    try {
+      let requestData;
+
+      requestData = { username };
+      requestData.password = deletePassword;
+
+      const res = await api.post("/auth/login/", requestData);
+
+      if (localStorage.getItem(ACCESS_TOKEN) === res.data.token) {
+        api.delete("profile-delete/");
+        alert("Profile Deleted Successfully :)");
+        navigate("/logout");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Error data:", error.response.data);
+        console.error("Error status:", error.response.status);
+        // Shows status errors from the backend to the user.
+        alert(JSON.stringify(error.response.data));
+      } else if (error.request) {
+        console.error("No response received", error.request);
+        alert(
+          "No response from server. Please check if the backend is running :)",
+        );
+      } else {
+        console.error("Error:", error.message);
+        alert(error.message);
+      }
+    }
+  };
 
   const parseCSV = (event) => {
     setDisabledImport(false);
@@ -101,7 +140,20 @@ const SettingsData = () => {
           <div className="warning-text">
             Delete this profile. This action is irreversible!
           </div>
-          <button className="data-settings-content-button-delete" type="button">
+          <input
+            className="settings-content-input"
+            type="password"
+            style={{ marginTop: 8 }}
+            value={deletePassword}
+            onChange={(d) => setDeletePassword(d.target.value)}
+            placeholder="Enter Password"
+          />
+          <button
+            className="data-settings-content-button-delete"
+            type="button"
+            onClick={deleteProfile}
+            disabled={deletePassword.length < 8}
+          >
             {"Delete Profile"}
           </button>
         </div>

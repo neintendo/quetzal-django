@@ -74,7 +74,8 @@
 }
 
 .data-settings-content-button:disabled,
-.settings-content-button:disabled {
+.settings-content-button:disabled,
+.data-settings-content-button-delete:disabled {
     background-color: #bbbbbb;
     cursor: not-allowed;
 }
