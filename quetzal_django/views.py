@@ -907,6 +907,24 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
+class ResetProfile(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        transactions, _ = Transaction.objects.filter(user=request.user).delete()
+        accounts, _ = Account.objects.filter(user=request.user).delete()
+        categories, _ = Category.objects.filter(user=request.user).delete()
+
+        return Response(
+            {
+                "Deleted {0} transactions — Deleted {1} accounts — Deleted {2} Categories".format(
+                    transactions, accounts, categories
+                )
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class TransactionAggregateView(APIView):
     permission_classes = [IsAuthenticated]
 
