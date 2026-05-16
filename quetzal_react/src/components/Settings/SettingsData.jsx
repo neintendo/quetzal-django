@@ -30,6 +30,41 @@ const SettingsData = () => {
     fetchData();
   }, []);
 
+  const resetProfile = async (c) => {
+    c.preventDefault();
+
+    try {
+      let requestData;
+
+      requestData = { username };
+      requestData.password = resetPassword;
+
+      const res = await api.post("/auth/login/", requestData);
+
+      if (localStorage.getItem(ACCESS_TOKEN) === res.data.token) {
+        const response = await api.delete("transactions-delete/");
+        alert("Profile Reset Successfully :)");
+        alert(response.data);
+        window.location.reload(true);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Error data:", error.response.data);
+        console.error("Error status:", error.response.status);
+        // Shows status errors from the backend to the user.
+        alert(JSON.stringify(error.response.data));
+      } else if (error.request) {
+        console.error("No response received", error.request);
+        alert(
+          "No response from server. Please check if the backend is running :)",
+        );
+      } else {
+        console.error("Error:", error.message);
+        alert(error.message);
+      }
+    }
+  };
+
   const deleteProfile = async (d) => {
     d.preventDefault();
 
@@ -45,6 +80,7 @@ const SettingsData = () => {
         api.delete("profile-delete/");
         alert("Profile Deleted Successfully :)");
         navigate("/logout");
+        window.location.reload(true);
       }
     } catch (error) {
       if (error.response) {
@@ -131,7 +167,20 @@ const SettingsData = () => {
             Delete all accounts, transactions and categories. This action is
             irreversible!
           </div>
-          <button className="data-settings-content-button-delete" type="button">
+          <input
+            className="settings-content-input"
+            type="password"
+            style={{ marginTop: 8 }}
+            value={resetPassword}
+            onChange={(c) => setResetPassword(c.target.value)}
+            placeholder="Enter Password"
+          />
+          <button
+            className="data-settings-content-button-delete"
+            type="button"
+            onClick={resetProfile}
+            disabled={resetPassword.length < 8}
+          >
             {"Reset Profile"}
           </button>
         </div>
