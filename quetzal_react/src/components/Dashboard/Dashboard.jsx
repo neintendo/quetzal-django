@@ -1,12 +1,15 @@
 import "../../styles/Dashboard/Dashboard.css";
+import DashboardStatus from "./DashboardStatus";
 
 const Dashboard = () => {
   return (
     <>
       <div className="dashboard">
-        <div className="dashboard-graph"></div>
+        <DashboardStatus />
+        <div className="dashboard-graph-container"></div>
       </div>
     </>
   );
 };
+
 export default Dashboard;

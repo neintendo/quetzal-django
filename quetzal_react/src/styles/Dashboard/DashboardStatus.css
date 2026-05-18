@@ -1,0 +1,51 @@
+@keyframes scrolling {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.dashboard-status-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    background-color: #dddddd;
+    padding: 16px;
+    justify-content: space-between;
+    width: calc(100% - 32px);
+    border: 1px solid #bbbbbb;
+    white-space: nowrap;
+    overflow: hidden;
+    min-height: 38px;
+
+    &:hover .dashboard-status-group {
+        animation-play-state: paused;
+    }
+}
+
+.dashboard-status-group {
+    will-change: transform;
+    animation: scrolling 60s linear infinite;
+    animation-delay: 5s;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    padding-right: 16px;
+    min-height: 0;
+}
+
+.dashboard-status {
+    display: flex;
+    background-color: #dddddd;
+    border: 1px solid #bbbbbb;
+    padding: 8px;
+    flex: 1;
+    white-space: nowrap;
+    height: 20px;
+}
+
+.dashboard-status-container:hover {
+    cursor: default;
+}

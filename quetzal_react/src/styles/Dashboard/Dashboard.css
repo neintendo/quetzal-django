@@ -7,9 +7,10 @@
     padding-left: 0px;
     gap: 16px;
     height: calc(100vh - 76.5px);
+    min-width: 0;
 }
 
-.dashboard-graph {
+.dashboard-graph-container {
     display: flex;
     gap: 8px;
     flex-direction: column;
@@ -22,4 +23,5 @@
     height: 50%;
     border: 1px solid #bbbbbb;
     position: relative;
+    overflow: hidden;
 }
