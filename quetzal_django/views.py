@@ -1064,3 +1064,127 @@ class TransactionExportView(APIView):
             )
 
         return response
+
+
+class TransactionSpendingGraph(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # All user transactions.
+        transactions = Transaction.objects.filter(user=request.user)
+
+        # Filtered transactions.
+        transactions_type = request.GET.get("transaction_type")
+        if transactions_type:
+            transactions = transactions.filter(transaction_type=transactions_type)
+
+        # Filters request by currency
+        currency = request.GET.get("currency")
+        if currency:
+            transactions = transactions.filter(currency=currency)
+
+        # Filters request by account
+        account = request.GET.get("account")
+        if account:
+            transactions = transactions.filter(account=account)
+
+        start_date = request.GET.get("start_date")
+        if start_date:
+            transactions = transactions.filter(datetime__date__gte=start_date)
+
+        end_date = request.GET.get("end_date")
+        if end_date:
+            transactions = transactions.filter(datetime__date__lte=end_date)
+
+        # User's main currency
+        main_currency = getattr(request.user, "main_currency", "USD")
+
+        month_daily_data = defaultdict(Decimal)
+        converted_transactions = 0
+        total_t = 0
+
+        # Graph conversion for all currencies
+        if (currency is None or currency == "") and (account is None or account == ""):
+            for transaction in transactions:
+                day_key = transaction.datetime.strftime("%Y-%m-%d")
+                amount = round(transaction.amount, 2)
+
+                # For non main_currency conversions only
+                if transaction.currency != main_currency and transaction.amount != 0:
+                    converted_amount = conversion(
+                        transaction.amount,
+                        transaction.currency,
+                        main_currency,
+                        transaction.datetime,
+                    )
+                    converted_transactions += 1
+                    amount = round(Decimal(str(converted_amount)), 2)
+
+                match transaction.transaction_type:
+                    case "income":
+                        month_daily_data[day_key] += amount
+                        total_t += 1
+                    case "expense":
+                        month_daily_data[day_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            month_daily_data[day_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            month_daily_data[day_key] -= amount
+
+        # No graph conversions for a single currency
+        else:
+            for transaction in transactions:
+                day_key = transaction.datetime.strftime("%Y-%m-%d")
+                amount = round(transaction.amount, 2)
+
+                match transaction.transaction_type:
+                    case "income":
+                        month_daily_data[day_key] += amount
+                        total_t += 1
+                    case "expense":
+                        month_daily_data[day_key] -= amount
+                        total_t += 1
+                    case "transfer":
+                        if (
+                            transaction.destination_account is None
+                            and transaction.linked_transaction is not None
+                        ):
+                            month_daily_data[day_key] += amount
+                        elif (
+                            transaction.destination_account is not None
+                            and transaction.linked_transaction is not None
+                        ):
+                            month_daily_data[day_key] -= amount
+
+        list_month = []
+        for count in month_daily_data:
+            list_month.append(count)
+
+        values = list(month_daily_data.values())
+
+        cumulative = []
+        cumulative_total = 0
+        for value in values:
+            cumulative_total += value
+            cumulative.append(cumulative_total)
+
+        c = 0
+        for month in month_daily_data:
+            month_daily_data[month] = cumulative[c]
+            c += 1
+
+        return Response(
+            {
+                "daily_transactions_by_month": month_daily_data,
+                "converted_transactions": converted_transactions,
+                "total_transctions": total_t,
+            }
+        )
