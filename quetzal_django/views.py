@@ -1007,6 +1007,7 @@ class TransactionAggregateView(APIView):
                 "expense": float(exp),
                 "net": float(net),
                 "transaction_count": transactions.count(),
+                "transactions_converted": transactions_converted,
                 "filters_applied": dict(request.GET),
             }
         )
