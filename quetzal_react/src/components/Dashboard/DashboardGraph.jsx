@@ -92,7 +92,7 @@ const DashboardGraph = () => {
     labels: fill_days,
     datasets: [
       {
-        label: "Balance",
+        label: "Total Spent",
         data: amounts,
       },
     ],
