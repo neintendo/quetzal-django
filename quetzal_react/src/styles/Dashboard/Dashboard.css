@@ -20,8 +20,22 @@
     padding-bottom: 8px;
     width: calc(100% - 32px);
     min-height: 4%;
-    height: 50%;
+    height: 30%;
     border: 1px solid #bbbbbb;
     position: relative;
     overflow: hidden;
+}
+
+.dashboard-graph-title {
+    padding: 8px;
+    background-color: #cccccc;
+    display: inline-block;
+    border: 1px solid #bbbbbb;
+    outline: 8px solid #dddddd;
+    overflow-y: auto;
+    z-index: 31;
+}
+
+.dashboard-graph-title {
+    cursor: default;
 }
