@@ -1126,12 +1126,11 @@ class TransactionSpendingGraph(APIView):
             for transaction in transactions:
                 day_key = transaction.datetime.strftime("%Y-%m-%d")
                 amount = round(transaction.amount, 2)
-
                 month_daily_data[day_key] += amount
                 total_t += 1
 
+        month_daily_data = dict(sorted(month_daily_data.items()))
         values = list(month_daily_data.values())
-        values.reverse()
 
         cumulative = []
         cumulative_total = 0
@@ -1140,8 +1139,8 @@ class TransactionSpendingGraph(APIView):
             cumulative.append(cumulative_total)
 
         c = 0
-        for month in reversed(list(month_daily_data.keys())):
-            month_daily_data[month] = cumulative[c]
+        for day_key in list(month_daily_data.keys()):
+            month_daily_data[day_key] = cumulative[c]
             c += 1
 
         return Response(
