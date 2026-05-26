@@ -1,7 +1,7 @@
 .dashboard-graph-canvas {
     display: flex;
     position: absolute;
-    top: 16px;
+    top: 0px;
     bottom: 8px;
     right: 8px;
     width: calc(100% - 32px);
