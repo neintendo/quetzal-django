@@ -16,6 +16,7 @@ from .views import (
     TransactionDetailView,
     TransactionExportView,
     TransactionListCreateView,
+    TransactionSpendingGraph,
     UserDetailView,
     UserListCreateView,
     UserProfileView,
@@ -76,5 +77,10 @@ urlpatterns = [
         "transactions/export/",
         TransactionExportView.as_view(),
         name="transaction-export",
+    ),
+    path(
+        "transactions/spending-graph/",
+        TransactionSpendingGraph.as_view(),
+        name="transaction-spending-graph",
     ),
 ]
