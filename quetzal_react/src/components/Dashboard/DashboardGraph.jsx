@@ -34,11 +34,11 @@ const DashboardGraph = () => {
     const getTransactionData = () => {
       api
         .get("transactions/spending-graph", {
-          params: { transaction_type: "expense", start_date: currentMonth },
+          params: { start_date: currentMonth },
         })
         .then((res) => res.data)
         .then((data) => {
-          setDailyTransactionData(data.daily_transactions_by_month);
+          setDailyTransactionData(data.expenses_by_day);
           console.log(data);
         })
         .catch((err) => alert(err));

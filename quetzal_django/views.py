@@ -1070,13 +1070,11 @@ class TransactionSpendingGraph(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # All user transactions.
+        # All expense transactions of the user.
         transactions = Transaction.objects.filter(user=request.user)
-
-        # Filtered transactions.
-        transactions_type = request.GET.get("transaction_type")
-        if transactions_type:
-            transactions = transactions.filter(transaction_type=transactions_type)
+        transactions = transactions.filter(
+            user=request.user, transaction_type="expense"
+        )
 
         # Filters request by currency
         currency = request.GET.get("currency")
@@ -1108,8 +1106,6 @@ class TransactionSpendingGraph(APIView):
             for transaction in transactions:
                 day_key = transaction.datetime.strftime("%Y-%m-%d")
                 amount = round(transaction.amount, 2)
-                print("daykey", day_key)
-                print("amount", amount)
 
                 # For non main_currency conversions only
                 if transaction.currency != main_currency and transaction.amount != 0:
@@ -1122,24 +1118,8 @@ class TransactionSpendingGraph(APIView):
                     converted_transactions += 1
                     amount = round(Decimal(str(converted_amount)), 2)
 
-                match transaction.transaction_type:
-                    case "income":
-                        month_daily_data[day_key] += amount
-                        total_t += 1
-                    case "expense":
-                        month_daily_data[day_key] -= amount
-                        total_t += 1
-                    case "transfer":
-                        if (
-                            transaction.destination_account is None
-                            and transaction.linked_transaction is not None
-                        ):
-                            month_daily_data[day_key] += amount
-                        elif (
-                            transaction.destination_account is not None
-                            and transaction.linked_transaction is not None
-                        ):
-                            month_daily_data[day_key] -= amount
+                month_daily_data[day_key] += amount
+                total_t += 1
 
         # No graph conversions for a single currency
         else:
@@ -1147,24 +1127,8 @@ class TransactionSpendingGraph(APIView):
                 day_key = transaction.datetime.strftime("%Y-%m-%d")
                 amount = round(transaction.amount, 2)
 
-                match transaction.transaction_type:
-                    case "income":
-                        month_daily_data[day_key] += amount
-                        total_t += 1
-                    case "expense":
-                        month_daily_data[day_key] -= amount
-                        total_t += 1
-                    case "transfer":
-                        if (
-                            transaction.destination_account is None
-                            and transaction.linked_transaction is not None
-                        ):
-                            month_daily_data[day_key] += amount
-                        elif (
-                            transaction.destination_account is not None
-                            and transaction.linked_transaction is not None
-                        ):
-                            month_daily_data[day_key] -= amount
+                month_daily_data[day_key] += amount
+                total_t += 1
 
         values = list(month_daily_data.values())
         values.reverse()
@@ -1172,10 +1136,9 @@ class TransactionSpendingGraph(APIView):
         cumulative = []
         cumulative_total = 0
         for value in values:
-            cumulative_total += value * -1
+            cumulative_total += value
             cumulative.append(cumulative_total)
 
-        # Also reverse the keys
         c = 0
         for month in reversed(list(month_daily_data.keys())):
             month_daily_data[month] = cumulative[c]
@@ -1183,7 +1146,7 @@ class TransactionSpendingGraph(APIView):
 
         return Response(
             {
-                "daily_transactions_by_month": month_daily_data,
+                "expenses_by_day": month_daily_data,
                 "converted_transactions": converted_transactions,
                 "total_transctions": total_t,
             }
