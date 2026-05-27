@@ -98,12 +98,8 @@ WSGI_APPLICATION = "quetzal.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "quetzal",
-        "USER": "neintendo",
-        "PASSWORD": "quetzal-pass",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "quetzal.sqlite3",
     }
 }
 
