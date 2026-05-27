@@ -92,19 +92,14 @@ const CategoriesDetail = ({
     if (sortHeader.key === "amount") {
       if (sortHeader.key === "amount") {
         aValue = parseFloat(aValue);
-        a.transaction_type === "expense" ? (aValue *= -1) : aValue;
+        if (a.transaction_type === "expense") aValue;
         bValue = parseFloat(bValue);
-        b.transaction_type === "expense" ? (bValue *= -1) : bValue;
+        if (b.transaction_type === "expense") bValue;
       }
 
-      if (aValue < bValue) {
-        return sortHeader.direction === "asc" ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortHeader.direction === "asc" ? 1 : -1;
-      }
+      if (aValue < bValue) return sortHeader.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortHeader.direction === "asc" ? 1 : -1;
     } else {
-      console.log(sortHeader.key);
       if (aValue.toLowerCase() < bValue.toLowerCase()) {
         return sortHeader.direction === "asc" ? -1 : 1;
       }
