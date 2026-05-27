@@ -11,6 +11,7 @@ from .views import (
     CategoriesGraphView,
     CategoriesListCreateView,
     ChangePassword,
+    RecentTransactionsView,
     ResetProfile,
     TransactionAggregateView,
     TransactionDetailView,
@@ -57,6 +58,11 @@ urlpatterns = [
         "transactions/",
         TransactionListCreateView.as_view(),
         name="transaction-list-create",
+    ),
+    path(
+        "transactions/recent/",
+        RecentTransactionsView.as_view(),
+        name="transaction-recents",
     ),
     path(
         "transactions/<int:pk>/",

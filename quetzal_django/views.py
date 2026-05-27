@@ -755,6 +755,17 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 transaction.destination_account.save()
 
 
+# List 10 most recent transactions
+class RecentTransactionsView(generics.ListAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user).order_by("-datetime")[
+            :10
+        ]
+
+
 # Get, delete or update a specific transaction
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
