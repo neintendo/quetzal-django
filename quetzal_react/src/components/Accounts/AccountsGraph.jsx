@@ -110,6 +110,7 @@ const AccountsGraph = ({
       {
         label: "Balance",
         data: amounts,
+        borderColor: "#bbbbbb",
       },
     ],
   };
