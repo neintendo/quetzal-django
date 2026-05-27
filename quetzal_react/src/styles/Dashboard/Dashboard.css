@@ -36,6 +36,50 @@
     z-index: 31;
 }
 
+.recents-table-title {
+    padding: 8px;
+    display: inline-block;
+    border: 1px solid #bbbbbb;
+    position: sticky;
+    background-color: #cccccc;
+    display: flex;
+    top: 0px;
+    z-index: 30;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-content: space-between;
+    box-sizing: border-box;
+    box-shadow: 0 -30px 0 #dddddd;
+    gap: 8px;
+}
+
+.dashboard-summaries-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    background-color: #dddddd;
+    align-items: start;
+    width: calc(100% - 32px);
+    min-height: 4%;
+    height: 60%;
+    position: relative;
+    overflow: hidden;
+}
+
+.recents-table-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #dddddd;
+    padding: 16px;
+    width: 33%;
+    height: 100%;
+    border: 1px solid #bbbbbb;
+    overflow-y: auto;
+    scroll-snap-type: y proximity;
+    scroll-padding: 20%;
+    box-sizing: border-box;
+}
+
 .dashboard-graph-title {
     cursor: default;
 }

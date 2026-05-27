@@ -1,0 +1,28 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    position: sticky;
+    top: 40px;
+    background-color: #dddddd;
+    text-align: left;
+    z-index: 28;
+    box-shadow: 0 -30px 0 #dddddd;
+}
+
+th,
+td {
+    padding: 1.4%;
+    font-size: 14px;
+}
+
+tr {
+    border-bottom: 1px solid #bbbbbb;
+    scroll-snap-align: center;
+    cursor: pointer;
+}
+tr:not(:first-child):hover {
+    background-color: #cccccc;
+}
