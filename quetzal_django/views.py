@@ -27,7 +27,7 @@ from .serializers import (
 from .utilities.currency_conv import conversion
 
 
-# Users
+# Get or update details of logged in user
 class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -43,6 +43,7 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# List all users
 class UserListCreateView(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
@@ -51,6 +52,7 @@ class UserListCreateView(generics.ListCreateAPIView):
         return User.objects.all()
 
 
+# Delete a specific user
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
@@ -61,6 +63,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         return self.request.user
 
 
+# Change user password
 class ChangePassword(generics.GenericAPIView):
     serializer_class = ChangePasswordSerializer
 
@@ -97,7 +100,7 @@ class ChangePassword(generics.GenericAPIView):
         return Response({"Password changed successfully"}, status=status.HTTP_200_OK)
 
 
-# Accounts
+# List (all) or create user accounts
 class AccountsListCreateView(generics.ListCreateAPIView):
     serializer_class = AccountSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -109,6 +112,7 @@ class AccountsListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
+# Get or delete a specific account
 class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AccountSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -155,6 +159,7 @@ class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
+# Get a total balance aggregate for all user accounts
 class AccountsAggregateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -177,7 +182,6 @@ class AccountsAggregateView(APIView):
         # Creates a new array with converted balances
         converted_balances = []
         date_obj = datetime.now(timezone.utc)
-        print("DATE", date_obj)
         accounts_converted = 0
 
         # Checks if API is working. If not, date_cmp = last saved date
@@ -236,6 +240,7 @@ class AccountsAggregateView(APIView):
         )
 
 
+# Get transaction aggregates by month
 class AccountsGraphView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -347,6 +352,7 @@ class AccountsGraphView(APIView):
         )
 
 
+# Get category aggregates by month (for bar charts)
 class CategoriesChartView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -456,7 +462,7 @@ class CategoriesChartView(APIView):
         )
 
 
-# Categories
+# List (all) or create user categories
 class CategoriesListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -480,6 +486,7 @@ class CategoriesListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
+# Get or delete a specific category
 class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -526,6 +533,7 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
+# Get transaction aggregates by categories (for radar chart)
 class CategoriesGraphView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -668,7 +676,7 @@ class CategoriesGraphView(APIView):
         )
 
 
-# Class for transaction filtering.
+# Class for transaction filtering
 class TransactionFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(field_name="datetime", lookup_expr="gte")
     end_date = django_filters.DateFilter(field_name="datetime", lookup_expr="lte")
@@ -689,7 +697,7 @@ class TransactionFilter(django_filters.FilterSet):
         )
 
 
-# Transactions
+# List (all) or create transactions
 class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -747,6 +755,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 transaction.destination_account.save()
 
 
+# Get, delete or update a specific transaction
 class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -907,6 +916,7 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
+# Reset all user related transaction data
 class ResetProfile(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -925,6 +935,7 @@ class ResetProfile(generics.RetrieveUpdateDestroyAPIView):
         )
 
 
+# Get aggregates for all transactions
 class TransactionAggregateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1013,14 +1024,13 @@ class TransactionAggregateView(APIView):
         )
 
 
+# Return transaction data in CSV format
 class TransactionExportView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         transactions = Transaction.objects.filter(user=request.user)
         username = request.user.username
-        for transaction in transactions:
-            print(transaction.account.name)
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = (
@@ -1066,6 +1076,7 @@ class TransactionExportView(APIView):
         return response
 
 
+# Get daily expense transaction aggregates
 class TransactionSpendingGraph(APIView):
     permission_classes = [IsAuthenticated]
 
