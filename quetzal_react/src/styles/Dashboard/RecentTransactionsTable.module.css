@@ -1,10 +1,16 @@
+.table-loading {
+    display: flex;
+    width: calc(100% - 4px);
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    cursor: default;
+}
 .table {
     width: 100%;
     border-collapse: collapse;
-    height: 100%;
-}
-.tbody {
-    height: 100%;
 }
 
 .th {
