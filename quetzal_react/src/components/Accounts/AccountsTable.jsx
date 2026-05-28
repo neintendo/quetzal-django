@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/Accounts/AccountsTable.css";
+import styles from "../../styles/Table.module.css";
 
 const AccountsTable = ({
   onRowClick,
@@ -56,61 +56,60 @@ const AccountsTable = ({
   });
 
   return (
-    <div>
-      <table>
-        <tbody>
-          <tr>
-            <th onClick={() => requestSort("name")}>
-              Name{" "}
-              {sortHeader.key === "name"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("type")}>
-              Type{" "}
-              {sortHeader.key === "type"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("currency")}>
-              Currency{" "}
-              {sortHeader.key === "currency"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("balance")}>
-              Balance{" "}
-              {sortHeader.key === "balance"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-          </tr>
-          {sortedData.map((val, key) => {
-            return (
-              <tr
-                onClick={() =>
-                  onRowClick(val.id, val.name, val.type, val.currency)
-                }
-                key={key}
-              >
-                <td>{val.name}</td>
-                <td>{val.type}</td>
-                <td>{val.currency}</td>
-                <td>{val.balance}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <table className={styles.table}>
+      <tbody className={styles.tbody}>
+        <tr className={styles.tr}>
+          <th className={styles.th} onClick={() => requestSort("name")}>
+            Name{" "}
+            {sortHeader.key === "name"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("type")}>
+            Type{" "}
+            {sortHeader.key === "type"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("currency")}>
+            Currency{" "}
+            {sortHeader.key === "currency"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("balance")}>
+            Balance{" "}
+            {sortHeader.key === "balance"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+        </tr>
+        {sortedData.map((val, key) => {
+          return (
+            <tr
+              className={styles.tr}
+              onClick={() =>
+                onRowClick(val.id, val.name, val.type, val.currency)
+              }
+              key={key}
+            >
+              <td className={styles.td}>{val.name}</td>
+              <td className={styles.td}>{val.type}</td>
+              <td className={styles.td}>{val.currency}</td>
+              <td className={styles.td}>{val.balance}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
 

@@ -80,6 +80,7 @@
     box-sizing: border-box;
 }
 
-.dashboard-graph-title {
+.dashboard-graph-title,
+.recents-table-title {
     cursor: default;
 }

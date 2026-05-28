@@ -1,6 +1,6 @@
 import api from "../../api";
 import { useState, useEffect } from "react";
-import "../../styles/Categories/CategoriesTable.css";
+import styles from "../../styles/Table.module.css";
 
 const CategoriesDetail = ({
   searchTerm,
@@ -111,87 +111,89 @@ const CategoriesDetail = ({
   });
 
   return (
-    <div>
-      <table>
-        <tbody>
-          <tr>
-            <th onClick={() => requestSort("datetime")}>
-              Date & Time{" "}
-              {sortHeader.key === "datetime"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("amount")}>
-              Amount{" "}
-              {sortHeader.key === "amount"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("description")}>
-              Description{" "}
-              {sortHeader.key === "description"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("account")}>
-              Account{" "}
-              {sortHeader.key === "account"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("currency")}>
-              Currency{" "}
-              {sortHeader.key === "currency"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-          </tr>
-          {sortedData.map((val, key) => {
-            return (
-              <tr
-                onClick={() =>
-                  detailsRowClick(
-                    val.id,
-                    val.datetime,
-                    val.description,
-                    val.notes,
-                    val.amount,
-                    val.category,
-                    val.account,
-                    val.currency,
-                    val.transaction_type,
-                    val.linked_transaction,
-                  )
-                }
-                key={key}
+    <table className={styles.table}>
+      <tbody className={styles.tbody}>
+        <tr className={styles.tr}>
+          <th className={styles.th} onClick={() => requestSort("datetime")}>
+            Date & Time{" "}
+            {sortHeader.key === "datetime"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("amount")}>
+            Amount{" "}
+            {sortHeader.key === "amount"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("description")}>
+            Description{" "}
+            {sortHeader.key === "description"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("account")}>
+            Account{" "}
+            {sortHeader.key === "account"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("currency")}>
+            Currency{" "}
+            {sortHeader.key === "currency"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+        </tr>
+        {sortedData.map((val, key) => {
+          return (
+            <tr
+              className={styles.tr}
+              onClick={() =>
+                detailsRowClick(
+                  val.id,
+                  val.datetime,
+                  val.description,
+                  val.notes,
+                  val.amount,
+                  val.category,
+                  val.account,
+                  val.currency,
+                  val.transaction_type,
+                  val.linked_transaction,
+                )
+              }
+              key={key}
+            >
+              <td className={styles.td} style={{ width: 150 }}>
+                {val.datetime}
+              </td>
+              <td className={styles.td}>{val.amount}</td>
+              <td className={styles.td}>{val.description}</td>
+              <td className={styles.td}>{val.account}</td>
+              <td
+                className={styles.td}
+                style={{
+                  width: 50,
+                }}
               >
-                <td style={{ width: 150 }}>{val.datetime}</td>
-                <td style={{ width: 150 }}>{val.amount}</td>
-                <td>{val.description}</td>
-                <td>{val.account}</td>
-                <td
-                  style={{
-                    width: 50,
-                  }}
-                >
-                  {val.currency}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                {val.currency}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
 

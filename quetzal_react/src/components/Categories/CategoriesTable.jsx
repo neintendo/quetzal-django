@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/Categories/CategoriesTable.css";
+import styles from "../../styles/Table.module.css";
 
 const CategoriesTable = ({
   searchTerm,
@@ -54,41 +54,40 @@ const CategoriesTable = ({
   });
 
   return (
-    <div>
-      <table>
-        <tbody>
-          <tr>
-            <th onClick={() => requestSort("name")}>
-              Name{" "}
-              {sortHeader.key === "name"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("total")}>
-              Total{" "}
-              {sortHeader.key === "total"
-                ? sortHeader.direction === "asc"
-                  ? "↑"
-                  : "↓"
-                : ""}
-            </th>
-          </tr>
-          {sortedData.map((val, key) => {
-            return (
-              <tr
-                onClick={() => onRowClick(val.id, val.name, val.total)}
-                key={key}
-              >
-                <td>{val.name}</td>
-                <td>{val.total}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <table className={styles.table}>
+      <tbody className={styles.tbody}>
+        <tr className={styles.tr}>
+          <th className={styles.th} onClick={() => requestSort("name")}>
+            Name{" "}
+            {sortHeader.key === "name"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+          <th className={styles.th} onClick={() => requestSort("total")}>
+            Total{" "}
+            {sortHeader.key === "total"
+              ? sortHeader.direction === "asc"
+                ? "↑"
+                : "↓"
+              : ""}
+          </th>
+        </tr>
+        {sortedData.map((val, key) => {
+          return (
+            <tr
+              className={styles.tr}
+              onClick={() => onRowClick(val.id, val.name, val.total)}
+              key={key}
+            >
+              <td className={styles.td}>{val.name}</td>
+              <td className={styles.td}>{val.total}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
 
