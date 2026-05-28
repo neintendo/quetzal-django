@@ -347,7 +347,7 @@ class AccountsGraphView(APIView):
             {
                 "transactions_by_month": monthly_data,
                 "converted_transactions": converted_transactions,
-                "total_transctions": total_t,
+                "total_transactions": total_t,
             }
         )
 
@@ -457,7 +457,7 @@ class CategoriesChartView(APIView):
             {
                 "category_transactions_by_month": monthly_data,
                 "converted_transactions": converted_transactions,
-                "total_transctions": total_t,
+                "total_transactions": total_t,
             }
         )
 
@@ -671,7 +671,7 @@ class CategoriesGraphView(APIView):
                 "income_total": round(income_total, 2),
                 "expenses_total": round(expense_total, 2),
                 "converted_transactions": converted_transactions,
-                "total_transctions": total_t,
+                "total_transactions": total_t,
             }
         )
 
@@ -1169,6 +1169,6 @@ class TransactionSpendingGraph(APIView):
             {
                 "expenses_by_day": month_daily_data,
                 "converted_transactions": converted_transactions,
-                "total_transctions": total_t,
+                "total_transactions": total_t,
             }
         )
