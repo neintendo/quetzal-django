@@ -10,6 +10,13 @@
     max-height: 16px;
 }
 
+.navbar-center {
+    transition: font-size 500ms ease;
+}
+.navbar-center:hover {
+    font-size: 17px;
+}
+
 .add-nav {
     display: flex;
     align-items: center;
@@ -41,4 +48,8 @@
 .add-nav,
 .sidebar-nav {
     cursor: pointer;
+}
+
+.navbar-center {
+    cursor: default;
 }
