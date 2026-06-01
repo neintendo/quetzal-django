@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../api";
 import styles from "../../styles/Dashboard/RecentTransactionsTable.module.css";
 
-const RecentTransactions = () => {
+const RecentTransactions = ({ onRowClick, refresh }) => {
   const [transactionsData, setTransactionsData] = useState([]);
 
   const fetchData = () => {
@@ -15,7 +15,7 @@ const RecentTransactions = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -33,20 +33,20 @@ const RecentTransactions = () => {
               return (
                 <tr
                   className={styles.tr}
-                  // onClick={() =>
-                  //   onRowClick(
-                  //     val.id,
-                  //     val.datetime,
-                  //     val.description,
-                  //     val.notes,
-                  //     val.amount,
-                  //     val.category,
-                  //     val.account,
-                  //     val.currency,
-                  //     val.transaction_type,
-                  //     val.linked_transaction,
-                  //   )
-                  // }
+                  onClick={() =>
+                    onRowClick(
+                      val.id,
+                      val.datetime,
+                      val.description,
+                      val.notes,
+                      val.amount,
+                      val.category,
+                      val.account,
+                      val.currency,
+                      val.transaction_type,
+                      val.linked_transaction,
+                    )
+                  }
                   key={key}
                 >
                   <td className={styles.td}>{val.description}</td>
