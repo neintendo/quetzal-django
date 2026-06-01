@@ -36,5 +36,5 @@
 }
 .tr:not(:first-child):hover {
     background-color: #cccccc;
-    cursor: pointer;
+    cursor: default;
 }

@@ -1,11 +1,17 @@
 import "../../styles/Dashboard/Dashboard.css";
-import { useState } from "react";
+import api from "../../api";
+import { useEffect, useState } from "react";
 import TransactionDetail from "../Transactions/TransactionDetail";
 import DashboardStatus from "./DashboardStatus";
 import DashboardGraph from "./DashboardGraph";
 import RecentTransactions from "./RecentTransactions";
+import TopCategories from "./TopCategories";
+import CurrentMonth from "../Utilities/CurrentMonth";
 
 const Dashboard = () => {
+  const { currentMonth } = CurrentMonth();
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [categoriesGraphData, setCategoriesGraphData] = useState([]);
   const [showTransactionDetailModal, setShowTransactionDetailModal] =
     useState(false);
   const [selectedTransactionID, setSelectedTransactionID] = useState("");
@@ -26,8 +32,48 @@ const Dashboard = () => {
   const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
     useState("");
 
+  const fetchData = () => {
+    Promise.all([
+      api.get("categories/"),
+      api.get("categories/graph/", { params: { start_date: currentMonth } }),
+    ])
+      .then(([categoriesRes, categoriesGraphRes]) => {
+        setCategoriesData(categoriesRes.data);
+        setCategoriesGraphData(categoriesGraphRes.data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // Refresh data in RecentTransactions
   const [refresh, setRefresh] = useState(0);
+
+  const enhancedCategoriesData = categoriesData
+    .map((category) => {
+      let total = 0;
+
+      if (category.type === "expense") {
+        total =
+          categoriesGraphData?.transactions_by_category?.expenses?.[
+            category.name
+          ] * -1 || 0;
+      } else if (category.type === "income") {
+        total =
+          categoriesGraphData?.transactions_by_category?.income?.[
+            category.name
+          ] || 0;
+      }
+
+      return {
+        ...category,
+        total: total,
+      };
+    })
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
 
   // Data from table row in child (RecentTransactions) component
   const handleRowClick = (
@@ -97,6 +143,12 @@ const Dashboard = () => {
           <div className="recents-table-container">
             <div className="recents-table-title">Recent Transactions</div>
             <RecentTransactions onRowClick={handleRowClick} refresh={refresh} />
+          </div>
+          <div className="top-categories-table-container">
+            <div className="top-categories-table-title">
+              Top Categories This Month
+            </div>
+            <TopCategories enhancedCategoriesData={enhancedCategoriesData} />
           </div>
         </div>
       </div>
