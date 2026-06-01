@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard/Dashboard";
 import Accounts from "../components/Accounts/Accounts";
 import Transactions from "../components/Transactions/Transactions";
+import Recurring from "../components/Transactions/Recurring";
 import Categories from "../components/Categories/Categories";
 
 function Home() {
@@ -37,10 +38,12 @@ function Home() {
         return <Accounts />;
       case "transactions":
         return <Transactions />;
+      case "recurring":
+        return <Recurring />;
       case "categories":
         return <Categories />;
       default:
-        return <Categories />;
+        return <Dashboard />;
     }
   };
 

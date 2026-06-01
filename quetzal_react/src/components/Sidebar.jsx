@@ -42,6 +42,19 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           >
             {"Dashboard"}
           </div>
+
+          <div
+            className={
+              currentPage === "accounts"
+                ? "sidebar-pages-top-active"
+                : "sidebar-pages-top"
+            }
+            onClick={() => {
+              (onPageClick("accounts"), setCurrentPage("accounts"));
+            }}
+          >
+            {"Accounts"}
+          </div>
           <div
             className={
               currentPage === "transactions"
@@ -56,15 +69,15 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           </div>
           <div
             className={
-              currentPage === "accounts"
+              currentPage === "recurring"
                 ? "sidebar-pages-top-active"
                 : "sidebar-pages-top"
             }
             onClick={() => {
-              (onPageClick("accounts"), setCurrentPage("accounts"));
+              (onPageClick("recurring"), setCurrentPage("recurring"));
             }}
           >
-            {"Accounts"}
+            {"Recurring"}
           </div>
           <div
             className={
