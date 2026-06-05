@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import "../../styles/Accounts/AddAccount.css";
-import "../../styles/Accounts/AddAccountForm.css";
+import styles from "../../styles/Accounts/AddAccount.module.css";
 import currencyList from "../Utilities/CurrencyList";
 import api from "../../api";
 
@@ -67,16 +66,16 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
   };
 
   return (
-    <div className="add-account-modal">
+    <div className={styles["add-account-modal"]}>
       <form
         onSubmit={handleSubmit}
-        className="add-account-form-container"
+        className={styles["add-account-form-container"]}
         id="divListen"
       >
-        <div className="modal-title-container">
-          <div className="modal-title">Add Account</div>
+        <div className={styles["modal-title-container"]}>
+          <div className={styles["modal-title"]}>Add Account</div>
           <div
-            className="modal-close-button"
+            className={styles["modal-close-button"]}
             onClick={onClose}
             title="Close Modal"
           >
@@ -84,7 +83,7 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
           </div>
         </div>
         <input
-          className="add-account-form-input"
+          className={styles["add-account-form-input"]}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -92,7 +91,7 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
           required
         />
         <input
-          className="add-account-form-input"
+          className={styles["add-account-form-input"]}
           list="types"
           type="text"
           value={type}
@@ -112,7 +111,7 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
               ))}
         </datalist>
         <select
-          className="add-account-form-input"
+          className={styles["add-account-form-input"]}
           type="text"
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
@@ -126,7 +125,7 @@ function AddAccount({ route, onSuccess, onClose, accountsData }) {
           ))}
         </select>
         <button
-          className="add-account-form-button"
+          className={styles["add-account-form-button"]}
           type="submit"
           disabled={loading}
         >

@@ -1,5 +1,5 @@
 import api from "../../api";
-import "../../styles/Accounts/AccountsGraph.css";
+import styles from "../../styles/Accounts/AccountsGraph.module.css";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -56,7 +56,11 @@ const AccountsGraph = ({
   ]);
 
   if (!transactionData) {
-    return <div className="accounts-graph-loading">[ Loading Graph... ]</div>;
+    return (
+      <div className={styles["accounts-graph-loading"]}>
+        [ Loading Graph... ]
+      </div>
+    );
   }
 
   // Get months then fills gaps
@@ -150,7 +154,7 @@ const AccountsGraph = ({
 
   return (
     <>
-      <div className="accounts-graph-canvas">
+      <div className={styles["accounts-graph-canvas"]}>
         <Line id="acc_graph" options={options} data={canvasData} />
       </div>
     </>

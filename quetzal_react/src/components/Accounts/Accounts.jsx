@@ -1,4 +1,4 @@
-import "../../styles/Accounts/Accounts.css";
+import styles from "../../styles/Accounts/Accounts.module.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import AccountsDetail from "./AccountsDetail";
@@ -96,7 +96,7 @@ const Accounts = () => {
 
   const divCurrencies = uniqueCurrencies.map((currency) => (
     <div
-      className="accounts-graph-balance-list"
+      className={styles["accounts-graph-balance-list"]}
       onClick={() => {
         setCurrencyFilter(currency);
         setTableNav(false);
@@ -238,10 +238,12 @@ const Accounts = () => {
           readLinkedTransaction={selectedLinkedTransaction}
         />
       )}
-      <div className="accounts">
+      <div className={styles["accounts"]}>
         {graphMin ? (
           <div
-            className={graphMax ? "accounts-graph-max" : "accounts-graph"}
+            className={
+              graphMax ? styles["accounts-graph-max"] : styles["accounts-graph"]
+            }
             onDoubleClick={() => {
               toggleGraphMax();
               toggleTableMin();
@@ -250,13 +252,13 @@ const Accounts = () => {
             <div
               className={
                 currencyFilter || tableNav
-                  ? "accounts-graph-balance-container-active"
-                  : "accounts-graph-balance-container"
+                  ? styles["accounts-graph-balance-container-active"]
+                  : styles["accounts-graph-balance-container"]
               }
               title={currencyFilter || tableNav ? "Reset Currency Filter" : ""}
             >
               <div
-                className="accounts-graph-balance"
+                className={styles["accounts-graph-balance"]}
                 onClick={() => {
                   setCurrencyFilter("");
                   setTableNav(false);
@@ -287,8 +289,8 @@ const Accounts = () => {
           ""
         )}
         {tableMin ? (
-          <div className="accounts-table-container">
-            <div className="accounts-table-header">
+          <div className={styles["accounts-table-container"]}>
+            <div className={styles["accounts-table-header"]}>
               {tableNav ? (
                 <div
                   onClick={() => {
@@ -296,14 +298,14 @@ const Accounts = () => {
                     setSearchTerm("");
                     setSelectedAccount();
                   }}
-                  className="accounts-table-title-active"
+                  className={styles["accounts-table-title-active"]}
                   title="Navigate Back"
                 >
                   {selectedAccountName}
                 </div>
               ) : (
                 <div
-                  className="accounts-table-title"
+                  className={styles["accounts-table-title"]}
                   onDoubleClick={() => {
                     (toggleTableMax(), toggleGraphMin());
                   }}
@@ -314,18 +316,18 @@ const Accounts = () => {
                 </div>
               )}
               <input
-                className="table-header-input"
+                className={styles["table-header-input"]}
                 placeholder={
                   tableNav ? `Search ${selectedAccountName}` : "Search Account"
                 }
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <div className="table-header-button-container">
+              <div className={styles["table-header-button-container"]}>
                 {tableNav ? (
-                  <div className="edit-account-container">
+                  <div className={styles["edit-account-container"]}>
                     <button
-                      className="edit-account-button"
+                      className={styles["edit-account-button"]}
                       type="button"
                       onClick={() => setShowAccEditModal(true)}
                     >
@@ -338,9 +340,9 @@ const Accounts = () => {
                 {tableNav ? (
                   ""
                 ) : (
-                  <div className="add-account-container">
+                  <div className={styles["add-account-container"]}>
                     <button
-                      className="add-account-button"
+                      className={styles["add-account-button"]}
                       type="button"
                       onClick={() => setShowAddModal(true)}
                     >

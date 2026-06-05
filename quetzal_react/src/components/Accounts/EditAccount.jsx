@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import "../../styles/Accounts/EditAccount.css";
-import "../../styles/Accounts/EditAccountForm.css";
+import styles from "../../styles/Accounts/EditAccount.module.css";
 import currencyList from "../Utilities/CurrencyList";
 import api from "../../api";
 
@@ -97,16 +96,16 @@ function EditAccount({
   };
 
   return (
-    <div className="edit-account-modal">
+    <div className={styles["edit-account-modal"]}>
       <form
         onSubmit={handleSubmit}
-        className="edit-account-form-container"
+        className={styles["edit-account-form-container"]}
         id="divListen"
       >
-        <div className="modal-title-container">
-          <div className="modal-title">Edit Account</div>
+        <div className={styles["modal-title-container"]}>
+          <div className={styles["modal-title"]}>Edit Account</div>
           <div
-            className="modal-close-button"
+            className={styles["modal-close-button"]}
             onClick={onClose}
             title="Close Modal"
           >
@@ -114,7 +113,7 @@ function EditAccount({
           </div>
         </div>
         <input
-          className="edit-account-form-input"
+          className={styles["edit-account-form-input"]}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -122,7 +121,7 @@ function EditAccount({
           required
         />
         <input
-          className="edit-account-form-input"
+          className={styles["edit-account-form-input"]}
           list="types"
           type="text"
           value={type}
@@ -142,7 +141,7 @@ function EditAccount({
               ))}
         </datalist>
         <select
-          className="add-account-form-input"
+          className={styles["edit-account-form-input"]}
           type="text"
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
@@ -156,7 +155,7 @@ function EditAccount({
           ))}
         </select>
         <button
-          className="edit-account-form-button"
+          className={styles["edit-account-form-button"]}
           onClick={() => setMethod("put")}
           type="submit"
           disabled={loading}
@@ -165,7 +164,7 @@ function EditAccount({
         </button>
         <hr></hr>
         <button
-          className="delete-account-form-button"
+          className={styles["delete-account-form-button"]}
           onClick={() => setMethod("delete")}
           type="submit"
           disabled={loadingB}
