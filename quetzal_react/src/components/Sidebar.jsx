@@ -1,4 +1,4 @@
-import "../styles/Sidebar.css";
+import styles from "../styles/Sidebar.module.css";
 import api from "../api";
 import { useEffect, useState } from "react";
 import Settings from "./Settings/Settings";
@@ -28,13 +28,15 @@ const Sidebar = ({ isOpen, onPageClick }) => {
       {showSettingsModal && (
         <Settings onClose={() => setShowSettingsModal(false)} />
       )}
-      <nav className={`sidebar ${isOpen ? "open" : "closed"}`}>
-        <div className="sidebar-top">
+      <nav
+        className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}
+      >
+        <div className={styles["sidebar-top"]}>
           <div
             className={
               currentPage === "dashboard"
-                ? "sidebar-pages-top-active"
-                : "sidebar-pages-top"
+                ? styles["sidebar-pages-top-active"]
+                : styles["sidebar-pages-top"]
             }
             onClick={() => {
               (onPageClick("dashboard"), setCurrentPage("dashboard"));
@@ -46,8 +48,8 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           <div
             className={
               currentPage === "accounts"
-                ? "sidebar-pages-top-active"
-                : "sidebar-pages-top"
+                ? styles["sidebar-pages-top-active"]
+                : styles["sidebar-pages-top"]
             }
             onClick={() => {
               (onPageClick("accounts"), setCurrentPage("accounts"));
@@ -58,8 +60,8 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           <div
             className={
               currentPage === "transactions"
-                ? "sidebar-pages-top-active"
-                : "sidebar-pages-top"
+                ? styles["sidebar-pages-top-active"]
+                : styles["sidebar-pages-top"]
             }
             onClick={() => {
               (onPageClick("transactions"), setCurrentPage("transactions"));
@@ -70,8 +72,8 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           <div
             className={
               currentPage === "recurring"
-                ? "sidebar-pages-top-active"
-                : "sidebar-pages-top"
+                ? styles["sidebar-pages-top-active"]
+                : styles["sidebar-pages-top"]
             }
             onClick={() => {
               (onPageClick("recurring"), setCurrentPage("recurring"));
@@ -82,8 +84,8 @@ const Sidebar = ({ isOpen, onPageClick }) => {
           <div
             className={
               currentPage === "categories"
-                ? "sidebar-pages-top-active"
-                : "sidebar-pages-top"
+                ? styles["sidebar-pages-top-active"]
+                : styles["sidebar-pages-top"]
             }
             onClick={() => {
               (onPageClick("categories"), setCurrentPage("categories"));
@@ -92,12 +94,12 @@ const Sidebar = ({ isOpen, onPageClick }) => {
             {"Categories"}
           </div>
         </div>
-        <div className="sidebar-bottom">
+        <div className={styles["sidebar-bottom"]}>
           <div
-            className="sidebar-menu"
+            className={styles["sidebar-menu"]}
             onClick={() => setShowSettingsModal(true)}
           >
-            <div className="sidebar-profile">
+            <div className={styles["sidebar-profile"]}>
               {profile ? (
                 <div>
                   <span
@@ -114,7 +116,7 @@ const Sidebar = ({ isOpen, onPageClick }) => {
                 <div>LOADING...</div>
               )}
             </div>
-            <div className="sidebar-settings-arrow">{"›"}</div>
+            <div className={styles["sidebar-settings-arrow"]}>{"›"}</div>
           </div>
         </div>
       </nav>

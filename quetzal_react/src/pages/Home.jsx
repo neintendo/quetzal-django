@@ -1,4 +1,4 @@
-import "../styles/Home.css";
+import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard/Dashboard";
@@ -53,7 +53,11 @@ function Home() {
 
   return (
     <div
-      className={isSidebarOpen ? "home-container" : "home-container-maximized"}
+      className={
+        isSidebarOpen
+          ? styles["home-container"]
+          : styles["home-container-maximized"]
+      }
     >
       <Navbar
         isSidebarOpen={isSidebarOpen}

@@ -1,4 +1,4 @@
-import "../styles/Navbar.css";
+import styles from "../styles/Navbar.module.css";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
 import AddTransaction from "./Transactions/AddTransaction";
@@ -26,10 +26,10 @@ const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
       )}
       <Sidebar isOpen={isSidebarOpen} onPageClick={handlePageClick} />
 
-      <nav className="navbar">
-        <div className="navbar-left">
+      <nav className={styles["navbar"]}>
+        <div className={styles["navbar-left"]}>
           <button
-            className="sidebar-nav"
+            className={styles["sidebar-nav"]}
             title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
             type="button"
             onClick={toggleSidebar}
@@ -37,10 +37,10 @@ const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
             {isSidebarOpen ? "<" : ">"}
           </button>
         </div>
-        <div className="navbar-center">quetzal</div>
-        <div className="navbar-right">
+        <div className={styles["navbar-center"]}>quetzal</div>
+        <div className={styles["navbar-right"]}>
           <button
-            className="add-nav"
+            className={styles["add-nav"]}
             title="Add Transaction"
             type="button"
             onClick={() => setShowAddModal(true)}
