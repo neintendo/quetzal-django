@@ -1,4 +1,4 @@
-import "../../styles/Dashboard/Dashboard.css";
+import styles from "../../styles/Dashboard/Dashboard.module.css";
 import api from "../../api";
 import { useEffect, useState } from "react";
 import TransactionDetail from "../Transactions/TransactionDetail";
@@ -133,19 +133,21 @@ const Dashboard = () => {
           readLinkedTransaction={selectedLinkedTransaction}
         />
       )}
-      <div className="dashboard">
+      <div className={styles["dashboard"]}>
         <DashboardStatus />
-        <div className="dashboard-graph-container">
-          <div className="dashboard-graph-title">Spending</div>
+        <div className={styles["dashboard-graph-container"]}>
+          <div className={styles["dashboard-graph-title"]}>Spending</div>
           <DashboardGraph />
         </div>
-        <div className="dashboard-summaries-container">
-          <div className="recents-table-container">
-            <div className="recents-table-title">Recent Transactions</div>
+        <div className={styles["dashboard-summaries-container"]}>
+          <div className={styles["recents-table-container"]}>
+            <div className={styles["recents-table-title"]}>
+              Recent Transactions
+            </div>
             <RecentTransactions onRowClick={handleRowClick} refresh={refresh} />
           </div>
-          <div className="top-categories-table-container">
-            <div className="top-categories-table-title">
+          <div className={styles["top-categories-table-container"]}>
+            <div className={styles["top-categories-table-title"]}>
               Top Categories This Month
             </div>
             <TopCategories enhancedCategoriesData={enhancedCategoriesData} />

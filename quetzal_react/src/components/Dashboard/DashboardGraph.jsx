@@ -1,5 +1,5 @@
 import api from "../../api";
-import "../../styles/Dashboard/DashboardGraph.css";
+import styles from "../../styles/Dashboard/DashboardGraph.module.css";
 import CurrentMonth from "../Utilities/CurrentMonth";
 import PreviousMonth from "../Utilities/PreviousMonth";
 import { useState, useEffect } from "react";
@@ -60,7 +60,11 @@ const DashboardGraph = () => {
   }, []);
 
   if (!dailyTransactionData) {
-    return <div className="dashboard-graph-loading">[ Loading Graph... ]</div>;
+    return (
+      <div className={styles["dashboard-graph-loading"]}>
+        [ Loading Graph... ]
+      </div>
+    );
   }
 
   const dateNow = new Date();
@@ -184,7 +188,7 @@ const DashboardGraph = () => {
 
   return (
     <>
-      <div className="dashboard-graph-canvas">
+      <div className={styles["dashboard-graph-canvas"]}>
         <Line id="dash_graph" options={options} data={canvasData} />
       </div>
     </>

@@ -1,4 +1,4 @@
-import "../../styles/Dashboard/DashboardStatus.css";
+import styles from "../../styles/Dashboard/DashboardStatus.module.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import CurrentMonth from "../Utilities/CurrentMonth";
@@ -61,27 +61,27 @@ const DashboardStatus = () => {
 
   return (
     <>
-      <div className="dashboard-status-container">
-        <div className="dashboard-status-group">
-          <div className="dashboard-status">
+      <div className={styles["dashboard-status-container"]}>
+        <div className={styles["dashboard-status-group"]}>
+          <div className={styles["dashboard-status"]}>
             Net Worth ›{" "}
             {accountAggregates?.accounts_converted != 0
               ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
               : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Income [MTD] ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeExpenseTotals?.income) ?? "..."}`
               : `${currencyFormatter.format(incomeExpenseTotals?.income) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Expenses [MTD] ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeExpenseTotals?.expense) ?? "..."}`
               : `${currencyFormatter.format(incomeExpenseTotals?.expense) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Income / Expense Ratio ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${(incomeExpenseTotals?.income / incomeExpenseTotals?.expense).toFixed(2)}`
@@ -89,13 +89,13 @@ const DashboardStatus = () => {
                   incomeExpenseTotals?.income / incomeExpenseTotals?.expense
                 ).toFixed(2)}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Average Income ›{" "}
             {incomeAggregate?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeAggregate?.income / incomeAggregate.transaction_count) ?? "..."}`
               : `${currencyFormatter.format(incomeAggregate?.income / incomeAggregate.transaction_count) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Average Expense ›{" "}
             {expenseAggregate?.transactions_converted != 0
               ? `± ${currencyFormatter.format(expenseAggregate?.expense / expenseAggregate.transaction_count) ?? "..."}`
@@ -103,26 +103,26 @@ const DashboardStatus = () => {
           </div>
         </div>
         {/* Connect carousel end-to-end */}
-        <div aria-hidden className="dashboard-status-group">
-          <div className="dashboard-status">
+        <div aria-hidden className={styles["dashboard-status-group"]}>
+          <div className={styles["dashboard-status"]}>
             Net Worth ›{" "}
             {accountAggregates?.accounts_converted != 0
               ? `± ${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`
               : `${currencyFormatter.format(accountAggregates?.total_balance) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Income [MTD] ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeExpenseTotals?.income) ?? "..."}`
               : `${currencyFormatter.format(incomeExpenseTotals?.income) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Expenses [MTD] ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeExpenseTotals?.expense) ?? "..."}`
               : `${currencyFormatter.format(incomeExpenseTotals?.expense) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Income / Expense Ratio ›{" "}
             {incomeExpenseTotals?.transactions_converted != 0
               ? `± ${(incomeExpenseTotals?.income / incomeExpenseTotals?.expense).toFixed(2)}`
@@ -130,13 +130,13 @@ const DashboardStatus = () => {
                   incomeExpenseTotals?.income / incomeExpenseTotals?.expense
                 ).toFixed(2)}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Average Income ›{" "}
             {incomeAggregate?.transactions_converted != 0
               ? `± ${currencyFormatter.format(incomeAggregate?.income / incomeAggregate.transaction_count) ?? "..."}`
               : `${currencyFormatter.format(incomeAggregate?.income / incomeAggregate.transaction_count) ?? "..."}`}
           </div>
-          <div className="dashboard-status">
+          <div className={styles["dashboard-status"]}>
             Average Expense ›{" "}
             {expenseAggregate?.transactions_converted != 0
               ? `± ${currencyFormatter.format(expenseAggregate?.expense / expenseAggregate.transaction_count) ?? "..."}`
