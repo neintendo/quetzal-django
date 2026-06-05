@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN } from "../constants";
 import currencyList from "./Utilities/CurrencyList";
-import "../styles/Form.css";
+import styles from "../styles/AuthForm.module.css";
 
-function Form({ route, method }) {
+function AuthForm({ route, method }) {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState("");
   const [display_name, setDisplayName] = useState("");
@@ -80,11 +80,11 @@ function Form({ route, method }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
+    <form onSubmit={handleSubmit} className={styles["form-container"]}>
       <h2>{name}</h2>
       {method === "login" ? (
         <select
-          className="form-input"
+          className={styles["form-input"]}
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -106,7 +106,7 @@ function Form({ route, method }) {
         </select>
       ) : (
         <input
-          className="form-input"
+          className={styles["form-input"]}
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -117,7 +117,7 @@ function Form({ route, method }) {
 
       {method === "register" && (
         <input
-          className="form-input"
+          className={styles["form-input"]}
           type="text"
           value={display_name}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -126,7 +126,7 @@ function Form({ route, method }) {
         />
       )}
       <input
-        className="form-input"
+        className={styles["form-input"]}
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -135,7 +135,7 @@ function Form({ route, method }) {
       />
       {method === "register" && (
         <select
-          className="form-input"
+          className={styles["form-input"]}
           type="text"
           value={main_currency}
           onChange={(e) => setCurrency(e.target.value)}
@@ -149,15 +149,19 @@ function Form({ route, method }) {
         </select>
       )}
       {/* Button disabled when loading to prevent double submission */}
-      <button className="form-button" type="submit" disabled={loading}>
+      <button
+        className={styles["form-button"]}
+        type="submit"
+        disabled={loading}
+      >
         {loading ? "LOADING..." : name}
       </button>
       {/* Dynamic link that navigates between login & register pages */}
-      <a className="where-to" href={link_path}>
+      <a className={styles["where-to"]} href={link_path}>
         {link_text}
       </a>
     </form>
   );
 }
 
-export default Form;
+export default AuthForm;
