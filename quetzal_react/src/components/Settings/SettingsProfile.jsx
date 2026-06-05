@@ -1,4 +1,4 @@
-import "../../styles/Settings/SettingsContent.css";
+import styles from "../../styles/Settings/SettingsContent.module.css";
 import api from "../../api";
 import currencyList from "../Utilities/CurrencyList";
 import { useEffect, useState } from "react";
@@ -106,11 +106,14 @@ const SettingsProfile = ({ route }) => {
   };
 
   return (
-    <form className="settings-content-container" onSubmit={handleSubmit}>
-      <div className="settings-sub-content-container">
-        <div className="settings-content-header">Username</div>
+    <form
+      className={styles["settings-content-container"]}
+      onSubmit={handleSubmit}
+    >
+      <div className={styles["settings-sub-content-container"]}>
+        <div className={styles["settings-content-header"]}>Username</div>
         <input
-          className="settings-content-input"
+          className={styles["settings-content-input"]}
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -118,10 +121,10 @@ const SettingsProfile = ({ route }) => {
           required
         />
       </div>
-      <div className="settings-sub-content-container">
-        <div className="settings-content-header">Display Name</div>
+      <div className={styles["settings-sub-content-container"]}>
+        <div className={styles["settings-content-header"]}>Display Name</div>
         <input
-          className="settings-content-input"
+          className={styles["settings-content-input"]}
           type="text"
           value={display_name}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -129,10 +132,10 @@ const SettingsProfile = ({ route }) => {
           required
         />
       </div>
-      <div className="settings-sub-content-container">
-        <div className="settings-content-header">Main Currency</div>
+      <div className={styles["settings-sub-content-container"]}>
+        <div className={styles["settings-content-header"]}>Main Currency</div>
         <select
-          className="settings-content-input"
+          className={styles["settings-content-input"]}
           type="text"
           value={main_currency}
           onChange={(e) => setMainCurrency(e.target.value)}
@@ -144,18 +147,18 @@ const SettingsProfile = ({ route }) => {
           ))}
         </select>
       </div>
-      <div className="settings-sub-content-container">
-        <div className="settings-content-header">Password</div>
-        <div className="settings-content-multiple-input-container">
+      <div className={styles["settings-sub-content-container"]}>
+        <div className={styles["settings-content-header"]}>Password</div>
+        <div className={styles["settings-content-multiple-input-container"]}>
           <input
-            className="settings-content-input"
+            className={styles["settings-content-input"]}
             type="password"
             value={old_password}
             onChange={(e) => setOldPassword(e.target.value)}
             placeholder="Enter Old Password"
           />
           <input
-            className="settings-content-input"
+            className={styles["settings-content-input"]}
             type="password"
             value={new_password}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -163,7 +166,7 @@ const SettingsProfile = ({ route }) => {
           />
           {new_password && (
             <input
-              className="settings-content-input"
+              className={styles["settings-content-input"]}
               type="password"
               value={confirm_password}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -173,7 +176,7 @@ const SettingsProfile = ({ route }) => {
         </div>
       </div>
       <button
-        className="settings-content-button"
+        className={styles["settings-content-button"]}
         type="submit"
         disabled={(!hasChangesProfile && !hasChangesPassword) || loading}
       >

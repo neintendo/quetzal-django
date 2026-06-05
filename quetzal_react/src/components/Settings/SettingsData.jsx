@@ -1,4 +1,4 @@
-import "../../styles/Settings/SettingsContent.css";
+import styles from "../../styles/Settings/SettingsContent.module.css";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -129,9 +129,11 @@ const SettingsData = () => {
     <>
       {showImport && <ImportTransactions data={parsedData} />}
 
-      <form className="settings-content-container">
-        <div className="settings-sub-content-container">
-          <div className="settings-content-header">Import Transactions</div>
+      <form className={styles["settings-content-container"]}>
+        <div className={styles["settings-sub-content-container"]}>
+          <div className={styles["settings-content-header"]}>
+            Import Transactions
+          </div>
           <input
             style={{}}
             type="file"
@@ -140,7 +142,7 @@ const SettingsData = () => {
             onChange={parseCSV}
           />
           <button
-            className="data-settings-content-button"
+            className={styles["data-settings-content-button"]}
             type="button"
             onClick={importData}
             disabled={disableImport}
@@ -148,27 +150,29 @@ const SettingsData = () => {
             {`Import ${numberOfTransactions != 0 ? numberOfTransactions : ""} Transactions`}
           </button>
         </div>
-        <div className="settings-sub-content-container">
-          <div className="settings-content-header">Export All Transactions</div>
-          <div className="warning-text">
+        <div className={styles["settings-sub-content-container"]}>
+          <div className={styles["settings-content-header"]}>
+            Export All Transactions
+          </div>
+          <div className={styles["warning-text"]}>
             File may contain sensitive data. Delete after use!
           </div>
           <button
-            className="data-settings-content-button"
+            className={styles["data-settings-content-button"]}
             type="button"
             onClick={exportCSV}
           >
             {"Export to CSV"}
           </button>
         </div>
-        <div className="settings-sub-content-container">
-          <div className="settings-content-header">Reset Profile</div>
-          <div className="warning-text">
+        <div className={styles["settings-sub-content-container"]}>
+          <div className={styles["settings-content-header"]}>Reset Profile</div>
+          <div className={styles["warning-text"]}>
             Delete all accounts, transactions and categories. This action is
             irreversible!
           </div>
           <input
-            className="settings-content-input"
+            className={styles["settings-content-input"]}
             type="password"
             style={{ marginTop: 8 }}
             value={resetPassword}
@@ -176,7 +180,7 @@ const SettingsData = () => {
             placeholder="Enter Password"
           />
           <button
-            className="data-settings-content-button-delete"
+            className={styles["data-settings-content-button-delete"]}
             type="button"
             onClick={resetProfile}
             disabled={resetPassword.length < 8}
@@ -184,13 +188,15 @@ const SettingsData = () => {
             {"Reset Profile"}
           </button>
         </div>
-        <div className="settings-sub-content-container">
-          <div className="settings-content-header">Delete Profile</div>
-          <div className="warning-text">
+        <div className={styles["settings-sub-content-container"]}>
+          <div className={styles["settings-content-header"]}>
+            Delete Profile
+          </div>
+          <div className={styles["warning-text"]}>
             Delete this profile. This action is irreversible!
           </div>
           <input
-            className="settings-content-input"
+            className={styles["settings-content-input"]}
             type="password"
             style={{ marginTop: 8 }}
             value={deletePassword}
@@ -198,7 +204,7 @@ const SettingsData = () => {
             placeholder="Enter Password"
           />
           <button
-            className="data-settings-content-button-delete"
+            className={styles["data-settings-content-button-delete"]}
             type="button"
             onClick={deleteProfile}
             disabled={deletePassword.length < 8}

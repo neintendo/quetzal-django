@@ -1,4 +1,4 @@
-import "../../styles/Settings/Settings.css";
+import styles from "../../styles/Settings/Settings.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsProfile from "./SettingsProfile";
@@ -38,17 +38,17 @@ const Settings = ({ onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="settings-modal">
-      <div id="divListen" className="settings-container">
-        <div className="settings-sidebar">
-          <div className="settings-sidebar-title">Settings</div>
-          <div className="sidebar-sections-container">
+    <div className={styles["settings-modal"]}>
+      <div id="divListen" className={styles["settings-container"]}>
+        <div className={styles["settings-sidebar"]}>
+          <div className={styles["settings-sidebar-title"]}>Settings</div>
+          <div className={styles["sidebar-sections-container"]}>
             <div
               onClick={() => setPage("profile")}
               className={
                 page === "profile"
-                  ? "sidebar-sections-active"
-                  : "sidebar-sections"
+                  ? styles["sidebar-sections-active"]
+                  : styles["sidebar-sections"]
               }
             >
               Account
@@ -57,8 +57,8 @@ const Settings = ({ onClose }) => {
               onClick={() => setPage("appearance")}
               className={
                 page === "appearance"
-                  ? "sidebar-sections-active"
-                  : "sidebar-sections"
+                  ? styles["sidebar-sections-active"]
+                  : styles["sidebar-sections"]
               }
             >
               Appearance
@@ -67,8 +67,8 @@ const Settings = ({ onClose }) => {
               onClick={() => setPage("preferences")}
               className={
                 page === "preferences"
-                  ? "sidebar-sections-active"
-                  : "sidebar-sections"
+                  ? styles["sidebar-sections-active"]
+                  : styles["sidebar-sections"]
               }
             >
               Preferences
@@ -76,7 +76,9 @@ const Settings = ({ onClose }) => {
             <div
               onClick={() => setPage("data")}
               className={
-                page === "data" ? "sidebar-sections-active" : "sidebar-sections"
+                page === "data"
+                  ? styles["sidebar-sections-active"]
+                  : styles["sidebar-sections"]
               }
             >
               Data
@@ -86,14 +88,16 @@ const Settings = ({ onClose }) => {
               target="_blank"
               style={{ textDecoration: "none" }}
               className={
-                page === "help" ? "sidebar-sections-active" : "sidebar-sections"
+                page === "help"
+                  ? styles["sidebar-sections-active"]
+                  : styles["sidebar-sections"]
               }
             >
               {"Help & Support ›"}
             </a>
           </div>
           <div
-            className="sidebar-logout"
+            className={styles["sidebar-logout"]}
             onClick={() => {
               const confirmed = window.confirm(
                 "Are you sure you want to logout?",
@@ -107,8 +111,8 @@ const Settings = ({ onClose }) => {
             {"↲"}
           </div>
         </div>
-        <div className="settings-content">{pageSwitch()}</div>
-        <div className="modal-close-button" onClick={() => onClose()}>
+        <div className={styles["settings-content"]}>{pageSwitch()}</div>
+        <div className={styles["modal-close-button"]} onClick={() => onClose()}>
           {"X"}
         </div>
       </div>
