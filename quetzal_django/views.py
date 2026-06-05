@@ -500,35 +500,42 @@ class CategoriesDetailView(generics.RetrieveUpdateDestroyAPIView):
         linked_acc = None
 
         for transaction in instance_transactions:
-            if transaction.transaction_type == "transfer":
-                try:
-                    isMirror = False
-                    if (transaction.destination_account) is None:
-                        raise Exception
-
-                except Exception:
-                    isMirror = True
+            match transaction.transaction_type:
+                case "transfer":
                     try:
-                        linked_acc = Account.objects.get(
-                            id=transaction.linked_transaction.account.id
-                        )
-                    except Exception as e:
-                        linked_acc = None
-                        print(e)
+                        isMirror = False
+                        if (transaction.destination_account) is None:
+                            raise Exception
 
-                if isMirror is False:
-                    transaction.destination_account.balance -= transaction.amount
-                    transaction.destination_account.save()
-                    Transaction.objects.filter(
-                        id=transaction.linked_transaction.id
-                    ).delete()
-                elif isMirror is True:
-                    if linked_acc is not None:
-                        linked_acc.balance += transaction.amount
-                        linked_acc.save()
+                    except Exception:
+                        isMirror = True
+                        try:
+                            linked_acc = Account.objects.get(
+                                id=transaction.linked_transaction.account.id
+                            )
+                        except Exception as e:
+                            linked_acc = None
+                            print(e)
+
+                    if isMirror is False:
+                        transaction.destination_account.balance -= transaction.amount
+                        transaction.destination_account.save()
                         Transaction.objects.filter(
                             id=transaction.linked_transaction.id
                         ).delete()
+                    elif isMirror is True:
+                        if linked_acc is not None:
+                            linked_acc.balance += transaction.amount
+                            linked_acc.save()
+                            Transaction.objects.filter(
+                                id=transaction.linked_transaction.id
+                            ).delete()
+                case "income":
+                    transaction.account.balance -= transaction.amount
+                    transaction.account.save()
+                case "expense":
+                    transaction.account.balance += transaction.amount
+                    transaction.account.save()
 
         instance.delete()
 
