@@ -1,4 +1,4 @@
-import "../../styles/Categories/CategoriesRadar.css";
+import styles from "../../styles/Categories/CategoriesRadar.module.css";
 import { Radar } from "react-chartjs-2";
 
 import {
@@ -26,7 +26,11 @@ const CategoriesRadar = ({
   enhancedRadarPrevData,
 }) => {
   if (!enhancedRadarData) {
-    return <div className="categories-radar-loading">[ Loading Radar... ]</div>;
+    return (
+      <div className={styles["categories-radar-loading"]}>
+        [ Loading Radar... ]
+      </div>
+    );
   }
 
   // Map categories
@@ -122,9 +126,9 @@ const CategoriesRadar = ({
   };
   return (
     <>
-      <div className="categories-radar-canvas">
+      <div className={styles["categories-radar-canvas"]}>
         {labels.length === 0 ? (
-          <div className="categories-radar-loading">[ No Data ]</div>
+          <div className={styles["categories-radar-loading"]}>[ No Data ]</div>
         ) : (
           <Radar id="cat_radar" options={options} data={canvasData} />
         )}

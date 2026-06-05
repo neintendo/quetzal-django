@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api";
-import "../../styles/Categories/AddCategory.css";
-import "../../styles/Categories/AddCategoryForm.css";
+import styles from "../../styles/Categories/AddCategory.module.css";
 
 function AddCategory({ route, onSuccess, onClose }) {
   const [name, setName] = useState("");
@@ -63,16 +62,16 @@ function AddCategory({ route, onSuccess, onClose }) {
   };
 
   return (
-    <div className="add-category-modal">
+    <div className={styles["add-category-modal"]}>
       <form
         onSubmit={handleSubmit}
-        className="add-category-form-container"
+        className={styles["add-category-form-container"]}
         id="divListen"
       >
-        <div className="modal-title-container">
-          <div className="modal-title">Add Category</div>
+        <div className={styles["modal-title-container"]}>
+          <div className={styles["modal-title"]}>Add Category</div>
           <div
-            className="modal-close-button"
+            className={styles["modal-close-button"]}
             onClick={onClose}
             title="Close Modal"
           >
@@ -80,7 +79,7 @@ function AddCategory({ route, onSuccess, onClose }) {
           </div>
         </div>
         <input
-          className="add-category-form-input"
+          className={styles["add-category-form-input"]}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -88,7 +87,7 @@ function AddCategory({ route, onSuccess, onClose }) {
           required
         />
         <select
-          className="add-category-form-input"
+          className={styles["add-category-form-input"]}
           list="types"
           type="text"
           value={type}
@@ -102,7 +101,7 @@ function AddCategory({ route, onSuccess, onClose }) {
         </select>
 
         <button
-          className="add-category-form-button"
+          className={styles["add-category-form-button"]}
           type="submit"
           disabled={loading}
         >

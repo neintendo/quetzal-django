@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import "../../styles/Categories/EditCategory.css";
-import "../../styles/Categories/EditCategoryForm.css";
+import styles from "../../styles/Categories/EditCategory.module.css";
 import api from "../../api";
 
 function EditCategory({
@@ -90,16 +89,16 @@ function EditCategory({
   };
 
   return (
-    <div className="edit-category-modal">
+    <div className={styles["edit-category-modal"]}>
       <form
         onSubmit={handleSubmit}
-        className="edit-category-form-container"
+        className={styles["edit-category-form-container"]}
         id="divListen"
       >
-        <div className="modal-title-container">
-          <div className="modal-title">Edit Category</div>
+        <div className={styles["modal-title-container"]}>
+          <div className={styles["modal-title"]}>Edit Category</div>
           <div
-            className="modal-close-button"
+            className={styles["modal-close-button"]}
             onClick={onClose}
             title="Close Modal"
           >
@@ -107,7 +106,7 @@ function EditCategory({
           </div>
         </div>
         <input
-          className="edit-category-form-input"
+          className={styles["edit-category-form-input"]}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -115,7 +114,7 @@ function EditCategory({
           required
         />
         <button
-          className="edit-category-form-button"
+          className={styles["edit-category-form-button"]}
           onClick={() => setMethod("put")}
           type="submit"
           disabled={loading}
@@ -124,7 +123,7 @@ function EditCategory({
         </button>
         <hr></hr>
         <button
-          className="delete-category-form-button"
+          className={styles["delete-category-form-button"]}
           onClick={() => setMethod("delete")}
           type="submit"
           disabled={loadingB}

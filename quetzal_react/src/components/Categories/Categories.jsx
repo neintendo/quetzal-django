@@ -1,4 +1,4 @@
-import "../../styles/Categories/Categories.css";
+import styles from "../../styles/Categories/Categories.module.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import CategoriesTable from "./CategoriesTable";
@@ -340,10 +340,10 @@ const Categories = () => {
           readLinkedTransaction={selectedLinkedTransaction}
         />
       )}
-      <div className="categories">
-        <div className="chartjs-container">
+      <div className={styles["categories"]}>
+        <div className={styles["chartjs-container"]}>
           {tableNav ? (
-            <div className="categories-chart">
+            <div className={styles["categories-chart"]}>
               <CategoriesChart
                 categoryID={selectedCategoryID}
                 conv_int={categoriesGraphData.converted_transactions}
@@ -352,12 +352,12 @@ const Categories = () => {
             </div>
           ) : (
             <>
-              <div className="categories-doughnut">
+              <div className={styles["categories-doughnut"]}>
                 <CategoriesDoughnut
                   enhancedCategoriesData={enhancedCategoriesData}
                 />
               </div>
-              <div className="categories-radar">
+              <div className={styles["categories-radar"]}>
                 <CategoriesRadar
                   enhancedCategoriesData={enhancedCategoriesData}
                   enhancedRadarData={enhancedRadarData}
@@ -367,14 +367,14 @@ const Categories = () => {
             </>
           )}
         </div>
-        <div className="categories-table-container">
-          <div className="categories-table-header-container">
-            <div className="categories-table-header">
+        <div className={styles["categories-table-container"]}>
+          <div className={styles["categories-table-header-container"]}>
+            <div className={styles["categories-table-header"]}>
               <div
                 className={
                   tableNav
-                    ? "categories-table-title-active"
-                    : "categories-table-title"
+                    ? styles["categories-table-title-active"]
+                    : styles["categories-table-title"]
                 }
                 onClick={() => {
                   if (!tableNav) {
@@ -396,15 +396,15 @@ const Categories = () => {
               <div
                 className={
                   showFilterView
-                    ? "categories-balance-container-expanded"
+                    ? styles["categories-balance-container-expanded"]
                     : isFilterActive
-                      ? "categories-balance-container-active"
-                      : "categories-balance-container"
+                      ? styles["categories-balance-container-active"]
+                      : styles["categories-balance-container"]
                 }
                 // id="filterListen"
               >
                 <div
-                  className="categories-balance"
+                  className={styles["categories-balance"]}
                   onClick={() => toggleFilterView()}
                 >
                   {tableNav
@@ -423,7 +423,7 @@ const Categories = () => {
                 </div>
               </div>
               <input
-                className="table-header-input"
+                className={styles["table-header-input"]}
                 placeholder={
                   tableNav
                     ? `Search ${selectedCategoryName}`
@@ -435,11 +435,11 @@ const Categories = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
 
-              <div className="table-header-button-container">
-                <div className="add-edit-category-container">
+              <div className={styles["table-header-button-container"]}>
+                <div className={styles["add-edit-category-container"]}>
                   {tableNav ? (
                     <button
-                      className="add-edit-category-button"
+                      className={styles["add-edit-category-button"]}
                       type="button"
                       onClick={() => setShowEditModal(true)}
                     >
@@ -447,7 +447,7 @@ const Categories = () => {
                     </button>
                   ) : (
                     <button
-                      className="add-edit-category-button"
+                      className={styles["add-edit-category-button"]}
                       type="button"
                       onClick={() => setShowAddModal(true)}
                     >
@@ -458,15 +458,19 @@ const Categories = () => {
               </div>
             </div>
             {showFilterView ? (
-              <div className="categories-filter-container">
+              <div className={styles["categories-filter-container"]}>
                 <div
-                  className="categories-textselect-container"
+                  className={styles["categories-textselect-container"]}
                   style={{ paddingLeft: 20 }}
                 >
-                  <div className="categories-filters-filter">Date Range:</div>
-                  <div className="categories-start-end-date-container">
+                  <div className={styles["categories-filters-filter"]}>
+                    Date Range:
+                  </div>
+                  <div
+                    className={styles["categories-start-end-date-container"]}
+                  >
                     <input
-                      className="category-filters-date"
+                      className={styles["category-filters-date"]}
                       type="date"
                       value={startDate}
                       onChange={(e) => {
@@ -475,7 +479,7 @@ const Categories = () => {
                     ></input>
                     <div style={{ fontSize: 11 }}>to </div>
                     <input
-                      className="category-filters-date"
+                      className={styles["category-filters-date"]}
                       type="date"
                       value={endDate}
                       onChange={(e) => {
@@ -485,7 +489,7 @@ const Categories = () => {
                   </div>
                   {startDate || endDate ? (
                     <div
-                      className="filter-clear-button"
+                      className={styles["filter-clear-button"]}
                       onClick={() => {
                         (setStartDate(""), setEndDate(""));
                       }}
@@ -496,10 +500,12 @@ const Categories = () => {
                     ""
                   )}
                 </div>
-                <div className="categories-textselect-container">
-                  <div className="categories-filters-filter">Account:</div>
+                <div className={styles["categories-textselect-container"]}>
+                  <div className={styles["categories-filters-filter"]}>
+                    Account:
+                  </div>
                   <select
-                    className="categories-filters-select"
+                    className={styles["categories-filters-select"]}
                     type="text"
                     value={account}
                     onChange={(e) => {
@@ -521,7 +527,7 @@ const Categories = () => {
                   </select>
                   {account ? (
                     <div
-                      className="filter-clear-button"
+                      className={styles["filter-clear-button"]}
                       onClick={() => {
                         setAccount("");
                         setCurrency("");
@@ -534,12 +540,14 @@ const Categories = () => {
                   )}
                 </div>
                 <div
-                  className="categories-textselect-container"
+                  className={styles["categories-textselect-container"]}
                   style={{ paddingRight: 20 }}
                 >
-                  <div className="categories-filters-filter">Currency:</div>
+                  <div className={styles["categories-filters-filter"]}>
+                    Currency:
+                  </div>
                   <select
-                    className="categories-filters-select"
+                    className={styles["categories-filters-select"]}
                     type="text"
                     value={currency}
                     onChange={(e) => {
@@ -558,7 +566,7 @@ const Categories = () => {
                     ""
                   ) : currency ? (
                     <div
-                      className="filter-clear-button"
+                      className={styles["filter-clear-button"]}
                       onClick={() => {
                         setCurrency("");
                       }}

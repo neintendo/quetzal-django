@@ -1,4 +1,4 @@
-import "../../styles/Categories/CategoriesDoughnut.css";
+import styles from "../../styles/Categories/CategoriesDoughnut.module.css";
 import { Doughnut } from "react-chartjs-2";
 
 import {
@@ -14,7 +14,9 @@ ChartJS.register(ArcElement, Tooltip, Legend, DoughnutController);
 const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
   if (!enhancedCategoriesData) {
     return (
-      <div className="categories-doughnut-loading">[ Loading Doughnut... ]</div>
+      <div className={styles["categories-doughnut-loading"]}>
+        [ Loading Doughnut... ]
+      </div>
     );
   }
 
@@ -84,9 +86,11 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
   };
   return (
     <>
-      <div className="categories-doughnut-canvas">
+      <div className={styles["categories-doughnut-canvas"]}>
         {labels.length === 0 ? (
-          <div className="categories-doughnut-loading">[ No Data ]</div>
+          <div className={styles["categories-doughnut-loading"]}>
+            [ No Data ]
+          </div>
         ) : (
           <Doughnut id="cat_chart" options={options} data={canvasData} />
         )}

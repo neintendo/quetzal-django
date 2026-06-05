@@ -1,5 +1,5 @@
 import api from "../../api";
-import "../../styles/Categories/CategoriesChart.css";
+import styles from "../../styles/Categories/CategoriesChart.module.css";
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -44,7 +44,11 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
   }, [categoryID, conv_int, transDetailRefresher]);
 
   if (!transactionData) {
-    return <div className="categories-chart-loading">[ Loading Graph... ]</div>;
+    return (
+      <div className={styles["categories-chart-loading"]}>
+        [ Loading Graph... ]
+      </div>
+    );
   }
 
   // Get months then fills gaps
@@ -140,7 +144,7 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
 
   return (
     <>
-      <div className="categories-chart-canvas">
+      <div className={styles["categories-chart-canvas"]}>
         <Bar id="cat_bar" options={options} data={canvasData} />
       </div>
     </>
