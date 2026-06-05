@@ -219,7 +219,9 @@ class TransactionSerializer(serializers.ModelSerializer):
             )
         if category_name:
             instance.category, _ = Category.objects.get_or_create(
-                name=category_name, user=self.context["request"].user
+                name=category_name,
+                user=self.context["request"].user,
+                defaults={"type": validated_data["transaction_type"]},
             )
 
         for attr, value in validated_data.items():
