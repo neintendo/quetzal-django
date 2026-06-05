@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api";
-import "../../styles/Transactions/TransactionDetail.css";
+import styles from "../../styles/Transactions/TransactionDetail.module.css";
 
 const TransactionDetail = ({
   route,
@@ -143,10 +143,10 @@ const TransactionDetail = ({
 
   return (
     <>
-      <div className="transaction-detail-modal-container">
-        <div className="transaction-detail-modal" id="divListen">
-          <div className="datetime-close">
-            <div className="datetime">
+      <div className={styles["transaction-detail-modal-container"]}>
+        <div className={styles["transaction-detail-modal"]} id="divListen">
+          <div className={styles["datetime-close"]}>
+            <div className={styles["datetime"]}>
               {new Intl.DateTimeFormat(undefined, {
                 year: "numeric",
                 day: "2-digit",
@@ -159,7 +159,7 @@ const TransactionDetail = ({
                 .replace(", ", " | ")}
             </div>
             <div
-              className="modal-close-button"
+              className={styles["modal-close-button"]}
               onClick={onClose}
               title="Close Modal"
             >
@@ -167,17 +167,17 @@ const TransactionDetail = ({
             </div>
           </div>
 
-          <div className="details-splitter-container">
-            <div className="details-left">
-              <div className="desc-cat">
-                <div className="description">{readDescription}</div>
-                <div className="category">{readCategory}</div>
+          <div className={styles["details-splitter-container"]}>
+            <div className={styles["details-left"]}>
+              <div className={styles["desc-cat"]}>
+                <div className={styles["description"]}>{readDescription}</div>
+                <div className={styles["category"]}>{readCategory}</div>
               </div>
             </div>
-            <div className="details-right">
-              <div className="bal-type-acc">
-                <div className="type">{readType}</div>
-                <div className="balance">
+            <div className={styles["details-right"]}>
+              <div className={styles["bal-type-acc"]}>
+                <div className={styles["type"]}>{readType}</div>
+                <div className={styles["balance"]}>
                   {Intl.NumberFormat(undefined, {
                     style: "currency",
                     currency: readCurrency,
@@ -188,14 +188,14 @@ const TransactionDetail = ({
             </div>
           </div>
           {readNotes !== "" ? (
-            <div className="notes-container">{readNotes}</div>
+            <div className={styles["notes-container"]}>{readNotes}</div>
           ) : (
             ""
           )}
-          <div className="expanded-modal">
+          <div className={styles["expanded-modal"]}>
             {isExpanded ? (
               <div
-                className="collapse-button"
+                className={styles["collapse-button"]}
                 onClick={toggleExpansion}
                 title="Collapse Modal"
               >
@@ -203,7 +203,7 @@ const TransactionDetail = ({
               </div>
             ) : (
               <div
-                className="expand-button"
+                className={styles["expand-button"]}
                 onClick={toggleExpansion}
                 title="Expand Modal"
               >
@@ -213,17 +213,17 @@ const TransactionDetail = ({
             {isExpanded ? (
               <form
                 onSubmit={handleSubmit}
-                className="transaction-form-container"
+                className={styles["transaction-form-container"]}
               >
                 <input
-                  className="edit-transaction-form-input"
+                  className={styles["edit-transaction-form-input"]}
                   type="datetime-local"
                   value={datetime}
                   onChange={(e) => setDatetime(e.target.value)}
                   required
                 />
                 <input
-                  className="edit-transaction-form-input"
+                  className={styles["edit-transaction-form-input"]}
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
@@ -231,7 +231,7 @@ const TransactionDetail = ({
                   required
                 />
                 <input
-                  className="edit-transaction-form-input"
+                  className={styles["edit-transaction-form-input"]}
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -239,14 +239,14 @@ const TransactionDetail = ({
                   required
                 />
                 <input
-                  className="edit-transaction-form-input"
+                  className={styles["edit-transaction-form-input"]}
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Notes"
                 />
                 <input
-                  className="edit-transaction-form-input"
+                  className={styles["edit-transaction-form-input"]}
                   type="text"
                   value={category_name}
                   onChange={(e) => setCategory(e.target.value)}
@@ -255,7 +255,7 @@ const TransactionDetail = ({
                 />
                 {linked_transaction === null && (
                   <select
-                    className="edit-transaction-form-input"
+                    className={styles["edit-transaction-form-input"]}
                     type="text"
                     value={transaction_type}
                     onChange={(e) => setType(e.target.value)}
@@ -275,7 +275,7 @@ const TransactionDetail = ({
                 )}
                 {linked_transaction === null && (
                   <select
-                    className="edit-transaction-form-input"
+                    className={styles["edit-transaction-form-input"]}
                     type="text"
                     value={account_name}
                     onChange={(e) => {
@@ -304,7 +304,7 @@ const TransactionDetail = ({
                 {transaction_type === "transfer" &&
                   linked_transaction === null && (
                     <select
-                      className="edit-transaction-form-input"
+                      className={styles["edit-transaction-form-input"]}
                       type="text"
                       value={destination_account_name}
                       onChange={(e) => setDestAccount(e.target.value)}
@@ -327,7 +327,7 @@ const TransactionDetail = ({
                     </select>
                   )}
                 <button
-                  className="edit-transaction-form-button"
+                  className={styles["edit-transaction-form-button"]}
                   type="submit"
                   disabled={loading}
                 >
@@ -335,7 +335,7 @@ const TransactionDetail = ({
                 </button>
                 <hr></hr>
                 <button
-                  className="delete-transaction-form-button"
+                  className={styles["delete-transaction-form-button"]}
                   onClick={() => setMethod("delete")}
                   type="submit"
                   disabled={loadingB}

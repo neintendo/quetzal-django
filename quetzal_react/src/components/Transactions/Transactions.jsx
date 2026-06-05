@@ -1,4 +1,4 @@
-import "../../styles/Transactions/Transactions.css";
+import styles from "../../styles/Transactions/Transactions.module.css";
 import api from "../../api";
 import { useState, useEffect } from "react";
 import TransactionsTable from "../Transactions/TransactionsTable";
@@ -140,32 +140,34 @@ const Transactions = () => {
           readLinkedTransaction={selectedLinkedTransaction}
         />
       )}
-      <div className="transactions">
-        <div className="transactions-table-container">
-          <div className="transactions-table-header">
+      <div className={styles["transactions"]}>
+        <div className={styles["transactions-table-container"]}>
+          <div className={styles["transactions-table-header"]}>
             <div
               className={
                 showFilterView
-                  ? "transactions-table-title-container-expanded"
+                  ? styles["transactions-table-title-container-expanded"]
                   : isFilterActive
-                    ? "transactions-table-title-container-active"
-                    : "transactions-table-title-container"
+                    ? styles["transactions-table-title-container-active"]
+                    : styles["transactions-table-title-container"]
               }
             >
               <div
-                className="transactions-table-title"
+                className={styles["transactions-table-title"]}
                 onClick={toggleFilterView}
                 title="Click to open filters"
               >
                 Transactions
               </div>
-              <div className="transactions-table-filter-container">
-                <div className="transactions-table-textselect-container">
-                  <div className="transactions-table-filters-filter">
+              <div className={styles["transactions-table-filter-container"]}>
+                <div
+                  className={styles["transactions-table-textselect-container"]}
+                >
+                  <div className={styles["transactions-table-filters-filter"]}>
                     Date Range
                     {startDate || endDate ? (
                       <div
-                        className="filter-clear-button"
+                        className={styles["filter-clear-button"]}
                         onClick={() => {
                           (setStartDate(""), setEndDate(""));
                         }}
@@ -176,9 +178,13 @@ const Transactions = () => {
                       ""
                     )}
                   </div>
-                  <div className="transaction-table-start-end-date-container">
+                  <div
+                    className={
+                      styles["transaction-table-start-end-date-container"]
+                    }
+                  >
                     <input
-                      className="transactions-table-filters-date"
+                      className={styles["transactions-table-filters-date"]}
                       type="date"
                       value={startDate}
                       onChange={(e) => {
@@ -187,7 +193,7 @@ const Transactions = () => {
                     ></input>
                     <div style={{ fontSize: 11 }}>to </div>
                     <input
-                      className="transactions-table-filters-date"
+                      className={styles["transactions-table-filters-date"]}
                       type="date"
                       value={endDate}
                       onChange={(e) => {
@@ -196,12 +202,14 @@ const Transactions = () => {
                     ></input>
                   </div>
                 </div>
-                <div className="transactions-table-textselect-container">
-                  <div className="transactions-table-filters-filter">
+                <div
+                  className={styles["transactions-table-textselect-container"]}
+                >
+                  <div className={styles["transactions-table-filters-filter"]}>
                     Account
                     {account ? (
                       <div
-                        className="filter-clear-button"
+                        className={styles["filter-clear-button"]}
                         onClick={() => {
                           setAccount("");
                         }}
@@ -213,7 +221,7 @@ const Transactions = () => {
                     )}
                   </div>
                   <select
-                    className="transactions-table-filters-select"
+                    className={styles["transactions-table-filters-select"]}
                     type="text"
                     value={account}
                     onChange={(e) => {
@@ -228,12 +236,14 @@ const Transactions = () => {
                     ))}
                   </select>
                 </div>
-                <div className="transactions-table-textselect-container">
-                  <div className="transactions-table-filters-filter">
+                <div
+                  className={styles["transactions-table-textselect-container"]}
+                >
+                  <div className={styles["transactions-table-filters-filter"]}>
                     Category
                     {category ? (
                       <div
-                        className="filter-clear-button"
+                        className={styles["filter-clear-button"]}
                         onClick={() => {
                           setCategory("");
                         }}
@@ -245,7 +255,7 @@ const Transactions = () => {
                     )}
                   </div>
                   <select
-                    className="transactions-table-filters-select"
+                    className={styles["transactions-table-filters-select"]}
                     type="text"
                     value={category}
                     onChange={(e) => {
@@ -260,12 +270,14 @@ const Transactions = () => {
                     ))}
                   </select>
                 </div>
-                <div className="transactions-table-textselect-container">
-                  <div className="transactions-table-filters-filter">
+                <div
+                  className={styles["transactions-table-textselect-container"]}
+                >
+                  <div className={styles["transactions-table-filters-filter"]}>
                     Currency
                     {currency ? (
                       <div
-                        className="filter-clear-button"
+                        className={styles["filter-clear-button"]}
                         onClick={() => {
                           setCurrency("");
                         }}
@@ -277,7 +289,7 @@ const Transactions = () => {
                     )}
                   </div>
                   <select
-                    className="transactions-table-filters-select"
+                    className={styles["transactions-table-filters-select"]}
                     type="text"
                     value={currency}
                     onChange={(e) => {
@@ -292,12 +304,14 @@ const Transactions = () => {
                     ))}
                   </select>
                 </div>
-                <div className="transactions-table-textselect-container">
-                  <div className="transactions-table-filters-filter">
+                <div
+                  className={styles["transactions-table-textselect-container"]}
+                >
+                  <div className={styles["transactions-table-filters-filter"]}>
                     Transaction Type
                     {transactionType ? (
                       <div
-                        className="filter-clear-button"
+                        className={styles["filter-clear-button"]}
                         onClick={() => {
                           setTransactionType("");
                         }}
@@ -309,7 +323,7 @@ const Transactions = () => {
                     )}
                   </div>
                   <select
-                    className="transactions-table-filters-select"
+                    className={styles["transactions-table-filters-select"]}
                     type="text"
                     value={transactionType}
                     onChange={(e) => {
@@ -332,7 +346,7 @@ const Transactions = () => {
               </div>
             </div>
             <input
-              className="table-header-input"
+              className={styles["table-header-input"]}
               placeholder={"Search Transaction"}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

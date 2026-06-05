@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api";
-import "../../styles/Transactions/AddTransaction.css";
-import "../../styles/Transactions/TransactionForm.css";
+import styles from "../../styles/Transactions/AddTransaction.module.css";
 
 function AddTransaction({ route, onSuccess, onClose }) {
   const [amount, setAmount] = useState("");
@@ -103,16 +102,16 @@ function AddTransaction({ route, onSuccess, onClose }) {
   };
 
   return (
-    <div className="add-transaction-modal">
+    <div className={styles["add-transaction-modal"]}>
       <form
         onSubmit={handleSubmit}
-        className="add-transaction-form-container"
+        className={styles["add-transaction-form-container"]}
         id="divListen"
       >
-        <div className="modal-title-container">
-          <div className="modal-title">Add Transaction</div>
+        <div className={styles["modal-title-container"]}>
+          <div className={styles["modal-title"]}>Add Transaction</div>
           <div
-            className="modal-close-button"
+            className={styles["modal-close-button"]}
             onClick={onClose}
             title="Close Modal"
           >
@@ -120,14 +119,14 @@ function AddTransaction({ route, onSuccess, onClose }) {
           </div>
         </div>
         <input
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="datetime-local"
           value={datetime}
           onChange={(e) => setDatetime(e.target.value)}
           required
         />
         <input
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -135,7 +134,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
           required
         />
         <input
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -143,7 +142,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
           required
         />
         <input
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="text"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -151,7 +150,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
         />
         <input
           list="categories"
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="text"
           value={category_name}
           onChange={(e) => setCategory(e.target.value)}
@@ -170,7 +169,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
               ))}
         </datalist>
         <select
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="text"
           value={transaction_type}
           onChange={(e) => setType(e.target.value)}
@@ -184,7 +183,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
           </optgroup>
         </select>
         <select
-          className="add-transaction-form-input"
+          className={styles["add-transaction-form-input"]}
           type="text"
           value={account_name}
           onChange={(e) => {
@@ -211,7 +210,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
         </select>
         {transaction_type === "transfer" && (
           <select
-            className="add-transaction-form-input"
+            className={styles["add-transaction-form-input"]}
             type="text"
             value={destination_account_name}
             onChange={(e) => {
@@ -242,7 +241,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
           </select>
         )}
         <button
-          className="add-transaction-form-button"
+          className={styles["add-transaction-form-button"]}
           type="submit"
           disabled={loading}
         >
