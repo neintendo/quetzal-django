@@ -96,6 +96,7 @@ const Accounts = () => {
 
   const divCurrencies = uniqueCurrencies.map((currency) => (
     <div
+      key={currency}
       className={styles["accounts-graph-balance-list"]}
       onClick={() => {
         setCurrencyFilter(currency);
