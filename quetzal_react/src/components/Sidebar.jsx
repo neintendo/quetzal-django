@@ -14,7 +14,6 @@ const Sidebar = ({ isOpen, onPageClick }) => {
       .then((res) => res.data)
       .then((data) => {
         setProfile(data);
-        console.log(data);
       })
       .catch((err) => alert(err));
   };
