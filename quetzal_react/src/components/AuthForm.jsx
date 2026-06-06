@@ -10,6 +10,7 @@ function AuthForm({ route, method }) {
   const [username, setUsername] = useState("");
   const [display_name, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordMatch, setPasswordMatch] = useState("");
   const [main_currency, setCurrency] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -32,6 +33,16 @@ function AuthForm({ route, method }) {
 
     getUsers();
   }, []);
+
+  const hasChangesLogin = password.length < 8 || username === "";
+  const hasChangesRegister =
+    password.length < 8 ||
+    password !== passwordMatch ||
+    username === "" ||
+    display_name === "" ||
+    main_currency === "" ||
+    main_currency === "- Select Main Currency -";
+  const doPasswordsMatch = password !== passwordMatch && method === "register";
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -126,13 +137,27 @@ function AuthForm({ route, method }) {
         />
       )}
       <input
-        className={styles["form-input"]}
+        className={
+          doPasswordsMatch ? styles["form-input-alert"] : styles["form-input"]
+        }
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder={method === "register" ? "Password (min. 8)" : "Password"}
         required
       />
+      {method === "register" && (
+        <input
+          className={
+            doPasswordsMatch ? styles["form-input-alert"] : styles["form-input"]
+          }
+          type="password"
+          value={passwordMatch}
+          onChange={(e) => setPasswordMatch(e.target.value)}
+          placeholder="Confirm Password"
+          required
+        />
+      )}
       {method === "register" && (
         <select
           className={styles["form-input"]}
@@ -148,14 +173,25 @@ function AuthForm({ route, method }) {
           ))}
         </select>
       )}
-      {/* Button disabled when loading to prevent double submission */}
-      <button
-        className={styles["form-button"]}
-        type="submit"
-        disabled={loading}
-      >
-        {loading ? "LOADING..." : name}
-      </button>
+      {/* Button disabled if form is incomplete & when loading to prevent double submission */}
+      {method === "login" && (
+        <button
+          className={styles["form-button"]}
+          type="submit"
+          disabled={hasChangesLogin || loading}
+        >
+          {loading ? "LOADING..." : name}
+        </button>
+      )}
+      {method === "register" && (
+        <button
+          className={styles["form-button"]}
+          type="submit"
+          disabled={hasChangesRegister || loading}
+        >
+          {loading ? "LOADING..." : name}
+        </button>
+      )}
       {/* Dynamic link that navigates between login & register pages */}
       <a className={styles["where-to"]} href={link_path}>
         {link_text}

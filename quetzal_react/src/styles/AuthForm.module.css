@@ -10,7 +10,8 @@
     max-width: 350px;
 }
 
-.form-input {
+.form-input,
+.form-input-alert {
     width: 90%;
     padding: 10px;
     margin: 10px 0;
@@ -18,6 +19,10 @@
     border-radius: 4px;
     box-sizing: border-box;
     height: 36px;
+}
+
+.form-input-alert {
+    border: 1px solid #cc0000;
 }
 
 .form-button {
@@ -34,6 +39,11 @@
 
 .form-button:hover {
     background-color: #666666;
+}
+
+.form-button:disabled {
+    background-color: #bbbbbb;
+    cursor: not-allowed;
 }
 
 .where-to {
