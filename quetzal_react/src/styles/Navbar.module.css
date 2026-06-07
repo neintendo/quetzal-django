@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #dddddd;
-    border: 1px solid #bbbbbb;
+    border-bottom: 1px solid #bbbbbb;
     padding: 16px;
     max-height: 16px;
 }
@@ -20,11 +20,13 @@
 .add-nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #cccccc;
-    border: none;
     font-size: 13px;
     border: 1px solid #bbbbbb;
     transition: background-color 250ms ease;
+    height: 24px;
+    width: 24px;
 }
 
 .add-nav:hover {
@@ -34,11 +36,14 @@
 .sidebar-nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #cccccc;
     border: none;
     font-size: 13px;
     border: 1px solid #bbbbbb;
     transition: background-color 250ms ease;
+    height: 24px;
+    width: 24px;
 }
 
 .sidebar-nav:hover {
