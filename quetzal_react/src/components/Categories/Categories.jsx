@@ -154,7 +154,7 @@ const Categories = () => {
 
     return {
       ...category,
-      total: total,
+      total: total.toFixed(2),
     };
   });
 
