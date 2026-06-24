@@ -282,3 +282,38 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.datetime} - {self.amount} {self.currency} - {self.description}"
+
+
+class Recurring(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    frequency = models.CharField(
+        max_length=10,
+        choices=[
+            ("DAILY", "Daily"),
+            ("WEEKLY", "Weekly"),
+            ("MONTHLY", "Monthly"),
+            ("YEARLY", "Yearly"),
+        ],
+    )
+    datetimes = models.JSONField(null=True, blank=True)
+    amount = models.DecimalField(
+        max_digits=15, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
+    )
+    description = models.TextField()
+    notes = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=100)
+    transaction_type = models.CharField(
+        max_length=10, choices=Transaction.TRANSACTION_TYPES
+    )
+    account = models.CharField(max_length=100)
+    destination_account = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    currency = models.CharField(
+        max_length=30, choices=ExchangeRates.CURRENCIES, default="USD"
+    )

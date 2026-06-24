@@ -12,6 +12,8 @@ from .views import (
     CategoriesListCreateView,
     ChangePassword,
     RecentTransactionsView,
+    RecurringDetailView,
+    RecurringListCreateView,
     ResetProfile,
     TransactionAggregateView,
     TransactionDetailView,
@@ -88,5 +90,15 @@ urlpatterns = [
         "transactions/spending-graph/",
         TransactionSpendingGraph.as_view(),
         name="transaction-spending-graph",
+    ),
+    path(
+        "recurring/",
+        RecurringListCreateView.as_view(),
+        name="recurring-list-create",
+    ),
+    path(
+        "recurring/<int:pk>/",
+        RecurringDetailView.as_view(),
+        name="recurring-update-destroy",
     ),
 ]

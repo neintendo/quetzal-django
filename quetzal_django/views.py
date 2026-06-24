@@ -6,6 +6,7 @@ from decimal import Decimal
 
 import django_filters
 import requests
+from dateutil.rrule import DAILY, MONTHLY, WEEKLY, YEARLY, rrule
 from django.contrib.auth import get_user_model
 from django.db import transaction as db_transaction
 from django.db.models import Q
@@ -16,11 +17,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Account, Category, Transaction, User
+from .models import Account, Category, Recurring, Transaction, User
 from .serializers import (
     AccountSerializer,
     CategorySerializer,
     ChangePasswordSerializer,
+    RecurringSerializer,
     TransactionSerializer,
     UserSerializer,
 )
@@ -771,6 +773,118 @@ class RecentTransactionsView(generics.ListAPIView):
         return Transaction.objects.filter(user=self.request.user).order_by("-datetime")[
             :10
         ]
+
+
+class RecurringListCreateView(generics.ListCreateAPIView):
+    serializer_class = RecurringSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        recurring = Recurring.objects.filter(user=self.request.user)
+        return recurring
+
+    def perform_create(self, serializer):
+        datetimes = []
+        datetime_events = list()
+        recurring_transaction = serializer.save(user=self.request.user)
+
+        match recurring_transaction.frequency:
+            case "DAILY":
+                datetime_events = list(
+                    rrule(
+                        DAILY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "WEEKLY":
+                datetime_events = list(
+                    rrule(
+                        WEEKLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "MONTHLY":
+                datetime_events = list(
+                    rrule(
+                        MONTHLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "YEARLY":
+                datetime_events = list(
+                    rrule(
+                        YEARLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+
+        for event in datetime_events:
+            datetimes.append(event.strftime("%Y-%m-%d %H:%M"))
+
+        recurring_transaction.datetimes = datetimes
+        recurring_transaction.save()
+
+
+class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = RecurringSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Recurring.objects.filter(user=self.request.user)
+
+    @db_transaction.atomic
+    def perform_update(self, serializer):
+        datetimes = []
+        datetime_events = list()
+        recurring_transaction = serializer.save(user=self.request.user)
+
+        match recurring_transaction.frequency:
+            case "DAILY":
+                datetime_events = list(
+                    rrule(
+                        DAILY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "WEEKLY":
+                datetime_events = list(
+                    rrule(
+                        WEEKLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "MONTHLY":
+                datetime_events = list(
+                    rrule(
+                        MONTHLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+            case "YEARLY":
+                datetime_events = list(
+                    rrule(
+                        YEARLY,
+                        dtstart=recurring_transaction.start_date,
+                        until=recurring_transaction.end_date,
+                    )
+                )
+
+        for event in datetime_events:
+            datetimes.append(event.strftime("%Y-%m-%d %H:%M"))
+
+        recurring_transaction.datetimes = datetimes
+        recurring_transaction.save()
+
+    @db_transaction.atomic
+    def perform_destroy(self, instance):
+        instance.delete()
 
 
 # Get, delete or update a specific transaction

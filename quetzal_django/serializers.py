@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from .models import Account, Category, Transaction, User
+from .models import Account, Category, Recurring, Transaction, User
 
 
 # Users
@@ -242,3 +242,53 @@ class TransactionSerializer(serializers.ModelSerializer):
             instance.category.name if instance.category else None
         )
         return representation
+
+
+# Recurring Transaction Serializer
+class RecurringSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recurring
+        fields = [
+            "id",
+            "start_date",
+            "end_date",
+            "frequency",
+            "datetimes",
+            "amount",
+            "description",
+            "notes",
+            "category",
+            "transaction_type",
+            "account",
+            "destination_account",
+            "currency",
+        ]
+        extra_kwargs = {
+            "datetimes": {"required": False},
+            "notes": {"required": False},
+            "destination_account": {"required": False},
+        }
+
+    def validate(self, attrs):
+        account = attrs.get("account")
+        transaction_type = attrs.get("transaction_type")
+
+        if not Account.objects.filter(
+            user=self.context["request"].user, name=account
+        ).exists():
+            raise serializers.ValidationError("Account does not exist")
+
+        # Recurring transfers validation
+        if transaction_type == "transfer":
+            destination_account = attrs.get("destination_account")
+            if account == destination_account:
+                raise serializers.ValidationError(
+                    "Cannot create a recurring transfer to the same account"
+                )
+
+            if not Account.objects.filter(
+                user=self.context["request"].user, name=destination_account
+            ).exists():
+                raise serializers.ValidationError("Destination account does not exist")
+
+        return attrs
