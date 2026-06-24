@@ -1,6 +1,28 @@
+import RecurringTable from "./RecurringTable";
+import { useState, useEffect } from "react";
+import api from "../../api";
 import styles from "../../styles/Transactions/Recurring.module.css";
 
 const Recurring = () => {
+  const [recurringData, setRecurringData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const fetchData = () => {
+    Promise.all([api.get("recurring/")])
+      .then(([recurringRes]) => {
+        setRecurringData(recurringRes.data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // const refresh = () => {
+  //   fetchData();
+  // };
+
   return (
     <>
       <div className={styles.recurring}>
@@ -14,11 +36,18 @@ const Recurring = () => {
             <input
               className={styles["table-header-input"]}
               placeholder="Search Recurring Transactions"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button className={styles["create-button"]}>
               {"+ Add Recurring Transaction"}
             </button>
           </div>
+          <RecurringTable
+            recurringData={recurringData}
+            searchTerm={searchTerm}
+            // onRowClick={handleRowClick}
+          />
         </div>
       </div>
     </>

@@ -246,6 +246,9 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 # Recurring Transaction Serializer
 class RecurringSerializer(serializers.ModelSerializer):
+    start_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    end_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+
     class Meta:
         model = Recurring
         fields = [
