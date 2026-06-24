@@ -15,6 +15,9 @@ const Recurring = () => {
               className={styles["table-header-input"]}
               placeholder="Search Recurring Transactions"
             />
+            <button className={styles["create-button"]}>
+              {"+ Add Recurring Transaction"}
+            </button>
           </div>
         </div>
       </div>

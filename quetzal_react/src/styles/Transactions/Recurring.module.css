@@ -78,6 +78,22 @@
     border: 1px solid #999999;
 }
 
-.recurring-table-title {
+.create-button {
+    align-items: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    transition: background-color 250ms ease;
+    border: 1px solid #bbbbbb;
+    min-width: 144px;
+    white-space: nowrap;
+}
+
+.create-button:hover {
+    background-color: #eeeeee;
+}
+
+.recurring-table-title,
+.create-button {
     cursor: pointer;
 }
