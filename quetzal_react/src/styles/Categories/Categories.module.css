@@ -13,7 +13,8 @@
 .chartjs-container {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 40%;
+    min-width: 0;
     background-color: #dddddd;
 }
 .categories-doughnut {
@@ -22,7 +23,7 @@
     align-items: start;
     padding: 16px;
     padding-bottom: 8px;
-    height: 40%;
+    height: 45%;
     min-height: 0;
     border: 1px solid #bbbbbb;
     margin-bottom: 16px;

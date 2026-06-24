@@ -60,7 +60,7 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
-    cutout: "70%",
+    cutout: "50%",
     radius: "95%",
     plugins: {
       tooltip: {
@@ -70,7 +70,7 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
         bodyColor: "#eeeeee",
       },
       legend: {
-        display: true,
+        display: false,
         position: "right",
         align: "center",
         labels: {

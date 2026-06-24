@@ -60,7 +60,7 @@ const CategoriesRadar = ({
         label: "Current Month",
         data: amounts,
         backgroundColor: "rgba(68, 68, 68, 0.33)",
-        borderColor: "#444444",
+        borderColor: "#ffffff",
         borderWidth: 1,
       },
       {
@@ -85,7 +85,7 @@ const CategoriesRadar = ({
     scales: {
       r: {
         grid: {
-          color: "#bbbbbb",
+          color: "#aaaaaa",
         },
         angleLines: {
           color: "#bbbbbb",
@@ -98,6 +98,7 @@ const CategoriesRadar = ({
         pointLabels: {
           font: { family: "DepartureMono-Regular", size: 10 },
           color: "#444444",
+          display: false,
         },
       },
     },
@@ -113,7 +114,7 @@ const CategoriesRadar = ({
         position: "top",
         align: "center",
         labels: {
-          font: { family: "DepartureMono-Regular", size: 11 },
+          font: { family: "DepartureMono-Regular", size: 10 },
           color: "#444444",
           textAlign: "center",
           usePointStyle: true,
