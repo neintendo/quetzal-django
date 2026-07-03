@@ -1,0 +1,122 @@
+/* Modal styles */
+.add-recurring-modal {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background-color: rgba(51, 51, 51, 0.25);
+}
+
+.modal-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    box-sizing: border-box;
+    padding-bottom: 16px;
+    padding-top: 8px;
+    white-space: nowrap;
+}
+
+.modal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-label-container {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.modal-label {
+    font-size: 12px;
+    width: 50%;
+    justify-content: space-between;
+    margin-left: 8px;
+}
+
+.modal-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #cccccc;
+    border: none;
+    font-size: 13px;
+    border: 1px solid #bbbbbb;
+    transition: background-color 250ms ease;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+    z-index: 1;
+}
+
+.modal-close-button:hover {
+    background-color: #dddddd;
+}
+
+.modal-close-button {
+    cursor: pointer;
+}
+
+/* Form styles */
+.add-recurring-form-container {
+    background-color: #eeeeee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    width: 90%;
+    max-width: 400px;
+    min-width: 280px;
+    height: auto;
+    min-height: 300px;
+    padding: 24px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.add-recurring-form-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    gap: 16px;
+}
+.add-recurring-form-input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.add-recurring-form-button {
+    width: 95%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #444444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.add-recurring-form-button:hover {
+    background-color: #666666;
+}

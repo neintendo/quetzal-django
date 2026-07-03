@@ -2,10 +2,12 @@ import RecurringTable from "./RecurringTable";
 import { useState, useEffect } from "react";
 import api from "../../api";
 import styles from "../../styles/Transactions/Recurring.module.css";
+import AddRecurring from "./AddRecurring";
 
 const Recurring = () => {
   const [recurringData, setRecurringData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchData = () => {
     Promise.all([api.get("recurring/")])
@@ -19,12 +21,24 @@ const Recurring = () => {
     fetchData();
   }, []);
 
-  // const refresh = () => {
-  //   fetchData();
-  // };
+  const refresh = () => {
+    fetchData();
+  };
+
+  const handleTransactionAdded = () => {
+    setShowAddModal(false);
+    refresh();
+  };
 
   return (
     <>
+      {showAddModal && (
+        <AddRecurring
+          route="/recurring/"
+          onClose={() => setShowAddModal(false)}
+          onSuccess={handleTransactionAdded}
+        />
+      )}
       <div className={styles.recurring}>
         <div className={styles["recurring-table-container"]}>
           <div className={styles["recurring-table-header"]}>
@@ -39,7 +53,10 @@ const Recurring = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className={styles["create-button"]}>
+            <button
+              className={styles["create-button"]}
+              onClick={() => setShowAddModal(true)}
+            >
               {"+ Add Recurring Transaction"}
             </button>
           </div>
