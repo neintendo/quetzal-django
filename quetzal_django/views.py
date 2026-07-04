@@ -841,6 +841,8 @@ class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
         datetimes = []
         datetime_events = list()
         recurring_transaction = serializer.save(user=self.request.user)
+        if recurring_transaction.transaction_type != "transfer":
+            recurring_transaction.destination_account = None
 
         match recurring_transaction.frequency:
             case "DAILY":

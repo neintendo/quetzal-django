@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "../../styles/Table.module.css";
 
-const RecurringTable = ({ recurringData, searchTerm }) => {
+const RecurringTable = ({ recurringData, searchTerm, onRowClick }) => {
   const [sortHeader, setSortHeader] = useState({
     key: "start_date",
     direction: "desc",
@@ -132,20 +132,22 @@ const RecurringTable = ({ recurringData, searchTerm }) => {
           return (
             <tr
               className={styles.tr}
-              // onClick={() =>
-              //   onRowClick(
-              //     val.id,
-              //     val.datetime,
-              //     val.description,
-              //     val.notes,
-              //     val.amount,
-              //     val.category,
-              //     val.account,
-              //     val.currency,
-              //     val.transaction_type,
-              //     val.linked_transaction,
-              //   )
-              // }
+              onClick={() =>
+                onRowClick(
+                  val.id,
+                  val.start_date,
+                  val.end_date,
+                  val.frequency,
+                  val.description,
+                  val.notes,
+                  val.amount,
+                  val.category,
+                  val.account,
+                  val.destination_account,
+                  val.currency,
+                  val.transaction_type,
+                )
+              }
               key={key}
             >
               <td className={styles.td} style={{ width: 150 }}>
