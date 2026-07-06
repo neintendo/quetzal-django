@@ -46,7 +46,6 @@ const RecurringDetail = ({
       .then((res) => res.data)
       .then((data) => {
         setUserAccounts(data);
-        console.log(data);
       })
       .catch((err) => alert(err));
   };
@@ -83,6 +82,17 @@ const RecurringDetail = ({
       );
       if (!confirmed) {
         setLoadingB(false);
+        return;
+      }
+    }
+    if (method === "put") {
+      const confirmed = window.confirm(
+        "Updating the start date, end date, or frequency will regenerate " +
+          "the entire transaction schedule. This will create duplicate or " +
+          "unexpected transactions. Do you want to proceed? ",
+      );
+      if (!confirmed) {
+        setLoading(false);
         return;
       }
     }

@@ -836,11 +836,17 @@ class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Recurring.objects.filter(user=self.request.user)
 
+    def update(self, request, *args, **kwargs):
+        kwargs["partial"] = True
+        return super().update(request, *args, **kwargs)
+
     @db_transaction.atomic
     def perform_update(self, serializer):
+        old_object = Recurring.objects.get(pk=serializer.instance.pk)
         datetimes = []
         datetime_events = list()
         recurring_transaction = serializer.save(user=self.request.user)
+
         if recurring_transaction.transaction_type != "transfer":
             recurring_transaction.destination_account = None
 
@@ -881,8 +887,19 @@ class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
         for event in datetime_events:
             datetimes.append(event.strftime("%Y-%m-%d %H:%M"))
 
-        recurring_transaction.datetimes = datetimes
-        recurring_transaction.save()
+        has_changes = (
+            old_object.start_date != recurring_transaction.start_date
+            or old_object.end_date != recurring_transaction.end_date
+            or old_object.frequency != recurring_transaction.frequency
+        )
+
+        # Create new datetimes if start_date, end_date or frequency differs
+        match has_changes:
+            case True:
+                recurring_transaction.datetimes = datetimes
+                recurring_transaction.save()
+            case False:
+                recurring_transaction.save()
 
     @db_transaction.atomic
     def perform_destroy(self, instance):
