@@ -692,7 +692,7 @@ class TransactionFilter(django_filters.FilterSet):
     account = django_filters.CharFilter(field_name="account__name", lookup_expr="exact")
     currency = django_filters.CharFilter(field_name="currency", lookup_expr="exact")
     category = django_filters.CharFilter(
-        field_name="category__name", lookup_expr="icontains"
+        field_name="category__name", lookup_expr="exact"
     )
 
     class Meta:
