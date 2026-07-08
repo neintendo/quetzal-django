@@ -10,6 +10,17 @@
     max-width: 350px;
 }
 
+.form-title {
+    transition: font-size 500ms ease;
+    font-size: 24px;
+    padding: 16px;
+    cursor: default;
+}
+
+.form-title:hover {
+    font-size: 25px;
+}
+
 .form-input,
 .form-input-alert {
     width: 90%;
