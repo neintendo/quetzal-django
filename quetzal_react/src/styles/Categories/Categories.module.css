@@ -278,3 +278,111 @@
 .categories-filter-container {
     cursor: default;
 }
+
+/* Dark Mode Overrides*/
+
+body[data-theme="dark"] .chartjs-container {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .categories-doughnut,
+body[data-theme="dark"] .categories-radar,
+body[data-theme="dark"] .categories-chart {
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .categories-balance-container,
+body[data-theme="dark"] .categories-balance-container-active,
+body[data-theme="dark"] .categories-balance-container-expanded {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .categories-balance-container-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+body[data-theme="dark"] .categories-balance-container-expanded {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .categories-balance-container:hover,
+body[data-theme="dark"] .categories-balance-container-expanded:hover,
+body[data-theme="dark"] .categories-balance-container-active:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .categories-filter-container {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .categories-filters-select {
+    background-color: #222222;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .categories-filters-select:disabled {
+    background-color: #444444;
+    color: #111111;
+}
+
+body[data-theme="dark"] .category-filters-date {
+    background-color: #222222;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .filter-clear-button {
+    background-color: #444444;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .filter-clear-button:hover {
+    background-color: #666666;
+}
+
+body[data-theme="dark"] .categories-table-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .categories-table-header-container {
+    background-color: #222222;
+    box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] .categories-table-title {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .categories-table-title:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .categories-table-title-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+body[data-theme="dark"] .categories-table-title-active:hover {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .table-header-input {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .table-header-input:hover {
+    background-color: #111111;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .add-edit-category-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .add-edit-category-button:hover {
+    background-color: #555555;
+}

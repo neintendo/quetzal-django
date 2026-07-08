@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import currencyList from "./Utilities/CurrencyList";
 import styles from "../styles/AuthForm.module.css";
+import SetTheme from "./Settings/SetTheme";
 
 function AuthForm({ route, method }) {
   const [users, setUsers] = useState([]);
@@ -34,6 +35,7 @@ function AuthForm({ route, method }) {
     getUsers();
   }, []);
 
+  document.body.setAttribute("data-theme", "");
   const hasChangesLogin = password.length < 8 || username === "";
   const hasChangesRegister =
     password.length < 8 ||
@@ -92,7 +94,7 @@ function AuthForm({ route, method }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles["form-container"]}>
-      <h2>{name}</h2>
+      <span style={{ fontSize: 24, padding: 16 }}>{name}</span>
       {method === "login" ? (
         <select
           className={styles["form-input"]}

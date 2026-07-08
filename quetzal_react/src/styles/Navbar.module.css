@@ -58,3 +58,21 @@
 .navbar-center {
     cursor: default;
 }
+
+/* Dark Theme Overrides*/
+
+body[data-theme="dark"] .navbar {
+    background-color: #222222;
+    border-bottom: 1px solid #444444;
+}
+
+body[data-theme="dark"] .add-nav,
+body[data-theme="dark"] .sidebar-nav {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .sidebar-nav:hover,
+body[data-theme="dark"] .add-nav:hover {
+    background-color: #555555;
+}

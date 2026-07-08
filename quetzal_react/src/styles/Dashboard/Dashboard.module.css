@@ -117,3 +117,29 @@
 .top-categories-table-title {
     cursor: default;
 }
+
+/* Dark Mode Overrides */
+
+body[data-theme="dark"] .dashboard-graph-container,
+body[data-theme="dark"] .top-categories-table-container,
+body[data-theme="dark"] .recents-table-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .dashboard-graph-title {
+    background-color: #333333;
+    border: 1px solid #444444;
+    outline: 8px solid #222222;
+}
+
+body[data-theme="dark"] .dashboard-summaries-container {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .recents-table-title,
+body[data-theme="dark"] .top-categories-table-title {
+    border: 1px solid #444444;
+    background-color: #333333;
+    box-shadow: 0 -30px 0 #222222;
+}

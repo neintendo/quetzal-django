@@ -1,5 +1,6 @@
 import api from "../../api";
 import styles from "../../styles/Categories/CategoriesChart.module.css";
+import SetTheme from "../Settings/SetTheme";
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -23,6 +24,7 @@ ChartJS.register(
 
 const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
   const [transactionData, setTransactionData] = useState(null);
+  const { theme } = SetTheme();
 
   useEffect(() => {
     const getTransactionData = () => {
@@ -111,6 +113,7 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    backgroundColor: theme === "dark" ? "rgba(187, 187, 187, 0.25" : undefined,
     indexAxis: "y",
     plugins: {
       tooltip: {
@@ -130,14 +133,16 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
       x: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
       y: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
     },
   };

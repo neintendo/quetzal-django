@@ -1,4 +1,5 @@
 import styles from "../../styles/Categories/CategoriesRadar.module.css";
+import SetTheme from "../Settings/SetTheme";
 import { Radar } from "react-chartjs-2";
 
 import {
@@ -25,6 +26,8 @@ const CategoriesRadar = ({
   enhancedRadarData,
   enhancedRadarPrevData,
 }) => {
+  const { theme } = SetTheme();
+
   if (!enhancedRadarData) {
     return (
       <div className={styles["categories-radar-loading"]}>
@@ -59,8 +62,11 @@ const CategoriesRadar = ({
       {
         label: "Current Month",
         data: amounts,
-        backgroundColor: "rgba(68, 68, 68, 0.33)",
-        borderColor: "#ffffff",
+        backgroundColor:
+          theme === "dark"
+            ? "rgba(255, 84, 68, 0.33)"
+            : "rgba(68, 68, 68, 0.33)",
+        borderColor: theme === "dark" ? "#ff5444" : "#ffffff",
         borderWidth: 1,
       },
       {
@@ -91,9 +97,9 @@ const CategoriesRadar = ({
           color: "#bbbbbb",
         },
         ticks: {
-          backdropColor: "#dddddd",
+          backdropColor: theme === "dark" ? "#222222" : "#dddddd",
           font: { family: "DepartureMono-Regular", size: 10 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
         pointLabels: {
           font: { family: "DepartureMono-Regular", size: 10 },
@@ -115,7 +121,7 @@ const CategoriesRadar = ({
         align: "center",
         labels: {
           font: { family: "DepartureMono-Regular", size: 10 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
           textAlign: "center",
           usePointStyle: true,
           pointStyle: "star",

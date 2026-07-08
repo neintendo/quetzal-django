@@ -151,3 +151,44 @@
 .settings-sidebar-title {
     cursor: default;
 }
+
+/* Dark Theme Overrides*/
+
+body[data-theme="dark"] .settings-modal {
+    background-color: rgba(204, 204, 204, 0.25);
+}
+body[data-theme="dark"] .modal-close-button,
+body[data-theme="dark"] .settings-sidebar-title,
+body[data-theme="dark"] .sidebar-logout {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .modal-close-button:hover,
+body[data-theme="dark"] .settings-sidebar {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .settings-container,
+body[data-theme="dark"] .sidebar-logout:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .settings-content,
+body[data-theme="dark"] .sidebar-sections-active,
+body[data-theme="dark"] .sidebar-sections:hover {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .settings-form-input {
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .settings-form-button {
+    background-color: #bbbbbb;
+    color: black;
+}
+
+body[data-theme="dark"] .settings-form-button:hover {
+    background-color: #999999;
+}

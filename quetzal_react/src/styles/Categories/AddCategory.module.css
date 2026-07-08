@@ -100,3 +100,36 @@
 .add-category-form-button:hover {
     background-color: #666666;
 }
+
+/* Dark Mode Overrides */
+
+body[data-theme="dark"] .add-category-modal {
+    background-color: rgba(204, 204, 204, 0.25);
+}
+
+body[data-theme="dark"] .modal-close-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .modal-close-button:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .add-category-form-container {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .add-category-form-input {
+    border: 1px solid #666666;
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .add-category-form-button {
+    background-color: #bbbbbb;
+    color: black;
+}
+
+body[data-theme="dark"] .add-category-form-button:hover {
+    background-color: #999999;
+}

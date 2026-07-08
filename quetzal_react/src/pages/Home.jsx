@@ -7,11 +7,13 @@ import Transactions from "../components/Transactions/Transactions";
 import Recurring from "../components/Transactions/Recurring";
 import Categories from "../components/Categories/Categories";
 import RecurringAuto from "../components/Transactions/RecurringAuto";
+import SetTheme from "../components/Settings/SetTheme";
 
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [page, setPage] = useState("dashboard");
   RecurringAuto();
+  SetTheme();
 
   useEffect(() => {
     const handleResize = () => {

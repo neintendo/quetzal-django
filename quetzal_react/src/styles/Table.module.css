@@ -27,3 +27,18 @@
 .tr:not(:first-child):hover {
     background-color: #cccccc;
 }
+
+/* Dark Theme Overrides */
+
+body[data-theme="dark"] th {
+    background-color: #222222;
+    box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] tr {
+    border-bottom: 1px solid #444444;
+}
+
+body[data-theme="dark"] tr:not(:first-child):hover {
+    background-color: #333333;
+}

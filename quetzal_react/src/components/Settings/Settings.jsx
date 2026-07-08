@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SettingsProfile from "./SettingsProfile";
 import SettingsData from "./SettingsData";
+import SettingsPreferences from "./SettingsPreferences";
 
 const Settings = ({ onClose }) => {
   const [page, setPage] = useState("profile");
@@ -14,8 +15,8 @@ const Settings = ({ onClose }) => {
         return <SettingsProfile route={"/profile-update/"} />;
       // case "appearance":
       //   return <Accounts />;
-      // case "preferences":
-      //   return <Transactions />;
+      case "preferences":
+        return <SettingsPreferences />;
       case "data":
         return <SettingsData />;
       default:
@@ -54,16 +55,6 @@ const Settings = ({ onClose }) => {
               Account
             </div>
             <div
-              onClick={() => setPage("appearance")}
-              className={
-                page === "appearance"
-                  ? styles["sidebar-sections-active"]
-                  : styles["sidebar-sections"]
-              }
-            >
-              Appearance
-            </div>
-            {/* <div
               onClick={() => setPage("preferences")}
               className={
                 page === "preferences"
@@ -72,7 +63,7 @@ const Settings = ({ onClose }) => {
               }
             >
               Preferences
-            </div>*/}
+            </div>
             <div
               onClick={() => setPage("data")}
               className={

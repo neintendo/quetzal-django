@@ -193,6 +193,11 @@ class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     display_name = models.CharField(unique=True, max_length=100)
     main_currency = models.CharField(max_length=10, choices=ExchangeRates.CURRENCIES)
+    theme = models.CharField(
+        max_length=6,
+        choices=[("system", "System"), ("light", "Light"), ("dark", "Dark")],
+        default="system",
+    )
 
     def __str__(self):
         return self.username

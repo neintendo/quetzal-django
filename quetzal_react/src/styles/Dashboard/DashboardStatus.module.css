@@ -49,3 +49,14 @@
 .dashboard-status-container:hover {
     cursor: default;
 }
+
+/* Dark Mode Overrides */
+body[data-theme="dark"] .dashboard-status-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .dashboard-status {
+    background-color: #222222;
+    border: 1px solid #444444;
+}

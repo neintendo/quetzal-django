@@ -1,5 +1,6 @@
 import api from "../../api";
 import styles from "../../styles/Accounts/AccountsGraph.module.css";
+import SetTheme from "../Settings/SetTheme";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -32,6 +33,7 @@ const AccountsGraph = ({
   editAccountRefresher,
 }) => {
   const [transactionData, setTransactionData] = useState(null);
+  const { theme } = SetTheme();
 
   useEffect(() => {
     const getTransactionData = () => {
@@ -140,14 +142,16 @@ const AccountsGraph = ({
       x: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
       y: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
     },
   };

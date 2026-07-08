@@ -102,7 +102,6 @@
     width: 95%;
     padding: 10px;
     margin-top: 10px;
-
     background-color: #990000;
     color: white;
     border: none;
@@ -117,4 +116,50 @@
 hr {
     width: 90%;
     border: 0.5px solid #bbbbbb;
+}
+
+/* Dark Mode Overrides */
+
+body[data-theme="dark"] .edit-account-modal {
+    background-color: rgba(204, 204, 204, 0.25);
+}
+
+body[data-theme="dark"] .modal-close-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .modal-close-button:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .edit-account-form-container {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .edit-account-form-input {
+    border: 1px solid #666666;
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .edit-account-form-button {
+    background-color: #bbbbbb;
+    color: black;
+}
+
+body[data-theme="dark"] .edit-account-form-button:hover {
+    background-color: #999999;
+}
+
+body[data-theme="dark"] .delete-account-form-button {
+    background-color: #dd5444;
+    color: white;
+}
+body[data-theme="dark"] .delete-account-form-button:hover {
+    background-color: #ff5444;
+}
+
+body[data-theme="dark"] hr {
+    width: 90%;
+    border: 0.5px solid #444444;
 }

@@ -187,3 +187,65 @@
 .transactions-table-filter-container {
     cursor: default;
 }
+
+/* Dark Theme Overrides */
+
+body[data-theme="dark"] .transactions-table-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .transactions-table-header {
+    background-color: #222222;
+    box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] .transactions-table-title-container,
+body[data-theme="dark"] .transactions-table-title-container-active,
+body[data-theme="dark"] .transactions-table-title-container-expanded,
+body[data-theme="dark"] .table-header-input {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .transactions-table-title-container-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .transactions-table-title-container-expanded,
+body[data-theme="dark"] .transactions-table-title:hover {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .transactions-table-title-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .transactions-table-filter-container {
+    border-top: 1px solid #444444;
+}
+
+body[data-theme="dark"] .transactions-table-filters-select {
+    background-color: #222222;
+}
+
+body[data-theme="dark"] .transactions-table-filters-date {
+    background-color: #222222;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .filter-clear-button {
+    background-color: #444444;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .filter-clear-button:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .table-header-input:hover {
+    background-color: #eeeeee;
+    border: 1px solid #666666;
+}

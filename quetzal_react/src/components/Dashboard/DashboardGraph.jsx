@@ -2,6 +2,7 @@ import api from "../../api";
 import styles from "../../styles/Dashboard/DashboardGraph.module.css";
 import CurrentMonth from "../Utilities/CurrentMonth";
 import PreviousMonth from "../Utilities/PreviousMonth";
+import SetTheme from "../Settings/SetTheme";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -36,6 +37,7 @@ const DashboardGraph = () => {
   const { previousMonth } = PreviousMonth();
   const { prevMonthNumberOfDays } = PreviousMonth();
   const { previousMonthLastDay } = PreviousMonth();
+  const { theme } = SetTheme();
 
   const fetchData = () => {
     Promise.all([
@@ -132,14 +134,19 @@ const DashboardGraph = () => {
         label: "Current Month",
         data: amounts,
         fill: true,
-        borderColor: "#ffffff",
-        backgroundColor: "rgba(256,256,256, 0.25)",
+        borderColor: theme === "dark" ? "#ff5444" : "#ffffff",
+        backgroundColor:
+          theme === "dark"
+            ? "rgba(255, 84 ,68 , 0.25)"
+            : "rgba(255, 255 ,255 , 0.25)",
       },
       {
         label: "Previous Month",
         data: amounts2,
         fill: true,
         borderColor: "#bbbbbb",
+        backgroundColor:
+          theme === "dark" ? "rgba(187, 187 ,187 , 0.05)" : undefined,
       },
     ],
   };
@@ -147,6 +154,7 @@ const DashboardGraph = () => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
+    borderColor: "#fffffff",
     plugins: {
       tooltip: {
         titleFont: { family: "DepartureMono-Regular", size: 11 },
@@ -161,6 +169,7 @@ const DashboardGraph = () => {
         labels: {
           font: { family: "DepartureMono-Regular", size: 11 },
           usePointStyle: true,
+          color: theme === "dark" ? "#bbbbbb" : undefined,
           pointStyle: "star",
           padding: 16,
           boxHeight: 6,
@@ -174,14 +183,16 @@ const DashboardGraph = () => {
       x: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
       y: {
         ticks: {
           font: { family: "DepartureMono-Regular", size: 11 },
-          color: "#444444",
+          color: theme === "dark" ? "#bbbbbb" : "#444444",
         },
+        grid: { color: theme === "dark" ? "#333333" : undefined },
       },
     },
   };

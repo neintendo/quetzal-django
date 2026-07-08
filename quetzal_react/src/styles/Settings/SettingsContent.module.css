@@ -79,3 +79,46 @@
     background-color: #bbbbbb;
     cursor: not-allowed;
 }
+
+/* Dark Theme Overrides*/
+
+body[data-theme="dark"] .settings-content-input {
+    border: 1px solid #666666;
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .settings-content-container,
+body[data-theme="dark"] .settings-sub-content-container {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .settings-content-button,
+body[data-theme="dark"] .data-settings-content-button,
+body[data-theme="dark"] .data-settings-content-button-delete {
+    background-color: #bbbbbb;
+    color: white;
+}
+
+body[data-theme="dark"] .data-settings-content-button-delete {
+    background-color: #dd5444;
+}
+
+body[data-theme="dark"] .data-settings-content-button-delete:hover {
+    background-color: #ff5444;
+}
+
+body[data-theme="dark"] .warning-text {
+    color: #ff5444;
+}
+
+body[data-theme="dark"] .settings-content-button:hover,
+body[data-theme="dark"] .data-settings-content-button:hover {
+    background-color: #999999;
+}
+
+body[data-theme="dark"] .data-settings-content-button:disabled,
+body[data-theme="dark"] .settings-content-button:disabled,
+body[data-theme="dark"] .data-settings-content-button-delete:disabled {
+    background-color: #444444;
+    color: #bbbbbb;
+}

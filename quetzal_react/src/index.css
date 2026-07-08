@@ -7,10 +7,16 @@ html,
 body {
     font-family: "DepartureMono-Regular", sans-serif;
     color: #333333;
+    background-color: #dddddd;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+body[data-theme="dark"] {
+    color: #cccccc;
+    background-color: #222222;
 }
 
 * {

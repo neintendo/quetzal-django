@@ -45,7 +45,7 @@
 }
 .accounts-graph-balance-container-active {
     background-color: #bbbbbb;
-    border: 1px solid #999999;
+    border: 1px solid #666666w;
 }
 
 .accounts-graph-balance-container:hover {
@@ -202,4 +202,99 @@
 
 .accounts-table-title {
     cursor: default;
+}
+
+/* Dark Mode Overrides*/
+
+body[data-theme="dark"] .accounts-graph,
+body[data-theme="dark"] .accounts-graph-max {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .accounts-graph-balance-container-active,
+body[data-theme="dark"] .accounts-graph-balance-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+    outline: 8px solid #222222;
+}
+body[data-theme="dark"] .accounts-graph-balance-container-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .accounts-graph-balance-container:hover {
+    background-color: #333333;
+}
+body[data-theme="dark"] .accounts-graph-balance-container-active:hover {
+    border: 1px solid #666666;
+    background-color: #333333;
+}
+
+body[data-theme="dark"]
+    .accounts-graph-balance-container:hover
+    .accounts-graph-balance {
+    background-color: #333333;
+}
+body[data-theme="dark"]
+    .accounts-graph-balance-container-active:hover
+    .accounts-graph-balance {
+    background-color: #444444;
+}
+
+body[data-theme="dark"] .accounts-graph-balance-list {
+    border-top: 1px solid #444444;
+}
+body[data-theme="dark"] .accounts-graph-balance-list:hover {
+    background-color: #444444;
+}
+
+body[data-theme="dark"] .accounts-table-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .accounts-table-header {
+    background-color: #222222;
+    box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] .accounts-table-title {
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .accounts-table-title-active {
+    background-color: #444444;
+    border: 1px solid #666666;
+}
+body[data-theme="dark"] .accounts-table-title-active:hover {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .table-header-input {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .table-header-input:hover {
+    background-color: #111111;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .add-account-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .add-account-button:hover {
+    background-color: #555555;
+}
+
+body[data-theme="dark"] .edit-account-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .edit-account-button:hover {
+    background-color: #555555;
 }

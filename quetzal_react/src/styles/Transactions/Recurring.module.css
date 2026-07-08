@@ -97,3 +97,35 @@
 .create-button {
     cursor: pointer;
 }
+
+/* Dark Mode Overrides */
+
+body[data-theme="dark"] .recurring-table-container,
+body[data-theme="dark"] .table-header-input,
+body[data-theme="dark"] .recurring-table-title-container {
+    background-color: #222222;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .recurring-table-header {
+    background-color: #222222;
+    box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] .recurring-table-title:hover {
+    background-color: #333333;
+}
+
+body[data-theme="dark"] .table-header-input:hover {
+    background-color: #111111;
+    border: 1px solid #666666;
+}
+
+body[data-theme="dark"] .create-button {
+    background-color: #333333;
+    border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .create-button:hover {
+    background-color: #555555;
+}
