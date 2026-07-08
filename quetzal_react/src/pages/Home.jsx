@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard/Dashboard";
 import Accounts from "../components/Accounts/Accounts";
@@ -10,25 +10,10 @@ import RecurringAuto from "../components/Transactions/RecurringAuto";
 import SetTheme from "../components/Settings/SetTheme";
 
 function Home() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [page, setPage] = useState("dashboard");
   RecurringAuto();
   SetTheme();
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 720) {
-        // Mobile breakpoint
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const pageHandler = (pageFromChild) => {
     setPage(pageFromChild);
@@ -69,6 +54,10 @@ function Home() {
         pageToHome={pageHandler}
       />
       {pageSwitch()}
+      <div
+        className={styles["sidebar-hover-trigger"]}
+        onMouseEnter={toggleSidebar}
+      ></div>
     </div>
   );
 }

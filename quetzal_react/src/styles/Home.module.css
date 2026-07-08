@@ -3,7 +3,8 @@
     display: grid;
     grid-template-rows: 48px 1fr;
     height: 100vh;
-    overflow: hidden;
+    overflow: clip;
+    transition: grid-template-columns 250ms ease;
 }
 
 .home-container {
@@ -11,6 +12,11 @@
 }
 
 .home-container-maximized {
-    transition: grid-template-columns 250ms ease;
     grid-template-columns: 12px 1fr;
+}
+
+.sidebar-hover-trigger {
+    height: 100%;
+    width: 20px;
+    position: absolute;
 }
