@@ -3,7 +3,9 @@ import api from "../../api";
 
 const SetTheme = () => {
   const [profile, setProfile] = useState(null);
-  const [theme, setTheme] = useState();
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "system",
+  );
 
   const getProfile = () => {
     api
@@ -37,6 +39,7 @@ const SetTheme = () => {
 
     document.body.setAttribute("data-theme", appliedTheme);
     setTheme(appliedTheme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   return { theme: theme };
