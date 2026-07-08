@@ -246,6 +246,6 @@ body[data-theme="dark"] .filter-clear-button:hover {
 }
 
 body[data-theme="dark"] .table-header-input:hover {
-    background-color: #eeeeee;
+    background-color: #333333;
     border: 1px solid #666666;
 }

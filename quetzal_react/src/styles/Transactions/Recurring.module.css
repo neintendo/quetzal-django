@@ -117,7 +117,7 @@ body[data-theme="dark"] .recurring-table-title:hover {
 }
 
 body[data-theme="dark"] .table-header-input:hover {
-    background-color: #111111;
+    background-color: #333333;
     border: 1px solid #666666;
 }
 
