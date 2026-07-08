@@ -5,6 +5,8 @@
 
 html,
 body {
+    height: 100vh;
+    overflow: hidden;
     font-family: "DepartureMono-Regular", sans-serif;
     color: #333333;
     background-color: #dddddd;
