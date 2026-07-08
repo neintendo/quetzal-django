@@ -165,13 +165,13 @@ body[data-theme="dark"] .sidebar-logout {
     border: 1px solid #444444;
 }
 
-body[data-theme="dark"] .modal-close-button:hover,
 body[data-theme="dark"] .settings-sidebar {
     background-color: #222222;
 }
 
 body[data-theme="dark"] .settings-container,
-body[data-theme="dark"] .sidebar-logout:hover {
+body[data-theme="dark"] .sidebar-logout:hover,
+body[data-theme="dark"] .modal-close-button:hover {
     background-color: #555555;
 }
 
