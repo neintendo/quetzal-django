@@ -245,7 +245,7 @@ hr {
 /* Dark Mode Overrides */
 
 body[data-theme="dark"] .recurring-detail-modal-container {
-    background-color: rgba(204, 204, 204, 0.25);
+    background-color: rgba(204, 204, 204, 0.1);
 }
 
 body[data-theme="dark"] .recurring-detail-modal {
