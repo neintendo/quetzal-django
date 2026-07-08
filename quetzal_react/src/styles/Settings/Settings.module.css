@@ -45,6 +45,7 @@
     flex-direction: row;
     position: absolute;
     width: 50%;
+    aspect-ratio: 1.1 / 1;
     height: auto;
     min-height: 700px;
     border-radius: 8px;
