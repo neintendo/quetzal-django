@@ -15,6 +15,10 @@ const Accounts = () => {
     GlobalRefresh.subscribe,
     GlobalRefresh.getSnapshot,
   );
+
+  // Check network connectivity
+  let isOnline = navigator.onLine;
+
   const [accountAggregates, setAccountAggregates] = useState(null);
   const [profile, setProfile] = useState(null);
   const [accountsData, setAccountsData] = useState([]);
@@ -59,7 +63,7 @@ const Accounts = () => {
 
   const fetchData = () => {
     Promise.all([
-      api.get("accounts/aggregate/"),
+      api.get("accounts/aggregate/", { params: { isOnline } }),
       api.get("profile/"),
       api.get("accounts/"),
     ])

@@ -181,21 +181,27 @@ class AccountsAggregateView(APIView):
         if currency:
             accounts = accounts.filter(currency=currency.upper())
 
+        # Frontend connectivity
+        is_online = request.GET.get("isOnline")
+
         # Creates a new array with converted balances
         converted_balances = []
-        date_obj = datetime.now(timezone.utc)
         accounts_converted = 0
+        date_obj = datetime.now(timezone.utc)
 
         # Checks if API is working. If not, date_cmp = last saved date
         try:
-            url = (
-                "https://api.frankfurter.dev/v1/"
-                + date_obj.strftime("%Y-%m-%d")
-                + "?base="
-                + main_currency.upper()
-            )
-            response = requests.get(url)
-            print("STATUS CODE:", response.status_code)
+            if is_online == "true":
+                url = (
+                    "https://api.frankfurter.dev/v1/"
+                    + date_obj.strftime("%Y-%m-%d")
+                    + "?base="
+                    + main_currency.upper()
+                )
+                response = requests.get(url)
+                print("STATUS CODE:", response.status_code)
+            else:
+                raise Exception
 
         except Exception as e:
             try:
