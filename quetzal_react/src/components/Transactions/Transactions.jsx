@@ -1,10 +1,17 @@
 import styles from "../../styles/Transactions/Transactions.module.css";
 import api from "../../api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import TransactionsTable from "../Transactions/TransactionsTable";
 import TransactionDetail from "./TransactionDetail";
 
 const Transactions = () => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
+
   const [transactionsData, setTransactionsData] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -57,7 +64,15 @@ const Transactions = () => {
 
   useEffect(() => {
     fetchData();
-  }, [startDate, endDate, account, category, currency, transactionType]);
+  }, [
+    globalRefresh,
+    startDate,
+    endDate,
+    account,
+    category,
+    currency,
+    transactionType,
+  ]);
 
   const refresh = () => {
     fetchData();

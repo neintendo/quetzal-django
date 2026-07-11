@@ -1,6 +1,7 @@
 import styles from "../../styles/Accounts/Accounts.module.css";
 import api from "../../api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import AccountsDetail from "./AccountsDetail";
 import AccountsGraph from "./AccountsGraph";
 import AccountsTable from "../Accounts/AccountsTable";
@@ -9,6 +10,11 @@ import EditAccount from "./EditAccount";
 import TransactionDetail from "../Transactions/TransactionDetail";
 
 const Accounts = () => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
   const [accountAggregates, setAccountAggregates] = useState(null);
   const [profile, setProfile] = useState(null);
   const [accountsData, setAccountsData] = useState([]);
@@ -67,7 +73,7 @@ const Accounts = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [globalRefresh]);
 
   const refresh = () => {
     fetchData();

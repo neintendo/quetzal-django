@@ -3,7 +3,8 @@ import styles from "../../styles/Dashboard/DashboardGraph.module.css";
 import CurrentMonth from "../Utilities/CurrentMonth";
 import PreviousMonth from "../Utilities/PreviousMonth";
 import SetTheme from "../Settings/SetTheme";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -28,7 +29,13 @@ ChartJS.register(
   Filler,
 );
 
-const DashboardGraph = () => {
+const DashboardGraph = ({ refresh }) => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
+
   const [dailyTransactionData, setDailyTransactionData] = useState([]);
   const [otherDailyTransactionData, setOtherDailyTransactionData] = useState(
     [],
@@ -59,7 +66,7 @@ const DashboardGraph = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [globalRefresh, refresh]);
 
   if (!dailyTransactionData) {
     return (

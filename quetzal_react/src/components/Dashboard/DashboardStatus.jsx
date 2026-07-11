@@ -1,9 +1,16 @@
 import styles from "../../styles/Dashboard/DashboardStatus.module.css";
 import api from "../../api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import CurrentMonth from "../Utilities/CurrentMonth";
 
 const DashboardStatus = () => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
+
   const { currentMonth } = CurrentMonth();
   const [accountAggregates, setAccountAggregates] = useState([]);
   const [profile, setProfile] = useState([]);
@@ -48,11 +55,7 @@ const DashboardStatus = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  // const refresh = () => {
-  //   fetchData();
-  // };
+  }, [globalRefresh]);
 
   const currencyFormatter = new Intl.NumberFormat("en", {
     style: "currency",

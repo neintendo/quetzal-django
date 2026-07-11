@@ -1,7 +1,8 @@
 import api from "../../api";
 import styles from "../../styles/Categories/CategoriesChart.module.css";
 import SetTheme from "../Settings/SetTheme";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,6 +24,12 @@ ChartJS.register(
 );
 
 const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
+
   const [transactionData, setTransactionData] = useState(null);
   const { theme } = SetTheme();
 
@@ -43,7 +50,7 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
     };
 
     getTransactionData();
-  }, [categoryID, conv_int, transDetailRefresher]);
+  }, [globalRefresh, categoryID, conv_int, transDetailRefresher]);
 
   if (!transactionData) {
     return (

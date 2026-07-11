@@ -1,7 +1,8 @@
 import api from "../../api";
 import styles from "../../styles/Accounts/AccountsGraph.module.css";
 import SetTheme from "../Settings/SetTheme";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -32,6 +33,11 @@ const AccountsGraph = ({
   transDetailRefresher,
   editAccountRefresher,
 }) => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
   const [transactionData, setTransactionData] = useState(null);
   const { theme } = SetTheme();
 
@@ -51,6 +57,7 @@ const AccountsGraph = ({
 
     getTransactionData();
   }, [
+    globalRefresh,
     currencyFilter,
     selectedAccount,
     transDetailRefresher,

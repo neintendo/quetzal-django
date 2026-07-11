@@ -1,6 +1,7 @@
 import styles from "../../styles/Dashboard/Dashboard.module.css";
 import api from "../../api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import TransactionDetail from "../Transactions/TransactionDetail";
 import DashboardStatus from "./DashboardStatus";
 import DashboardGraph from "./DashboardGraph";
@@ -9,6 +10,12 @@ import TopCategories from "./TopCategories";
 import CurrentMonth from "../Utilities/CurrentMonth";
 
 const Dashboard = () => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
+
   const { currentMonth } = CurrentMonth();
   const [categoriesData, setCategoriesData] = useState([]);
   const [categoriesGraphData, setCategoriesGraphData] = useState([]);
@@ -31,6 +38,7 @@ const Dashboard = () => {
     useState("");
   const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
     useState("");
+  const [refresh, setRefresh] = useState(0);
 
   const fetchData = () => {
     Promise.all([
@@ -46,10 +54,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  // Refresh data in RecentTransactions
-  const [refresh, setRefresh] = useState(0);
+  }, [globalRefresh, refresh]);
 
   const enhancedCategoriesData = categoriesData
     .map((category) => {
@@ -137,7 +142,7 @@ const Dashboard = () => {
         <DashboardStatus />
         <div className={styles["dashboard-graph-container"]}>
           <div className={styles["dashboard-graph-title"]}>Spending</div>
-          <DashboardGraph />
+          <DashboardGraph refresh={refresh} />
         </div>
         <div className={styles["dashboard-summaries-container"]}>
           <div className={styles["recents-table-container"]}>

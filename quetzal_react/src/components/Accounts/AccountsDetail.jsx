@@ -1,6 +1,6 @@
 import api from "../../api";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import styles from "../../styles/Table.module.css";
 
 const AccountsDetail = ({
@@ -9,6 +9,11 @@ const AccountsDetail = ({
   detailsRowClick,
   transDetailRefresher,
 }) => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
   const [accTransactionData, setAccTransactionData] = useState([]);
   const [sortHeader, setSortHeader] = useState({
     key: "datetime",
@@ -28,7 +33,7 @@ const AccountsDetail = ({
     };
 
     getAccTransactionData();
-  }, [accountName, transDetailRefresher]);
+  }, [globalRefresh, accountName, transDetailRefresher]);
 
   const requestSort = (key) => {
     let direction = "asc";

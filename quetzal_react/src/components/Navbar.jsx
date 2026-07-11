@@ -1,14 +1,16 @@
 import styles from "../styles/Navbar.module.css";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
+import { GlobalRefresh } from "./Utilities/GlobalRefresh";
 import AddTransaction from "./Transactions/AddTransaction";
 
 const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
   const [showAddModal, setShowAddModal] = useState(false);
 
   const handleTransactionAdded = () => {
+    // Triggers global refresh function
+    GlobalRefresh.trigger();
     setShowAddModal(false);
-    // add code for refreshing table here later
   };
 
   const handlePageClick = (pageFromChild) => {

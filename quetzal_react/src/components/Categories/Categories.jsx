@@ -1,6 +1,7 @@
 import styles from "../../styles/Categories/Categories.module.css";
 import api from "../../api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import CategoriesTable from "./CategoriesTable";
 import CategoriesDoughnut from "./CategoriesDoughnut";
 import CategoriesRadar from "./CategoriesRadar";
@@ -12,6 +13,11 @@ import CategoriesChart from "./CategoriesChart";
 import TransactionDetail from "../Transactions/TransactionDetail";
 
 const Categories = () => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
   const { currentMonth } = CurrentMonth();
   const [categoriesData, setCategoriesData] = useState([]);
   const [categoriesGraphData, setCategoriesGraphData] = useState([]);
@@ -117,7 +123,7 @@ const Categories = () => {
 
   useEffect(() => {
     fetchData();
-  }, [categoryType, startDate, endDate, account, currency]);
+  }, [globalRefresh, categoryType, startDate, endDate, account, currency]);
 
   useEffect(() => {
     function clickOutside(event) {

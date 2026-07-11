@@ -1,8 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { GlobalRefresh } from "../Utilities/GlobalRefresh";
 import api from "../../api";
 import styles from "../../styles/Dashboard/RecentTransactionsTable.module.css";
 
 const RecentTransactions = ({ onRowClick, refresh }) => {
+  // Re-fetch data when GlobalRefresh.trigger is called elsewhere
+  const globalRefresh = useSyncExternalStore(
+    GlobalRefresh.subscribe,
+    GlobalRefresh.getSnapshot,
+  );
   const [transactionsData, setTransactionsData] = useState([]);
 
   const fetchData = () => {
@@ -15,7 +21,7 @@ const RecentTransactions = ({ onRowClick, refresh }) => {
 
   useEffect(() => {
     fetchData();
-  }, [refresh]);
+  }, [globalRefresh, refresh]);
 
   return (
     <>
