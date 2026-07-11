@@ -46,7 +46,7 @@ class UserProfileView(APIView):
 
 
 # List all users
-class UserListCreateView(generics.ListCreateAPIView):
+class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 

@@ -21,7 +21,7 @@ from .views import (
     TransactionListCreateView,
     TransactionSpendingGraph,
     UserDetailView,
-    UserListCreateView,
+    UserListView,
     UserProfileView,
 )
 
@@ -31,7 +31,7 @@ urlpatterns = [
     path("auth/login/", UserLoginView.as_view(), name="login"),
     path("auth/logout/", UserLogoutView.as_view(), name="logout"),
     # Users
-    path("users/", UserListCreateView.as_view(), name="users"),
+    path("users/", UserListView.as_view(), name="users"),
     # User Profile
     path("profile/", UserProfileView.as_view(), name="profile"),
     path("profile-update/", UserProfileView.as_view(), name="profile-update"),
