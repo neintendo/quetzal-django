@@ -354,6 +354,9 @@ const Categories = () => {
                 categoryID={selectedCategoryID}
                 conv_int={categoriesGraphData.converted_transactions}
                 transDetailRefresher={transDetailRefresher}
+                startDate={startDate}
+                endDate={endDate}
+                account={account}
               />
             </div>
           ) : (

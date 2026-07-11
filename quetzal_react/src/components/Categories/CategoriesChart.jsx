@@ -23,7 +23,14 @@ ChartJS.register(
   Legend,
 );
 
-const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
+const CategoriesChart = ({
+  categoryID,
+  conv_int,
+  transDetailRefresher,
+  startDate,
+  endDate,
+  account,
+}) => {
   // Re-fetch data when GlobalRefresh.trigger is called elsewhere
   const globalRefresh = useSyncExternalStore(
     GlobalRefresh.subscribe,
@@ -40,6 +47,9 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
           params: {
             category: categoryID,
             category_converted_transactions: conv_int,
+            start_date: startDate,
+            end_date: endDate,
+            account,
           },
         })
         .then((res) => res.data)
@@ -50,7 +60,15 @@ const CategoriesChart = ({ categoryID, conv_int, transDetailRefresher }) => {
     };
 
     getTransactionData();
-  }, [globalRefresh, categoryID, conv_int, transDetailRefresher]);
+  }, [
+    globalRefresh,
+    categoryID,
+    conv_int,
+    transDetailRefresher,
+    startDate,
+    endDate,
+    account,
+  ]);
 
   if (!transactionData) {
     return (

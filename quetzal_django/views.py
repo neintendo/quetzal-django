@@ -368,6 +368,21 @@ class CategoriesChartView(APIView):
         # All user transactions.
         transactions = Transaction.objects.filter(user=request.user)
 
+        # Filters request by account
+        account = request.GET.get("account")
+        if account:
+            transactions = transactions.filter(account__name=account)
+
+        # Filters request by date
+        start_date = request.GET.get("start_date")
+        if start_date:
+            print("huh")
+            transactions = transactions.filter(datetime__date__gte=start_date)
+
+        end_date = request.GET.get("end_date")
+        if end_date:
+            transactions = transactions.filter(datetime__date__lte=end_date)
+
         # Filters request by currency
         currency = request.GET.get("currency")
         if currency:
