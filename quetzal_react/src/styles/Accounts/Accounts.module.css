@@ -143,6 +143,7 @@
 .table-header-input::placeholder {
     font-size: 12px;
     text-align: center;
+    color: #999999;
 }
 
 .table-header-input:hover {
@@ -274,6 +275,10 @@ body[data-theme="dark"] .accounts-table-title-active:hover {
 body[data-theme="dark"] .table-header-input {
     background-color: #222222;
     border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .table-header-input::placeholder {
+    color: #666666;
 }
 
 body[data-theme="dark"] .table-header-input:hover {

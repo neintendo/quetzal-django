@@ -115,6 +115,7 @@
 }
 
 .categories-filters-select {
+    font-size: 11px;
     background-color: #dddddd;
     margin: 4px 0;
     border: 1px solid #999999;
@@ -130,6 +131,7 @@
 }
 
 .category-filters-date {
+    font-size: 11px;
     background-color: #dddddd;
     border: 1px solid #999999;
     border-radius: 4px;
@@ -236,6 +238,7 @@
 .table-header-input::placeholder {
     font-size: 12px;
     text-align: center;
+    color: #999999;
 }
 
 .table-header-input:hover {
@@ -371,6 +374,10 @@ body[data-theme="dark"] .categories-table-title-active:hover {
 body[data-theme="dark"] .table-header-input {
     background-color: #222222;
     border: 1px solid #444444;
+}
+
+body[data-theme="dark"] .table-header-input::placeholder {
+    color: #666666;
 }
 
 body[data-theme="dark"] .table-header-input:hover {

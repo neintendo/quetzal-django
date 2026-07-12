@@ -135,6 +135,7 @@ const SettingsData = () => {
             Import Transactions
           </div>
           <input
+            className={styles["settings-import-button"]}
             style={{}}
             type="file"
             accept=".csv"

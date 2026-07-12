@@ -76,6 +76,7 @@
 }
 
 .add-account-form-input {
+    font-size: 11px;
     width: 90%;
     padding: 10px;
     margin: 10px 0;
@@ -86,6 +87,7 @@
 }
 
 .add-account-form-button {
+    font-size: 11px;
     width: 95%;
     padding: 10px;
     margin: 20px 0;

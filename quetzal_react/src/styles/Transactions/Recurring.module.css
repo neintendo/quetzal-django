@@ -47,14 +47,7 @@
 
 .recurring-table-title {
     padding: 8px;
-    transition:
-        background-color 250ms ease,
-        font-size 250ms ease;
-}
-
-.recurring-table-title:hover {
-    font-size: 18px;
-    background-color: #cccccc;
+    transition: background-color 250ms ease;
 }
 
 .table-header-input {
@@ -70,6 +63,7 @@
 .table-header-input::placeholder {
     font-size: 12px;
     text-align: center;
+    color: #999999;
 }
 
 .table-header-input:hover {
@@ -93,9 +87,11 @@
     background-color: #eeeeee;
 }
 
-.recurring-table-title,
 .create-button {
     cursor: pointer;
+}
+.recurring-table-title {
+    cursor: default;
 }
 
 /* Dark Mode Overrides */
@@ -106,14 +102,17 @@ body[data-theme="dark"] .recurring-table-title-container {
     background-color: #222222;
     border: 1px solid #444444;
 }
+body[data-theme="dark"] .table-header-input::placeholder {
+    color: #666666;
+}
 
 body[data-theme="dark"] .recurring-table-header {
     background-color: #222222;
     box-shadow: 0 -30px 0 #222222;
 }
 
-body[data-theme="dark"] .recurring-table-title:hover {
-    background-color: #333333;
+body[data-theme="dark"] .recurring-table-title {
+    background-color: #222222;
 }
 
 body[data-theme="dark"] .table-header-input:hover {

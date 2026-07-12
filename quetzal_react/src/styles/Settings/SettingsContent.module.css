@@ -25,6 +25,7 @@
 }
 
 .settings-content-input {
+    font-size: 11px;
     width: 100%;
     padding: 10px;
     border: 1px solid #999999;
@@ -33,9 +34,14 @@
     height: 36px;
 }
 
+.settings-import-button {
+    font-size: 11px;
+}
+
 .settings-content-button,
 .data-settings-content-button,
 .data-settings-content-button-delete {
+    font-size: 11px;
     width: 100%;
     padding: 10px;
     margin: 24px 0;

@@ -72,6 +72,7 @@
 }
 
 .edit-category-form-input {
+    font-size: 11px;
     width: 90%;
     padding: 10px;
     margin: 10px 0;
@@ -82,6 +83,7 @@
 }
 
 .edit-category-form-button {
+    font-size: 11px;
     width: 95%;
     padding: 10px;
     margin-top: 30px;
@@ -99,10 +101,10 @@
 }
 
 .delete-category-form-button {
+    font-size: 11px;
     width: 95%;
     padding: 10px;
     margin-top: 10px;
-
     background-color: #990000;
     color: white;
     border: none;

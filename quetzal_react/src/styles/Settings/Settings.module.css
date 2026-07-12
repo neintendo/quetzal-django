@@ -99,7 +99,8 @@
     background-color: #cccccc;
 }
 
-.settings-form-input {
+/*.settings-form-input {
+    font-size: 11px;
     width: 90%;
     padding: 10px;
     margin: 10px 0;
@@ -107,7 +108,7 @@
     border-radius: 4px;
     box-sizing: border-box;
     height: 36px;
-}
+}*/
 
 .settings-form-button {
     width: 95%;
