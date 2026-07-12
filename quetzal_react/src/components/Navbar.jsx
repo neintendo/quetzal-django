@@ -27,7 +27,6 @@ const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
         />
       )}
       <Sidebar isOpen={isSidebarOpen} onPageClick={handlePageClick} />
-
       <nav className={styles["navbar"]}>
         <div className={styles["navbar-left"]}>
           <button

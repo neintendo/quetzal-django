@@ -44,6 +44,9 @@
     transition: background-color 250ms ease;
     height: 24px;
     width: 24px;
+    position: relative;
+    left: 84px;
+    app-region: no-drag;
 }
 
 .sidebar-nav:hover {
@@ -57,6 +60,14 @@
 
 .navbar-center {
     cursor: default;
+}
+
+.navbar {
+    app-region: drag;
+}
+
+.navbar > * {
+    app-region: no-drag;
 }
 
 /* Dark Theme Overrides*/
