@@ -1089,7 +1089,7 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 # Reset all user related transaction data
-class ResetProfile(generics.RetrieveUpdateDestroyAPIView):
+class ResetProfile(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
