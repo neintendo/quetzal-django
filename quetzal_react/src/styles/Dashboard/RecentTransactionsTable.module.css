@@ -15,11 +15,10 @@
 
 .th {
     position: sticky;
-    top: 40px;
+    top: 38px;
     background-color: #dddddd;
     text-align: left;
     z-index: 28;
-    box-shadow: 0 -30px 0 #dddddd;
     cursor: default;
 }
 
