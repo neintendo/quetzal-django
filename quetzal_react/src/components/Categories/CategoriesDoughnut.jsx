@@ -1,5 +1,7 @@
 import styles from "../../styles/Categories/CategoriesDoughnut.module.css";
 import { Doughnut } from "react-chartjs-2";
+import SetTheme from "../Settings/SetTheme";
+
 
 import {
   Chart as ChartJS,
@@ -12,6 +14,8 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend, DoughnutController);
 
 const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
+  const { theme } = SetTheme();
+
   if (!enhancedCategoriesData) {
     return (
       <div className={styles["categories-doughnut-loading"]}>
@@ -66,8 +70,12 @@ const CategoriesDoughnut = ({ enhancedCategoriesData }) => {
       tooltip: {
         titleFont: { family: "DepartureMono-Regular", size: 11 },
         bodyFont: { family: "DepartureMono-Regular", size: 10 },
-        titleColor: "#eeeeee",
-        bodyColor: "#eeeeee",
+        titleColor: theme === "dark" ? "#cccccc" : "#333333",
+        bodyColor: theme === "dark" ? "#cccccc" : "#333333",
+        backgroundColor: theme === "dark" ? "rgba(68, 68, 68, 0.9)" : "rgba(187, 187, 187, 0.66)",
+        borderColor: theme === "dark" ? "rgba(187, 187, 187, 0.66)" : "rgba(68, 68, 68, 0.9)",
+        borderWidth: 0.5,
+        cornerRadius: 2,
       },
       legend: {
         display: false,
