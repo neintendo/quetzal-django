@@ -12,6 +12,7 @@ const createWindow = () => {
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
   });
 
+  win.setMinimumSize(width / 2, height / 1.5)
   win.loadURL("http://localhost:5173/home");
 };
 
