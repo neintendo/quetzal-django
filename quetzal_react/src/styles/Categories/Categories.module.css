@@ -8,6 +8,7 @@
     gap: 16px;
     height: calc(100vh - 76.5px);
     width: calc(100% - 14px);
+    min-width: 0;
 }
 
 .chartjs-container {

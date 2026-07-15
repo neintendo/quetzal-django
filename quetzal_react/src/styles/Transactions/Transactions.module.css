@@ -7,6 +7,7 @@
     padding-left: 0px;
     gap: 16px;
     height: calc(100vh - 76.5px);
+    min-width: 0;
 }
 
 .transactions-table-container {
