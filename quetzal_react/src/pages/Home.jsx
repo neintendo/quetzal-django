@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard/Dashboard";
 import Accounts from "../components/Accounts/Accounts";
@@ -12,8 +12,25 @@ import SetTheme from "../components/Settings/SetTheme";
 function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [page, setPage] = useState("dashboard");
+  const widthTrigger = window.screen.width / 1.65;
+
   RecurringAuto();
   SetTheme();
+
+  // Auto open/close sidebar when resizing
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < widthTrigger) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const pageHandler = (pageFromChild) => {
     setPage(pageFromChild);
