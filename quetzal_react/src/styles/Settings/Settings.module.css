@@ -44,10 +44,10 @@
     display: flex;
     flex-direction: row;
     position: absolute;
-    width: 50%;
-    aspect-ratio: 1.1 / 1;
-    height: auto;
-    min-height: 700px;
+    aspect-ratio: 1.25 / 1;
+    max-width: 75vw;
+    height: 75vh;
+    max-height: 75vh;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -56,7 +56,6 @@
     display: flex;
     padding: 24px;
     flex-direction: column;
-    width: 25%;
     min-height: 100%;
     background-color: #dddddd;
 }
@@ -65,8 +64,8 @@
     display: flex;
     padding: 24px;
     flex-direction: column;
-    width: 75%;
-    min-height: 100%;
+    width: 100%;
+    overflow-y: scroll;
 }
 
 .settings-sidebar-title {
@@ -80,6 +79,7 @@
 .sidebar-sections-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .sidebar-sections {
     border-bottom: 4px solid transparent;

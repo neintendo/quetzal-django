@@ -77,7 +77,7 @@ const Settings = ({ onClose }) => {
             <a
               href="https://github.com/neintendo/quetzal"
               target="_blank"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", whiteSpace: "nowrap" }}
               className={
                 page === "help"
                   ? styles["sidebar-sections-active"]
