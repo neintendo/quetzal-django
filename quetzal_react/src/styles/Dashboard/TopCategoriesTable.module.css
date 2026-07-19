@@ -31,7 +31,7 @@
 
 .tr {
     border-bottom: 1px solid #bbbbbb;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
 }
 .tr:not(:first-child):hover {
     background-color: #cccccc;

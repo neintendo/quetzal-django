@@ -107,6 +107,7 @@
     overflow-x: scroll;
     scrollbar-color: #999 #ddd;
     scrollbar-width: thin;
+    scroll-snap-type: y proximity;
 }
 
 .accounts-table-header {

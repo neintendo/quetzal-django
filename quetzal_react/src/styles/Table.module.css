@@ -21,7 +21,7 @@
 
 .tr {
     border-bottom: 1px solid #bbbbbb;
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     cursor: pointer;
 }
 .tr:not(:first-child):hover {
