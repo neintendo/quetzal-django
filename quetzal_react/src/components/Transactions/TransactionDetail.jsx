@@ -41,7 +41,6 @@ const TransactionDetail = ({
       .then((res) => res.data)
       .then((data) => {
         setUserAccounts(data);
-        console.log(data);
       })
       .catch((err) => alert(err));
   };

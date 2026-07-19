@@ -50,7 +50,6 @@ const AccountsGraph = ({
         .then((res) => res.data)
         .then((data) => {
           setTransactionData(data.transactions_by_month);
-          console.log(data);
         })
         .catch((err) => alert(err));
     };
@@ -113,7 +112,6 @@ const AccountsGraph = ({
   for (let b = 0; b < f_months.length; b++) {
     if (amounts[b] == undefined) {
       amounts[b] = amounts[b - 1];
-      console.log(amounts[b]);
     }
   }
 

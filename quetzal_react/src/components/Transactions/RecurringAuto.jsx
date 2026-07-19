@@ -45,7 +45,6 @@ const RecurringAuto = () => {
             datetimes: filteredDatetimes,
             account: recurringData[countOuter].account,
           });
-          console.log(filteredDatetimes);
         } catch (error) {
           console.error("Update error:", error.response.data || error.message);
           continue; // Skip creating transactions if update fails

@@ -27,7 +27,6 @@ const AccountsDetail = ({
         .then((res) => res.data)
         .then((data) => {
           setAccTransactionData(data);
-          console.log(data);
         })
         .catch((err) => alert(err));
     };
@@ -71,7 +70,6 @@ const AccountsDetail = ({
         return sortHeader.direction === "asc" ? 1 : -1;
       }
     } else {
-      console.log(sortHeader.key);
       if (aValue.toLowerCase() < bValue.toLowerCase()) {
         return sortHeader.direction === "asc" ? -1 : 1;
       }
