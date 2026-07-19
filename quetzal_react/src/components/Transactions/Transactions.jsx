@@ -367,7 +367,7 @@ const Transactions = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div style={{overflowX: "scroll"}}>
+          <div className={styles["sub-table-container"]}>
             <TransactionsTable
             transactionsData={transactionsData}
             searchTerm={searchTerm}

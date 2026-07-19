@@ -593,7 +593,7 @@ const Categories = () => {
           </div>
 
           {tableNav ? (
-            <div style={{ overflowX: "scroll" }}>
+            <div className={styles["sub-table-container"]}>
             <CategoriesDetail
               searchTerm={searchTerm}
               categoryName={selectedCategoryName}
@@ -607,7 +607,7 @@ const Categories = () => {
             />
             </div>
           ) : (
-          <div style={{ overflowX: "scroll" }}>
+          <div className={styles["sub-table-container"]}>
             <CategoriesTable
               onRowClick={handleRowClick}
               searchTerm={searchTerm}

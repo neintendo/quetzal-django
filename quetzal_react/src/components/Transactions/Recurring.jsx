@@ -146,7 +146,7 @@ const Recurring = () => {
               {"+ Add Recurring Transaction"}
             </button>
           </div>
-          <div style={{ overflowX: "scroll" }}>
+          <div className={styles["sub-table-container"]}>
             <RecurringTable
               recurringData={recurringData}
               searchTerm={searchTerm}

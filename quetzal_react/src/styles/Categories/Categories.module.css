@@ -185,6 +185,12 @@
     scroll-padding: 20%;
 }
 
+.sub-table-container {
+    overflow-x: scroll;
+    scrollbar-color: #999 #ddd;
+    scrollbar-width: thin;
+}
+
 .categories-table-header-container {
     background-color: #dddddd;
     position: sticky;
@@ -397,4 +403,8 @@ body[data-theme="dark"] .add-edit-category-button {
 
 body[data-theme="dark"] .add-edit-category-button:hover {
     background-color: #555555;
+}
+
+body[data-theme="dark"] .sub-table-container {
+    scrollbar-color: #666 #222;
 }

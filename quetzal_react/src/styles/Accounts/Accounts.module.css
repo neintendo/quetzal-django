@@ -103,6 +103,12 @@
     scroll-padding: 20%;
 }
 
+.sub-table-container {
+    overflow-x: scroll;
+    scrollbar-color: #999 #ddd;
+    scrollbar-width: thin;
+}
+
 .accounts-table-header {
     position: sticky;
     background-color: #dddddd;
@@ -303,4 +309,8 @@ body[data-theme="dark"] .edit-account-button {
 
 body[data-theme="dark"] .edit-account-button:hover {
     background-color: #555555;
+}
+
+body[data-theme="dark"] .sub-table-container {
+    scrollbar-color: #666 #222;
 }

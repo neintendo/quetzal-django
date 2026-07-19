@@ -363,7 +363,7 @@ const Accounts = () => {
                 )}
               </div>
             </div>
-            <div style={{overflowX: "scroll"}}>
+            <div className={styles["sub-table-container"]}>
               {/* If tableNav is true switch page to account AccountsDetail*/}
               {tableNav ? (
                 <AccountsDetail

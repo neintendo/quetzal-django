@@ -112,6 +112,12 @@
     margin-right: clamp(-4px, -2px, -2px);
 }
 
+.sub-table-container {
+    overflow-x: scroll;
+    scrollbar-color: #999 #ddd;
+    scrollbar-width: thin;
+}
+
 .dashboard-graph-title,
 .recents-table-title,
 .top-categories-table-title {
@@ -142,4 +148,8 @@ body[data-theme="dark"] .top-categories-table-title {
     border: 1px solid #444444;
     background-color: #333333;
     box-shadow: 0 -30px 0 #222222;
+}
+
+body[data-theme="dark"] .sub-table-container {
+    scrollbar-color: #666 #222;
 }
