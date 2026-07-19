@@ -174,7 +174,7 @@ const Transactions = () => {
               >
                 Transactions
               </div>
-              <div className={styles["transactions-table-filter-container"]}>
+              <div className={styles["transactions-table-filter-container"]} style={{overflowX:"scroll"}}>
                 <div
                   className={styles["transactions-table-textselect-container"]}
                 >

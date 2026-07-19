@@ -191,6 +191,9 @@
 .transactions-table-filter-container {
     cursor: default;
 }
+.transactions-table-filter-container::-webkit-scrollbar {
+    display: none;
+}
 
 /* Dark Theme Overrides */
 

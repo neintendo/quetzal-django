@@ -122,7 +122,8 @@
     border: 1px solid #999999;
     border-radius: 4px;
     box-sizing: border-box;
-    width: 100%;
+    /*min-width: 100%;*/
+    flex: 1;
     height: 75%;
 }
 
@@ -281,6 +282,9 @@
 
 .categories-filter-container {
     cursor: default;
+}
+.categories-filter-container::-webkit-scrollbar {
+    display: none;
 }
 
 /* Dark Mode Overrides*/

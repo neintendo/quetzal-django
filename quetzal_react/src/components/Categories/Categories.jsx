@@ -467,7 +467,7 @@ const Categories = () => {
               </div>
             </div>
             {showFilterView ? (
-              <div className={styles["categories-filter-container"]}>
+              <div className={styles["categories-filter-container"]} style={{overflowX:"scroll"}}>
                 <div
                   className={styles["categories-textselect-container"]}
                   style={{ paddingLeft: 20 }}
