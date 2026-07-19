@@ -146,11 +146,13 @@ const Recurring = () => {
               {"+ Add Recurring Transaction"}
             </button>
           </div>
-          <RecurringTable
-            recurringData={recurringData}
-            searchTerm={searchTerm}
-            onRowClick={handleRowClick}
-          />
+          <div style={{ overflowX: "scroll" }}>
+            <RecurringTable
+              recurringData={recurringData}
+              searchTerm={searchTerm}
+              onRowClick={handleRowClick}
+            />
+          </div>
         </div>
       </div>
     </>

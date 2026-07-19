@@ -363,7 +363,7 @@ const Accounts = () => {
                 )}
               </div>
             </div>
-            <div>
+            <div style={{overflowX: "scroll"}}>
               {/* If tableNav is true switch page to account AccountsDetail*/}
               {tableNav ? (
                 <AccountsDetail

@@ -5,10 +5,11 @@
 
 .th {
     position: sticky;
-    top: 38px;
+    top: 0px;
     background-color: #dddddd;
     text-align: left;
     z-index: 28;
+    white-space: nowrap;
 }
 
 .th,

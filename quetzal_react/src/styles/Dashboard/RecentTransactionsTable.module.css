@@ -15,7 +15,7 @@
 
 .th {
     position: sticky;
-    top: 38px;
+    top: 0;
     background-color: #dddddd;
     text-align: left;
     z-index: 28;

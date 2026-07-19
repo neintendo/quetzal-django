@@ -593,6 +593,7 @@ const Categories = () => {
           </div>
 
           {tableNav ? (
+            <div style={{ overflowX: "scroll" }}>
             <CategoriesDetail
               searchTerm={searchTerm}
               categoryName={selectedCategoryName}
@@ -604,12 +605,15 @@ const Categories = () => {
               detailsRowClick={detailsRowClick}
               transDetailRefresher={transDetailRefresher}
             />
+            </div>
           ) : (
+          <div style={{ overflowX: "scroll" }}>
             <CategoriesTable
               onRowClick={handleRowClick}
               searchTerm={searchTerm}
               enhancedCategoriesData={enhancedCategoriesData}
             />
+          </div>
           )}
         </div>
       </div>

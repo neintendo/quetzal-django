@@ -367,11 +367,14 @@ const Transactions = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <TransactionsTable
+          <div style={{overflowX: "scroll"}}>
+            <TransactionsTable
             transactionsData={transactionsData}
             searchTerm={searchTerm}
             onRowClick={handleRowClick}
-          />
+            />
+          </div>
+
         </div>
       </div>
     </>

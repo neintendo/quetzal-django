@@ -149,13 +149,17 @@ const Dashboard = () => {
             <div className={styles["recents-table-title"]}>
               Recent Transactions
             </div>
-            <RecentTransactions onRowClick={handleRowClick} refresh={refresh} />
+            <div style={{ overflowX: "scroll" }}>
+              <RecentTransactions onRowClick={handleRowClick} refresh={refresh} />
+            </div>
           </div>
           <div className={styles["top-categories-table-container"]}>
             <div className={styles["top-categories-table-title"]}>
               Top Categories This Month
             </div>
-            <TopCategories enhancedCategoriesData={enhancedCategoriesData} />
+            <div style={{ overflowX: "scroll" }}>
+              <TopCategories enhancedCategoriesData={enhancedCategoriesData} />
+            </div>
           </div>
         </div>
       </div>
