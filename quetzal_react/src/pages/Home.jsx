@@ -19,7 +19,15 @@ function Home() {
 
   // Auto open/close sidebar when resizing
   useEffect(() => {
+    let previousOuterWidth = window.outerWidth;
+
     const handleResize = () => {
+
+      // Ignore zoom
+      if (window.outerWidth === previousOuterWidth) {
+        return;
+      }
+
       if (window.innerWidth < widthTrigger) {
         setIsSidebarOpen(false);
       } else {
