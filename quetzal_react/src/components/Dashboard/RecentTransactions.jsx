@@ -25,9 +25,6 @@ const RecentTransactions = ({ onRowClick, refresh }) => {
 
   return (
     <>
-      {transactionsData.length === 0 ? (
-        <div className={styles["table-loading"]}>[ No Data ]</div>
-      ) : (
         <table className={styles.table}>
           <tbody className={styles.tbody}>
             <tr className={styles.tr}>
@@ -63,7 +60,6 @@ const RecentTransactions = ({ onRowClick, refresh }) => {
             })}
           </tbody>
         </table>
-      )}
     </>
   );
 };
