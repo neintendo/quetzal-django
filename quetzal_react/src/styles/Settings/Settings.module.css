@@ -66,6 +66,9 @@
     flex-direction: column;
     width: 100%;
     overflow-y: scroll;
+    scrollbar-color: #999 #ddd;
+    scrollbar-width: thin;
+    scroll-snap-type: y proximity;
 }
 
 .settings-sidebar-title {
@@ -180,6 +183,7 @@ body[data-theme="dark"] .settings-content,
 body[data-theme="dark"] .sidebar-sections-active,
 body[data-theme="dark"] .sidebar-sections:hover {
     background-color: #333333;
+    scrollbar-color: #666 #333;
 }
 
 body[data-theme="dark"] .settings-form-input {
