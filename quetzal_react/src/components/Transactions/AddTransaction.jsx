@@ -148,31 +148,21 @@ function AddTransaction({ route, onSuccess, onClose }) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Notes"
         />
-        <input
-          list="categories"
-          className={styles["add-transaction-form-input"]}
-          type="text"
-          value={category_name}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-          required
-        />
-        <datalist id="categories">
-          {userCategories &&
-            Array.isArray(userCategories) &&
-            [...userCategories]
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((category, index) => (
-                <option key={index} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-        </datalist>
+
         <select
           className={styles["add-transaction-form-input"]}
           type="text"
           value={transaction_type}
-          onChange={(e) => setType(e.target.value)}
+          onChange={(e) => {
+            const typeVal = e.target.value
+            setType(typeVal)
+
+            if (typeVal === "transfer") {
+              setCategory("Transfers");
+            } else {
+              setCategory("")
+            }
+          }}
           placeholder="Transaction Type"
           required
         >
@@ -182,6 +172,30 @@ function AddTransaction({ route, onSuccess, onClose }) {
             <option value="transfer">Transfer</option>
           </optgroup>
         </select>
+        {transaction_type !== "transfer" &&
+          <>
+          <input
+            list="categories"
+            className={styles["add-transaction-form-input"]}
+            type="text"
+            value={category_name}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Category"
+            required
+          />
+          <datalist id="categories">
+            {userCategories &&
+              Array.isArray(userCategories) &&
+              [...userCategories]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((category, index) => (
+                  <option key={index} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+          </datalist>
+          </>
+        }
         <select
           className={styles["add-transaction-form-input"]}
           type="text"
