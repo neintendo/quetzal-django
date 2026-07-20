@@ -19,11 +19,12 @@
     padding: 16px;
     padding-bottom: 8px;
     width: calc(100% - 32px);
-    min-height: 4%;
+    min-height: 128px;
     height: 30%;
     border: 1px solid #bbbbbb;
     position: relative;
     overflow: hidden;
+    resize: vertical;
 }
 
 .dashboard-graph-title {
@@ -43,10 +44,10 @@
     background-color: #dddddd;
     align-items: start;
     width: 100%;
-    min-height: 4%;
+    min-height: 72px;
     height: 60%;
     position: relative;
-    /*overflow: hidden;*/
+    flex: 1;
 }
 
 .recents-table-title {
@@ -78,6 +79,7 @@
     scroll-snap-type: y proximity;
     scroll-padding: 20%;
     box-sizing: border-box;
+    resize: horizontal;
 }
 
 .top-categories-table-title {
@@ -110,6 +112,7 @@
     scroll-padding: 20%;
     box-sizing: border-box;
     margin-right: clamp(-4px, -2px, -2px);
+    flex: 1;
 }
 
 .sub-table-container {

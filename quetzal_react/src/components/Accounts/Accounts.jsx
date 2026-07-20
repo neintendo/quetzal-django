@@ -55,12 +55,6 @@ const Accounts = () => {
   const [selectedTransactionCurrency, setSelectedTransactionCurrency] =
     useState("");
 
-  // consts to track fullscreen state of Graph & Table
-  const [graphMax, setGraphMax] = useState(false);
-  const [graphMin, setGraphMin] = useState(true);
-  const [tableMax, setTableMax] = useState(false);
-  const [tableMin, setTableMin] = useState(true);
-
   const fetchData = () => {
     Promise.all([
       api.get("accounts/aggregate/", { params: { isOnline } }),
@@ -193,22 +187,6 @@ const Accounts = () => {
     (account) => account.id === selectedAccount,
   );
 
-  const toggleGraphMax = () => {
-    setGraphMax(!graphMax);
-  };
-
-  const toggleGraphMin = () => {
-    setGraphMin(!graphMin);
-  };
-
-  const toggleTableMax = () => {
-    setTableMax(!tableMax);
-  };
-
-  const toggleTableMin = () => {
-    setTableMin(!tableMin);
-  };
-
   return (
     <>
       {showAddModal && (
@@ -250,15 +228,9 @@ const Accounts = () => {
         />
       )}
       <div className={styles["accounts"]}>
-        {graphMin ? (
           <div
-            className={
-              graphMax ? styles["accounts-graph-max"] : styles["accounts-graph"]
+            className={styles["accounts-graph"]
             }
-            onDoubleClick={() => {
-              toggleGraphMax();
-              toggleTableMin();
-            }}
           >
             <div
               className={
@@ -296,10 +268,6 @@ const Accounts = () => {
               editAccountRefresher={editAccountRefresher}
             />
           </div>
-        ) : (
-          ""
-        )}
-        {tableMin ? (
           <div className={styles["accounts-table-container"]}>
             <div className={styles["accounts-table-header"]}>
               {tableNav ? (
@@ -317,10 +285,6 @@ const Accounts = () => {
               ) : (
                 <div
                   className={styles["accounts-table-title"]}
-                  onDoubleClick={() => {
-                    (toggleTableMax(), toggleGraphMin());
-                  }}
-                  title="Double Click to Minimise / Maximise"
                 >
                   {" "}
                   Accounts
@@ -382,9 +346,6 @@ const Accounts = () => {
               )}
             </div>
           </div>
-        ) : (
-          ""
-        )}
       </div>
     </>
   );
