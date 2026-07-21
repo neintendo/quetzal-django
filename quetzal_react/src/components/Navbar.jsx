@@ -5,6 +5,7 @@ import { GlobalRefresh } from "./Utilities/GlobalRefresh";
 import AddTransaction from "./Transactions/AddTransaction";
 
 const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
+  const isMac = (navigator.userAgent).toLowerCase().includes("electron") && (navigator.userAgent).toLowerCase().includes("mac")
   const [showAddModal, setShowAddModal] = useState(false);
 
   const handleTransactionAdded = () => {
@@ -30,7 +31,8 @@ const Navbar = ({ isSidebarOpen, toggleSidebar, pageToHome }) => {
       <nav className={styles["navbar"]}>
         <div className={styles["navbar-left"]}>
           <button
-            className={styles["sidebar-nav"]}
+            // Shifts the sidebar toggle to the right on Electron macOS
+            className={isMac ? styles["sidebar-nav-mac"] : styles["sidebar-nav"]}
             title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
             type="button"
             onClick={toggleSidebar}
