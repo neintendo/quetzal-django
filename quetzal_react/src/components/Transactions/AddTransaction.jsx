@@ -101,6 +101,8 @@ function AddTransaction({ route, onSuccess, onClose }) {
     }
   };
 
+  console.log(userCategories)
+
   return (
     <div className={styles["add-transaction-modal"]}>
       <form
@@ -187,6 +189,7 @@ function AddTransaction({ route, onSuccess, onClose }) {
             {userCategories &&
               Array.isArray(userCategories) &&
               [...userCategories]
+                .filter(category => category.type === transaction_type)
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((category, index) => (
                   <option key={index} value={category.name}>
