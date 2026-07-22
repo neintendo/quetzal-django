@@ -172,31 +172,20 @@ function AddRecurring({ route, onSuccess, onClose }) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Notes"
         />
-        <input
-          list="categories"
-          className={styles["add-recurring-form-input"]}
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-          required
-        />
-        <datalist id="categories">
-          {userCategories &&
-            Array.isArray(userCategories) &&
-            [...userCategories]
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((category, index) => (
-                <option key={index} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-        </datalist>
         <select
           className={styles["add-recurring-form-input"]}
           type="text"
           value={transaction_type}
-          onChange={(e) => setType(e.target.value)}
+          onChange={(e) => {
+            const typeVal = e.target.value
+            setType(typeVal)
+
+            if (typeVal === "transfer") {
+              setCategory("Transfers");
+            } else {
+              setCategory("")
+            }
+          }}
           placeholder="Transaction Type"
           required
         >
@@ -206,6 +195,31 @@ function AddRecurring({ route, onSuccess, onClose }) {
             <option value="transfer">Transfer</option>
           </optgroup>
         </select>
+        {transaction_type !== "transfer" &&
+          <>
+          <input
+            list="categories"
+            className={styles["add-recurring-form-input"]}
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Category"
+            required
+          />
+          <datalist id="categories">
+            {userCategories &&
+              Array.isArray(userCategories) &&
+              [...userCategories]
+                .filter(category => category.type === transaction_type)
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((category, index) => (
+                  <option key={index} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+          </datalist>
+          </>
+        }
         <select
           className={styles["add-recurring-form-input"]}
           type="text"
