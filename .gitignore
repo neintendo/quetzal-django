@@ -1,10 +1,6 @@
 # .gitignore
 .env
-db_reset.sh
+.testing_scripts/
 *.pyc
-test_accounts_curl.sh
-test_transactions_curl.sh
-transfers_test.sh
-trans_curl.sh
 quetzal.sqlite3
 quetzal_django/utilities/date_obj.txt
