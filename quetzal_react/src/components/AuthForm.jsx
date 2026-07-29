@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import currencyList from "./Utilities/CurrencyList";
 import styles from "../styles/AuthForm.module.css";
@@ -194,9 +194,9 @@ function AuthForm({ route, method }) {
         </button>
       )}
       {/* Dynamic link that navigates between login & register pages */}
-      <a className={styles["where-to"]} href={link_path}>
+      <Link className={styles["where-to"]} to={link_path}>
         {link_text}
-      </a>
+      </ Link>
     </form>
   );
 }

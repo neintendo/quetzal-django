@@ -4,3 +4,6 @@
 *.pyc
 quetzal.sqlite3
 quetzal_django/utilities/date_obj.txt
+build/quetzal_django/
+dist/quetzal_django/
+quetzal_react/out/quetzal_react-darwin-arm64/
