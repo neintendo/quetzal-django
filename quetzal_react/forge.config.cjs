@@ -6,6 +6,7 @@ module.exports = {
   packagerConfig: {
     asar: true,
     afterExtract: [afterExtract],
+    icon: 'src/assets/quetzal-icon.icns'
   },
   rebuildConfig: {},
   makers: [
