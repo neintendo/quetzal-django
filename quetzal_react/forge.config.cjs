@@ -6,7 +6,8 @@ module.exports = {
   packagerConfig: {
     asar: true,
     afterExtract: [afterExtract],
-    icon: 'src/assets/quetzal-icon.icns'
+    icon: 'src/assets/quetzal-icon.icns',
+    appCategoryType: 'public.app-category.finance'
   },
   rebuildConfig: {},
   makers: [
