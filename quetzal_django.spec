@@ -5,9 +5,7 @@ a = Analysis(
     ['manage.py'],
     pathex=[],
     binaries=[],
-    datas=[
-        ('quetzal_django/migrations', 'quetzal_django/migrations'),
-    ],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

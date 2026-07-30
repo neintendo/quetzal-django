@@ -1,5 +1,6 @@
 import calendar
 import csv
+import os
 from collections import defaultdict
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -7,6 +8,7 @@ from decimal import Decimal
 import django_filters
 import requests
 from dateutil.rrule import DAILY, MONTHLY, WEEKLY, YEARLY, rrule
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction as db_transaction
 from django.db.models import Q
@@ -16,6 +18,9 @@ from rest_framework import generics, permissions, serializers, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+CACHE_FILE_PATH = os.path.join(settings.QUETZAL_DB_DIR, "date_obj.txt")
+
 
 from .models import Account, Category, Recurring, Transaction, User
 from .serializers import (
@@ -205,7 +210,7 @@ class AccountsAggregateView(APIView):
 
         except Exception as e:
             try:
-                with open("quetzal_django/utilities/date_obj.txt", "r") as date_cmp:
+                with open(CACHE_FILE_PATH, "r") as date_cmp:
                     date_obj = datetime.strptime(date_cmp.read(), "%Y-%m-%d")
 
             except Exception as read_err:
@@ -231,7 +236,7 @@ class AccountsAggregateView(APIView):
 
         # On success, saves the current date for cache reference
         try:
-            with open("quetzal_django/utilities/date_obj.txt", "w") as date_cmp:
+            with open(CACHE_FILE_PATH, "w") as date_cmp:
                 date_cmp.write(date_obj.strftime("%Y-%m-%d"))
 
         except Exception as read_err:
