@@ -187,7 +187,7 @@ const TransactionDetail = ({
             </div>
           </div>
           {readNotes !== "" ? (
-            <div className={styles["notes-container"]}>{readNotes}</div>
+            <p className={styles["notes-container"]}>{readNotes}</p>
           ) : (
             ""
           )}
