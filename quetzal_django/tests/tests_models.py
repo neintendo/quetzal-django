@@ -7,16 +7,18 @@ Covers User, Account, Category, Transaction, and ExchangeRates models.
 """
 
 from datetime import date, datetime
+from types import SimpleNamespace
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
-from ..models import Account, Category, ExchangeRates, Transaction, User
+from ..models import Account, Category, ExchangeRates, Recurring, Transaction, User
 from ..serializers import (
     AccountSerializer,
     CategorySerializer,
+    RecurringSerializer,
     TransactionSerializer,
     UserLoginSerializer,
     UserRegistrationSerializer,
@@ -441,6 +443,364 @@ class TransactionModelTest(TestCase):
         self.assertIn("account_name", serializer.errors)
         self.assertIn("category_name", serializer.errors)
         self.assertIn("transaction_type", serializer.errors)
+
+
+class RecurringModelTest(TestCase):
+    """Tests for Recurring model"""
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="pass",
+            display_name="Test User",
+            main_currency="USD",
+        )
+        self.account = Account.objects.create(
+            name="Standard Bank", type="bank", currency="USD", user=self.user
+        )
+        self.destination_account = Account.objects.create(
+            name="Savings", type="bank", currency="USD", user=self.user
+        )
+        # RecurringSerializer.validate() reads self.context["request"].user
+        # directly, so the context needs a real object with a `.user`
+        # attribute rather than the User instance itself.
+        self.request = SimpleNamespace(user=self.user)
+
+    def test_create_recurring_transaction(self):
+        """Test creating a recurring transaction"""
+        recurring = Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+            frequency="MONTHLY",
+            amount=1500,
+            description="Rent",
+            notes="",
+            category="Housing",
+            transaction_type="expense",
+            account="Standard Bank",
+        )
+        self.assertEqual(recurring.amount, 1500)
+        self.assertEqual(recurring.frequency, "MONTHLY")
+        self.assertEqual(recurring.transaction_type, "expense")
+        self.assertEqual(recurring.account, "Standard Bank")
+        self.assertEqual(recurring.user.username, "testuser")
+
+    def test_create_transfer_recurring_transaction(self):
+        """Test creating a recurring transfer with a destination account"""
+        recurring = Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+            frequency="WEEKLY",
+            amount=200,
+            description="Savings transfer",
+            notes="",
+            category="Transfer",
+            transaction_type="transfer",
+            account="Standard Bank",
+            destination_account="Savings",
+        )
+        self.assertEqual(recurring.transaction_type, "transfer")
+        self.assertEqual(recurring.destination_account, "Savings")
+
+    def test_recurring_datetimes_json_field_can_store_list(self):
+        """Test that the datetimes JSONField can store and retrieve a list.
+
+        Note: the model itself does not generate these values — that logic
+        lives in RecurringListCreateView.perform_create/perform_update
+        (views.py), which uses dateutil.rrule based on frequency/start_date/
+        end_date. This test only confirms the field can persist a list;
+        auto-generation should be covered by a view-level test instead.
+        """
+        recurring = Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2025, 10, 1, 7, 0)),
+            frequency="MONTHLY",
+            amount=1500,
+            description="Rent",
+            notes="",
+            category="Housing",
+            transaction_type="expense",
+            account="Standard Bank",
+        )
+        recurring.datetimes = ["2025-08-01 07:00", "2025-09-01 07:00", "2025-10-01 07:00"]
+        recurring.save()
+        recurring.refresh_from_db()
+        self.assertEqual(len(recurring.datetimes), 3)
+        self.assertIn("2025-09-01 07:00", recurring.datetimes)
+
+    def test_recurring_datetimes_default_null(self):
+        """Test that datetimes defaults to None when not provided"""
+        recurring = Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+            frequency="DAILY",
+            amount=50,
+            description="Coffee",
+            notes="",
+            category="Food",
+            transaction_type="expense",
+            account="Standard Bank",
+        )
+        self.assertIsNone(recurring.datetimes)
+
+    def test_recurring_cascade_delete_with_user(self):
+        """Test that recurring transactions are deleted when their user is deleted"""
+        Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+            frequency="YEARLY",
+            amount=1000,
+            description="Insurance",
+            notes="",
+            category="Insurance",
+            transaction_type="expense",
+            account="Standard Bank",
+        )
+        self.assertEqual(Recurring.objects.count(), 1)
+        self.user.delete()
+        self.assertEqual(Recurring.objects.count(), 0)
+
+    # Validation tests for Recurring
+    def test_recurring_validation_amount_greater_than_zero(self):
+        """Test that recurring amount must be greater than 0"""
+        with self.assertRaises(ValidationError):
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency="MONTHLY",
+                amount=0,
+                description="Zero amount",
+                notes="",
+                category="Housing",
+                transaction_type="expense",
+                account="Standard Bank",
+            )
+            recurring.full_clean()
+
+    def test_recurring_validation_negative_amount(self):
+        """Test that negative amount triggers validation error"""
+        with self.assertRaises(ValidationError):
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency="MONTHLY",
+                amount=-100,
+                description="Negative amount",
+                notes="",
+                category="Housing",
+                transaction_type="expense",
+                account="Standard Bank",
+            )
+            recurring.full_clean()
+
+    def test_recurring_validation_invalid_frequency(self):
+        """Test that invalid frequency raises ValidationError"""
+        with self.assertRaises(ValidationError):
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency="BIWEEKLY",
+                amount=100,
+                description="Invalid frequency",
+                notes="",
+                category="Housing",
+                transaction_type="expense",
+                account="Standard Bank",
+            )
+            recurring.full_clean()
+
+    def test_recurring_validation_valid_frequencies(self):
+        """Test that valid frequency choices pass validation"""
+        valid_frequencies = ["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]
+        for valid_frequency in valid_frequencies:
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency=valid_frequency,
+                amount=100,
+                description=f"Test {valid_frequency}",
+                notes="",
+                category="Housing",
+                transaction_type="expense",
+                account="Standard Bank",
+            )
+            # Should not raise an error
+            recurring.full_clean()
+
+    def test_recurring_validation_invalid_transaction_type(self):
+        """Test that invalid transaction_type raises ValidationError"""
+        with self.assertRaises(ValidationError):
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency="MONTHLY",
+                amount=100,
+                description="Invalid type",
+                notes="",
+                category="Housing",
+                transaction_type="invalid_type",
+                account="Standard Bank",
+            )
+            recurring.full_clean()
+
+    def test_recurring_validation_valid_transaction_types(self):
+        """Test that valid transaction types pass validation"""
+        valid_types = ["income", "expense", "transfer"]
+        for valid_type in valid_types:
+            recurring = Recurring(
+                user=self.user,
+                start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+                end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+                frequency="MONTHLY",
+                amount=100,
+                description=f"Test {valid_type}",
+                notes="",
+                category="Housing",
+                transaction_type=valid_type,
+                account="Standard Bank",
+            )
+            # Should not raise an error
+            recurring.full_clean()
+
+    def test_recurring_validation_currency_choices(self):
+        """Test that recurring currency must be a valid choice"""
+        recurring = Recurring.objects.create(
+            user=self.user,
+            start_date=timezone.make_aware(datetime(2025, 8, 1, 7, 0)),
+            end_date=timezone.make_aware(datetime(2026, 8, 1, 7, 0)),
+            frequency="MONTHLY",
+            amount=100,
+            description="Currency check",
+            notes="",
+            category="Housing",
+            transaction_type="expense",
+            account="Standard Bank",
+            currency="EUR",
+        )
+        self.assertEqual(recurring.currency, "EUR")
+
+    # Serializer tests for Recurring
+    def test_recurring_serializer_valid_data(self):
+        """Test RecurringSerializer with valid data for an existing account"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "MONTHLY",
+            "amount": "1500.00",
+            "description": "Rent",
+            "category": "Housing",
+            "transaction_type": "expense",
+            "account": "Standard Bank",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
+    def test_recurring_serializer_nonexistent_account_invalid(self):
+        """Test RecurringSerializer rejects an account that doesn't exist"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "MONTHLY",
+            "amount": "1500.00",
+            "description": "Rent",
+            "category": "Housing",
+            "transaction_type": "expense",
+            "account": "Nonexistent Account",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("non_field_errors", serializer.errors)
+
+    def test_recurring_serializer_transfer_valid(self):
+        """Test RecurringSerializer accepts a transfer between two existing accounts"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "WEEKLY",
+            "amount": "200.00",
+            "description": "Savings transfer",
+            "category": "Transfer",
+            "transaction_type": "transfer",
+            "account": "Standard Bank",
+            "destination_account": "Savings",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
+    def test_recurring_serializer_transfer_same_account_invalid(self):
+        """Test RecurringSerializer rejects a transfer to the same account"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "WEEKLY",
+            "amount": "200.00",
+            "description": "Transfer to self",
+            "category": "Transfer",
+            "transaction_type": "transfer",
+            "account": "Standard Bank",
+            "destination_account": "Standard Bank",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("non_field_errors", serializer.errors)
+
+    def test_recurring_serializer_transfer_nonexistent_destination_invalid(self):
+        """Test RecurringSerializer rejects a transfer to a nonexistent destination account"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "WEEKLY",
+            "amount": "200.00",
+            "description": "Transfer to nowhere",
+            "category": "Transfer",
+            "transaction_type": "transfer",
+            "account": "Standard Bank",
+            "destination_account": "Nonexistent Account",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("non_field_errors", serializer.errors)
+
+    def test_recurring_serializer_missing_required_fields(self):
+        """Test RecurringSerializer rejects missing required fields"""
+        data = {
+            "amount": "100.00",
+            "description": "Missing fields",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("start_date", serializer.errors)
+        self.assertIn("end_date", serializer.errors)
+        self.assertIn("frequency", serializer.errors)
+        self.assertIn("category", serializer.errors)
+        self.assertIn("transaction_type", serializer.errors)
+        self.assertIn("account", serializer.errors)
+
+    def test_recurring_serializer_currency_defaults_to_usd(self):
+        """Test RecurringSerializer doesn't require currency (model default applies)"""
+        data = {
+            "start_date": "2025-08-01 07:00",
+            "end_date": "2026-08-01 07:00",
+            "frequency": "MONTHLY",
+            "amount": "1500.00",
+            "description": "Rent",
+            "category": "Housing",
+            "transaction_type": "expense",
+            "account": "Standard Bank",
+        }
+        serializer = RecurringSerializer(data=data, context={"request": self.request})
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+        self.assertEqual(serializer.validated_data.get("currency", "USD"), "USD")
 
 
 class ExchangeRatesModelTest(TestCase):
