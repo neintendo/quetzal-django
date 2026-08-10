@@ -8,3 +8,4 @@ build/quetzal_django/
 dist/quetzal_django/
 quetzal_react/out/quetzal_react-darwin-arm64/
 date_obj.txt
+.DS_Store
