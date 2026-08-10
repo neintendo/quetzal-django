@@ -138,6 +138,7 @@ const RecurringTable = ({ recurringData, searchTerm, onRowClick }) => {
                   val.start_date,
                   val.end_date,
                   val.frequency,
+                  val.datetimes,
                   val.description,
                   val.notes,
                   val.amount,

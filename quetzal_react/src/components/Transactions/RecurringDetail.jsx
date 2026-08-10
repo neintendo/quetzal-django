@@ -10,6 +10,7 @@ const RecurringDetail = ({
   readStartDate,
   readEndDate,
   readFrequency,
+  readDatetimes,
   readAmount,
   readDescription,
   readNotes,
@@ -157,8 +158,10 @@ const RecurringDetail = ({
 
   let startDateStr = readStartDate.replace(" ", "T");
   let endDateStr = readEndDate.replace(" ", "T");
+  let nextDateStr = readDatetimes[0].replace(" ", "T");
   const newStartDate = Date.parse(startDateStr);
   const newEndDate = Date.parse(endDateStr);
+  const newNextDate = Date.parse(nextDateStr);
 
   return (
     <>
@@ -238,6 +241,19 @@ const RecurringDetail = ({
                 )}
               </div>
             </div>
+          </div>
+          <div className={styles["datetime-alt"]}>
+            {"› Next Transaction: "}
+            {new Intl.DateTimeFormat(undefined, {
+              year: "numeric",
+              day: "2-digit",
+              month: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            })
+              .format(newNextDate)
+              .replace(", ", " | ")}
           </div>
           {readNotes !== "" ? (
             <p className={styles["notes-container"]}>{readNotes}</p>

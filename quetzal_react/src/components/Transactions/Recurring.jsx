@@ -16,6 +16,8 @@ const Recurring = () => {
     useState("");
   const [selectedTransactionFrequency, setSelectedTransactionFrequency] =
     useState("");
+  const [selectedTransactionDatetimes, setSelectedTransactionDatetimes] =
+    useState("");
   const [selectedTransactionEndDate, setSelectedTransactionEndDate] =
     useState("");
   const [selectedTransactionDescription, setSelectedTransactionDescription] =
@@ -56,6 +58,7 @@ const Recurring = () => {
     startDateFromChild,
     endDateFromChild,
     frequencyFromChild,
+    datetimesFromChild,
     descriptionFromChild,
     notesFromChild,
     amountFromChild,
@@ -69,6 +72,7 @@ const Recurring = () => {
     setSelectedTransactionStartDate(startDateFromChild);
     setSelectedTransactionEndDate(endDateFromChild);
     setSelectedTransactionFrequency(frequencyFromChild);
+    setSelectedTransactionDatetimes(datetimesFromChild);
     setSelectedTransactionDescription(descriptionFromChild);
     setSelectedTransactionNotes(notesFromChild);
     setSelectedTransactionAmount(amountFromChild);
@@ -107,6 +111,7 @@ const Recurring = () => {
           readStartDate={selectedTransactionStartDate}
           readEndDate={selectedTransactionEndDate}
           readFrequency={selectedTransactionFrequency}
+          readDatetimes={selectedTransactionDatetimes}
           readDescription={selectedTransactionDescription}
           readNotes={selectedTransactionNotes}
           readAmount={selectedTransactionAmount}

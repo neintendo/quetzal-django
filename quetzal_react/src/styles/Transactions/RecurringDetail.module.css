@@ -73,6 +73,10 @@
     font-size: 14px;
 }
 
+.datetime-alt {
+    font-size: 11px;
+}
+
 .balance {
     font-size: 24px;
 }
@@ -295,4 +299,8 @@ body[data-theme="dark"] .modal-close-button {
 
 body[data-theme="dark"] .modal-close-button:hover {
     background-color: #555555;
+}
+
+body[data-theme="dark"] .datetime-alt {
+    color: #ff5444;
 }
