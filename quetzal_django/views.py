@@ -837,6 +837,8 @@ class RecurringListCreateView(generics.ListCreateAPIView):
                         MONTHLY,
                         dtstart=recurring_transaction.start_date,
                         until=recurring_transaction.end_date,
+                        bymonthday=(recurring_transaction.start_date.day, -1),
+                        bysetpos=1,
                     )
                 )
             case "YEARLY":
@@ -845,6 +847,9 @@ class RecurringListCreateView(generics.ListCreateAPIView):
                         YEARLY,
                         dtstart=recurring_transaction.start_date,
                         until=recurring_transaction.end_date,
+                        bymonth=recurring_transaction.start_date.month,
+                        bymonthday=(recurring_transaction.start_date.day, -1),
+                        bysetpos=1,
                     )
                 )
 
@@ -899,6 +904,8 @@ class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
                         MONTHLY,
                         dtstart=recurring_transaction.start_date,
                         until=recurring_transaction.end_date,
+                        bymonthday=(recurring_transaction.start_date.day, -1),
+                        bysetpos=1,
                     )
                 )
             case "YEARLY":
@@ -907,6 +914,9 @@ class RecurringDetailView(generics.RetrieveUpdateDestroyAPIView):
                         YEARLY,
                         dtstart=recurring_transaction.start_date,
                         until=recurring_transaction.end_date,
+                        bymonth=recurring_transaction.start_date.month,
+                        bymonthday=(recurring_transaction.start_date.day, -1),
+                        bysetpos=1,
                     )
                 )
 
