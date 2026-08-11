@@ -146,16 +146,20 @@ const Dashboard = () => {
         </div>
         <div className={styles["dashboard-summaries-container"]}>
           <div className={styles["recents-table-container"]}>
-            <div className={styles["recents-table-title"]}>
-              Recent Transactions
+            <div className={styles["recents-table-title-container"]}>
+              <div className={styles["recents-table-title"]}>
+                Recent Transactions
+              </div>
             </div>
             <div className={styles["sub-table-container"]}>
               <RecentTransactions onRowClick={handleRowClick} refresh={refresh} />
             </div>
           </div>
           <div className={styles["top-categories-table-container"]}>
-            <div className={styles["top-categories-table-title"]}>
-              Top Categories This Month
+            <div className={styles["top-categories-table-title-container"]}>
+              <div className={styles["top-categories-table-title"]}>
+                Top Categories This Month
+              </div>
             </div>
             <div className={styles["sub-table-container"]}>
               <TopCategories enhancedCategoriesData={enhancedCategoriesData} />
