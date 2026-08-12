@@ -120,6 +120,9 @@ const RecurringDetail = ({
         if (notes !== "") {
           requestData.notes = notes;
         }
+        if (notes.length < 1) {
+          requestData.notes = null;
+        }
       }
 
       const res = await api[method](route, requestData);
@@ -196,14 +199,7 @@ const RecurringDetail = ({
                   .format(newEndDate)
                   .replace(", ", " | ")}
               </div>
-              {/* <div
-                className={styles["frequency"]}
-                style={{ textTransform: "capitalize" }}
-              >
-                Frequency: &nbsp;{frequency.toLowerCase()}
-              </div>*/}
             </div>
-
             <div
               className={styles["modal-close-button"]}
               onClick={onClose}
@@ -212,7 +208,6 @@ const RecurringDetail = ({
               X
             </div>
           </div>
-
           <div className={styles["details-splitter-container"]}>
             <div className={styles["details-left"]}>
               <div className={styles["desc-cat"]}>
@@ -255,7 +250,7 @@ const RecurringDetail = ({
               .format(newNextDate)
               .replace(", ", " | ")}
           </div>
-          {readNotes !== "" ? (
+          {readNotes !== null ? (
             <p className={styles["notes-container"]}>{readNotes}</p>
           ) : (
             ""

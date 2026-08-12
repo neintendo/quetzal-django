@@ -101,6 +101,9 @@ const TransactionDetail = ({
         if (notes !== "") {
           requestData.notes = notes;
         }
+        if (notes.length < 1) {
+          requestData.notes = null;
+        }
       }
 
       const res = await api[method](route, requestData);
@@ -186,7 +189,7 @@ const TransactionDetail = ({
               </div>
             </div>
           </div>
-          {readNotes !== "" ? (
+          {readNotes !== null ? (
             <p className={styles["notes-container"]}>{readNotes}</p>
           ) : (
             ""
