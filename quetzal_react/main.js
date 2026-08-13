@@ -1,13 +1,13 @@
 // * I used https://ivanyu2021.hashnode.dev/electron-django-part-2-package-it-to-production
 // and Claude AI to help me package the backend & frontend to production *
 
-import { app, BrowserWindow, screen } from "electron";
+import { app, BrowserWindow, screen, dialog } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { spawn } from "child_process";
-import treeKill from "tree-kill";
 import fs from "fs";
 import crypto from "crypto";
+import http from "http";
 import { kill } from "process";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -89,6 +89,73 @@ const spawnDjango = (exe, baseArgs, env) => {
   return spawn(exe, runserverArgs, { env });
 };
 
+// `spawn()` resolves as soon as the OS has started the process -- not
+// once Django has finished booting (imports, app registry, migrations
+// check, etc.) and actually bound its socket. Without this, the renderer
+// can start firing requests before anything is listening, producing
+// ERR_CONNECTION_REFUSED. This polls until we get any HTTP response (even
+// a 404 counts -- it just means something's listening), and bails out
+// early if the process exits/errors before ever becoming ready so we
+// don't poll forever against a dead process.
+//
+const waitForDjangoReady = (
+  proc,
+  { host = "127.0.0.1", port = 8000, timeoutMs = 30000, intervalMs = 200 } = {},
+) => {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const deadline = Date.now() + timeoutMs;
+
+    const onProcessDown = (codeOrErr) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(
+        new Error(
+          `Django process exited/errored before becoming ready: ${codeOrErr}`,
+        ),
+      );
+    };
+
+    const cleanup = () => {
+      proc.removeListener("close", onProcessDown);
+      proc.removeListener("error", onProcessDown);
+    };
+
+    proc.once("close", onProcessDown);
+    proc.once("error", onProcessDown);
+
+    const attempt = () => {
+      if (settled) return;
+
+      const req = http.get({ host, port, path: "/", timeout: intervalMs }, (res) => {
+        res.resume(); // drain the response so the socket can close cleanly
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve();
+      });
+
+      req.on("timeout", () => {
+        req.destroy();
+      });
+
+      req.on("error", () => {
+        if (settled) return;
+        if (Date.now() >= deadline) {
+          settled = true;
+          cleanup();
+          reject(new Error(`Django server did not respond within ${timeoutMs}ms`));
+          return;
+        }
+        setTimeout(attempt, intervalMs);
+      });
+    };
+
+    attempt();
+  });
+};
+
 const startDjangoServer = async () => {
   const { exe, baseArgs, env } = resolveDjangoCommand();
 
@@ -117,6 +184,10 @@ const startDjangoServer = async () => {
     console.log(`child process exited with code ${code}`);
   });
 
+  console.log("Waiting for Django server to become ready...");
+  await waitForDjangoReady(djangoProcess);
+  console.log("Django server is ready.");
+
   return djangoProcess;
 };
 
@@ -132,7 +203,17 @@ const upsertKeyValue = (obj, keyToChange, value) => {
 };
 
 const createWindow = async () => {
-  await startDjangoServer();
+  try {
+    await startDjangoServer();
+  } catch (err) {
+    console.error("Failed to start Django server:", err.message);
+    dialog.showErrorBox(
+      "Startup Error",
+      `Quetzal's backend failed to start:\n\n${err.message}\n\nThe app will now close.`,
+    );
+    app.quit();
+    return;
+  }
 
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
@@ -165,7 +246,7 @@ const createWindow = async () => {
       hash: "/home",
     });
   } else {
-    win.loadURL("http://localhost:5173/home");
+    win.loadURL("http://localhost:5173/#/home");
   }
 
   if (isDevelopmentEnv()) {
