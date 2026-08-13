@@ -8,6 +8,7 @@ import { spawn } from "child_process";
 import treeKill from "tree-kill";
 import fs from "fs";
 import crypto from "crypto";
+import { kill } from "process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -119,19 +120,6 @@ const startDjangoServer = async () => {
   return djangoProcess;
 };
 
-const stopDjangoServer = () => {
-  if (djangoProcess && djangoProcess.pid) {
-    treeKill(djangoProcess.pid, "SIGTERM", (err) => {
-      if (err) {
-        console.error("Failed to kill Django process tree:", err);
-      } else {
-        console.log("Django process tree terminated");
-      }
-    });
-    djangoProcess = null;
-  }
-};
-
 const upsertKeyValue = (obj, keyToChange, value) => {
   const keyToChangeLower = keyToChange.toLowerCase();
   for (const key of Object.keys(obj)) {
@@ -189,19 +177,19 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-app.on("window-all-closed", () => {
-  stopDjangoServer();
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
-app.on("before-quit", () => {
-  stopDjangoServer();
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+  kill(djangoProcess.pid);
+});
+
+app.on("before-quit", async function () {
+  kill(djangoProcess.pid);
 });
