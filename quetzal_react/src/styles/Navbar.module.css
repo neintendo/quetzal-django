@@ -58,8 +58,13 @@
     background-color: #eeeeee;
 }
 
+.sidebar-nav-mac:hover {
+    background-color: #eeeeee;
+}
+
 .add-nav,
-.sidebar-nav {
+.sidebar-nav,
+.sidebar-nav-mac {
     cursor: pointer;
 }
 
