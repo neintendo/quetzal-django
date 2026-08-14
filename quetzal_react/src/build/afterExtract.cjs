@@ -9,7 +9,7 @@ module.exports = function (extractPath, electronVersion, platform, arch, done) {
   const destination =
     platform === 'darwin'
       ? path.join(extractPath, 'Electron.app', 'Contents', 'Resources', 'python')
-      : path.join(extractPath, 'python');
+      : path.join(extractPath, 'resources', 'python');
 
   const source = path.join(__dirname, '..', '..', '..', 'dist', 'quetzal_django');
 

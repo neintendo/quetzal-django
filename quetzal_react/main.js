@@ -52,14 +52,9 @@ const resolveDjangoCommand = () => {
   }
 
   // Production: run the PyInstaller-built binary copied in by afterExtract.cjs.
-  // afterExtract copies dist/quetzal_django into <extractPath>/Electron.app/Contents/Resources/python.
-  const exeDir = path.join(
-    path.dirname(app.getPath("exe")),
-    "..",
-    "Resources",
-    "python",
-  );
-  const exePath = path.join(exeDir, "quetzal_django");
+  const exeDir = path.join(process.resourcesPath, "python");
+  const exeName = process.platform === "win32" ? "quetzal_django.exe" : "quetzal_django";
+  const exePath = path.join(exeDir, exeName);
 
   return { exe: exePath, baseArgs: [], env };
 };
