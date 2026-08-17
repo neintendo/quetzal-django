@@ -590,6 +590,72 @@ Permanently deletes all transactions, accounts, and categories for the authentic
 
 ---
 
+### List / Create Recurring.
+
+`GET /recurring/` `POST /recurring/`
+
+**GET** — Returns all recurring transactions for the authenticated user.
+
+**POST** — Creates a new recurring transaction and automatically generates occurrence datetimes based on the frequency and date range.
+
+**Request body (POST)**
+
+|Field|Type|Required|Notes|
+|---|---|---|---|
+|`start_date`|string|Yes|Format: `YYYY-MM-DD HH:MM`|
+|`end_date`|string|Yes|Format: `YYYY-MM-DD HH:MM`|
+|`frequency`|string|Yes|One of: `DAILY`, `WEEKLY`, `MONTHLY`, `YEARLY`|
+|`amount`|decimal|Yes|Must be > 0|
+|`description`|string|Yes||
+|`notes`|string|No||
+|`category`|string|Yes|Category name (created if doesn't exist)|
+|`transaction_type`|string|Yes|`income`, `expense`, or `transfer`|
+|`account`|string|Yes|Account name (created if doesn't exist)|
+|`destination_account`|string|Required for transfers|Destination account name|
+|`currency`|string|No|Inherited from account if omitted|
+
+**Response** `201 Created`
+
+```json
+{
+  "id": 1,
+  "start_date": "2026-01-01 00:00",
+  "end_date": "2026-12-31 00:00",
+  "frequency": "MONTHLY",
+  "datetimes": [
+    "2026-01-01 00:00",
+    "2026-02-01 00:00",
+    "2026-03-01 00:00"
+  ],
+  "amount": "150.00",
+  "description": "Monthly Rent",
+  "notes": "Apartment",
+  "category": "Rent",
+  "transaction_type": "expense",
+  "account": "Checking",
+  "destination_account": null,
+  "currency": "USD"
+}
+```
+
+**Validation errors**
+
+- `400` — Account does not exist    
+- `400` — Destination account does not exist
+- `400` — Cannot create a recurring transfer to the same account
+
+---
+
+### Get / Update / Delete Recurring.
+
+`GET /recurring/<id>/` `PUT /recurring/<id>/` `DELETE /recurring/<id>/`
+
+**PUT** — Updates the recurring transaction. The update is partial (only provided fields are changed). If `start_date`, `end_date`, or `frequency` are modified, the list of occurrence `datetimes` is regenerated automatically.
+
+**DELETE** — Deletes the recurring transaction.
+
+**Response** `200 OK` / `204 No Content`
+
 ## Notes.
 
 **Currency conversion** — Conversion uses the [Frankfurter API](https://www.frankfurter.dev/). If the API is unavailable, the last successfully fetched date is used as a fallback.
